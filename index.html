@@ -5,7 +5,7 @@
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <link rel="apple-touch-icon" href="icon-192.png">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>AmbWebCrypt (sd5d)</title>
+    <title>AmbWebCrypt (ld5d)</title>
     <style>
 :root {
     --primary: #00ff41; 
@@ -111,7 +111,7 @@ button:disabled { background: #666 !important; color: #999 !important; cursor: n
 <div id="loader-screen" style="display:none; max-width: 600px; margin: 30px auto; padding: 20px; background: #0a0a0a; border: 1px solid #333; color: #fff; font-family: Consolas, monospace; border-radius: 8px;">
 <!-- 修复后（直接替换loader-screen内的标题区域） -->
 <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 10px;">
-    <h1 style="font-size: clamp(16px, 5vw, 22px); white-space: nowrap; margin: 0; color: var(--primary); border: none; padding: 0;">🔤 AmbWebCrypt (sd5d)</h1>
+    <h1 style="font-size: clamp(16px, 5vw, 22px); white-space: nowrap; margin: 0; color: var(--primary); border: none; padding: 0;">🔤 AmbWebCrypt (ld5d)</h1>
     <button onclick="backupTool()" style="background: none; border: 1px solid #444; color: #888; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 11px; flex-shrink: 0; white-space: nowrap; margin: 0;">
         💾 保存本页
     </button>
@@ -168,7 +168,7 @@ button:disabled { background: #666 !important; color: #999 !important; cursor: n
 <!-- 替换为下方带有 id 的版本 -->
 <div id="header-area" style="display: flex; flex-direction: column; gap: 8px; border-bottom: 2px solid var(--primary); margin-bottom: 20px; padding-bottom: 10px;">
     <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px;">
-        <h1 style="font-size: clamp(16px, 5vw, 22px); white-space: nowrap; margin: 0; color: var(--primary); border: none; padding: 0;">🔤 AmbWebCrypt (sd5d)</h1>
+        <h1 style="font-size: clamp(16px, 5vw, 22px); white-space: nowrap; margin: 0; color: var(--primary); border: none; padding: 0;">🔤 AmbWebCrypt (ld5d)</h1>
         <button onclick="backupTool()" style="background: none; border: 1px solid #444; color: #888; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 11px; flex-shrink: 0; white-space: nowrap; margin: 0;">
             💾 保存本页
         </button>
@@ -375,7 +375,7 @@ button:disabled { background: #666 !important; color: #999 !important; cursor: n
 
     <script src="https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js"></script>
     <script>
-    const VER = "sd5d"; // 升级到 sd5d
+    const VER = "ld5d"; // 升级到 ld5d
     const PLIM = 100000; 
     const MAX_PIXELS = 10000000; 
     const MAP = "零一二三四五六七八九十个百千万服多来米发锁拉系骇古极你歪它他她啊波次的饿歌喝以几可了们呢喔屏群人是烫鱼绿写用这莱方录鹿卢凹折山葱仪厂长秧同草末音菜酸汤名口窝填田土木火水金风雨石竹鸟马牛羊虫花树云雷雪星光天海湖林点线面体条猫狗搜库炮进城管锚泡抛刨袍图如吐加键减肥乘出除处初厨楚乔恩奖江姜酱犟僵耳儿文静网热卡空虚拟想希丁克门付款啦放大哦扩对皮肤看快手内存成绩差登记机声第集平时都觉得就行打击哒西到哪咳嗽带飞辛苦老试怕漏刷未微位小众中从聪信新旧杨样阳提清青酒流留物里例理力丽礼李立事史视率形之只染然似防重饭洗头连叫扣宜";
@@ -505,18 +505,22 @@ if (decrypted.length > 6 &&
                 score += 0.5; // GZIP解压成功
             } catch (e) { finalData = decrypted; }
         }
-
-        // 核心判分：校验和
+// --- 核心判分：校验和 ---
         const h = new Uint8Array(await window.crypto.subtle.digest('SHA-256', finalData));
         const currentCksum = ((h[16] << 8) | h[17]) >>> 0;
-        if (isSixHeaderValid && currentCksum === targetCksum) score += 1;
+        
+        // 定义变量，确保名称一致
+        const cksumMatched = isSixHeaderValid && currentCksum === targetCksum;
+        if (cksumMatched) score += 1;
 
-        // 弱特征判分
-        if (getAutoExtension(finalData)) score += 0.25; // 有扩展名特征
-        if (getAutoExtension(finalData) === '.bin') score -= 0.25;
-                if (getAutoExtension(finalData) === '.riff') score -= 0.125;
-        if (bufToHex(finalData.slice(0, 4)).startsWith('000000')) score += 0.125; // 0x000000开头等弱特征
+        // --- 弱特征判分 (守住你的 BIN/RIFF 红线) ---
+        const autoExt = getAutoExtension(finalData);
+        if (autoExt) score += 0.25; 
+        if (autoExt === '.bin') score -= 0.25;
+        if (autoExt === '.riff') score -= 0.125;
+        if (bufToHex(finalData.slice(0, 4)).startsWith('000000')) score += 0.125;
 
+        // 把结果塞进候选名单
         candidates.push({ 
             data: finalData, 
             score: score, 
@@ -524,7 +528,15 @@ if (decrypted.length > 6 &&
             edState: currentEd, 
             cksum: currentCksum 
         });
+
+        // --- 核心退出逻辑 ---
+        // A. 强加密算法(GCM/P384)成功，4分直接走人
         if (score >= 4) break;
+        
+        // B. 不加密文件(哈/嘻)且校验和中了，1.xx分也直接走人，不许盲试
+        if (sixHeader.isValid && !sixHeader.isEncrypted && mode === 5 && cksumMatched) {
+            break; 
+        }
     }
 if (!candidates.length) return null;
     
@@ -605,14 +617,17 @@ function parseSixHeader(fileName, textContent, rawBuf) {
         }
         return found.length === 6 ? found : null;
     };
-
-    const sixHeaderChars = scanFileName(fileName);
+let sixHeaderChars = scanFileName(fileName) || scanFileName(textContent);
+if (!sixHeaderChars && rawBuf) {
+    try {
+        const head = new TextDecoder().decode(new Uint8Array(rawBuf).slice(0, 1024));
+        sixHeaderChars = scanFileName(head);
+    } catch(e) {}
+}
     if (!sixHeaderChars) {
         return { isValid: false };
     }
-
-    // --- 修复点：计算预期的校验和 ---
-    const cksum = (HEX_MAP.indexOf(sixHeaderChars[0]) << 12) |
+const cksum = (HEX_MAP.indexOf(sixHeaderChars[0]) << 12) |
                   (HEX_MAP.indexOf(sixHeaderChars[1]) << 8)  |
                   (HEX_MAP.indexOf(sixHeaderChars[2]) << 4)  |
                   (HEX_MAP.indexOf(sixHeaderChars[3]));
@@ -620,13 +635,16 @@ function parseSixHeader(fileName, textContent, rawBuf) {
     const isGCM = sixHeaderChars[4] === "嘿";
     const sixthCharIdx = HEX_MAP.indexOf(sixHeaderChars[5]);
 
-    return {
-        isValid: true,
-        isGCM: isGCM,
-        cksumTarget: cksum, // 必须返回这个属性
-        firstFourChars: sixHeaderChars.slice(0,4).join(''),
-        sixthCharIdx: sixthCharIdx
-    };
+const isEnc = (sixthCharIdx & 1) !== 0;
+return {
+    isValid: true,
+    isGCM: sixHeaderChars[4] === "嘿",
+    isEncrypted: isEnc,
+    firstAlgo: isEnc ? HEX_MAP.indexOf(sixHeaderChars[4]) : 5, // 未加密则首选模式5
+    cksumTarget: cksum,
+    firstFourChars: sixHeaderChars.slice(0,4).join(''),
+    sixthCharIdx: sixthCharIdx
+};
 }
 function checkEncIdentity() {
     const valInput = $('e-key');
