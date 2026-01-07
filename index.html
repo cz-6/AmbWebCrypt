@@ -5,7 +5,7 @@
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <link rel="apple-touch-icon" href="icon-192.png">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>AmbWebCrypt (pd5c)</title>
+    <title>AmbWebCrypt (sd5d)</title>
     <style>
 :root {
     --primary: #00ff41; 
@@ -111,12 +111,13 @@ button:disabled { background: #666 !important; color: #999 !important; cursor: n
 <div id="loader-screen" style="display:none; max-width: 600px; margin: 30px auto; padding: 20px; background: #0a0a0a; border: 1px solid #333; color: #fff; font-family: Consolas, monospace; border-radius: 8px;">
 <!-- 修复后（直接替换loader-screen内的标题区域） -->
 <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 10px;">
-    <h1 style="font-size: clamp(16px, 5vw, 22px); white-space: nowrap; margin: 0; color: var(--primary); border: none; padding: 0;">🔤 AmbWebCrypt (pd5c)</h1>
+    <h1 style="font-size: clamp(16px, 5vw, 22px); white-space: nowrap; margin: 0; color: var(--primary); border: none; padding: 0;">🔤 AmbWebCrypt (sd5d)</h1>
     <button onclick="backupTool()" style="background: none; border: 1px solid #444; color: #888; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 11px; flex-shrink: 0; white-space: nowrap; margin: 0;">
         💾 保存本页
     </button>
 </div>
-<div style="font-size: clamp(14px, 3vw, 16px); color: var(--warn); font-weight: bold; text-align: center; margin-bottom: 20px;">
+<div style="font-size: clamp(14px, 3vw, 16px); color: var(--warn); font-weight: bold; text-align: center; margin-bottom: 0; display: flex; align-items: center; justify-content: center; gap: 8px;">
+    <a href="https://github.com/cz-6/AmbWebCrypt" target="_blank" style="color: var(--warn); text-decoration: none;">🐱</a>
     🎉 2026新年快乐 🎉
 </div>
 
@@ -167,14 +168,15 @@ button:disabled { background: #666 !important; color: #999 !important; cursor: n
 <!-- 替换为下方带有 id 的版本 -->
 <div id="header-area" style="display: flex; flex-direction: column; gap: 8px; border-bottom: 2px solid var(--primary); margin-bottom: 20px; padding-bottom: 10px;">
     <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px;">
-        <h1 style="font-size: clamp(16px, 5vw, 22px); white-space: nowrap; margin: 0; color: var(--primary); border: none; padding: 0;">🔤 AmbWebCrypt (pd5c)</h1>
+        <h1 style="font-size: clamp(16px, 5vw, 22px); white-space: nowrap; margin: 0; color: var(--primary); border: none; padding: 0;">🔤 AmbWebCrypt (sd5d)</h1>
         <button onclick="backupTool()" style="background: none; border: 1px solid #444; color: #888; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 11px; flex-shrink: 0; white-space: nowrap; margin: 0;">
             💾 保存本页
         </button>
     </div>
-    <div style="font-size: clamp(14px, 3vw, 16px); color: var(--warn); font-weight: bold; text-align: center;">
-        🎉 2026新年快乐 🎉
-    </div>
+<div style="font-size: clamp(14px, 3vw, 16px); color: var(--warn); font-weight: bold; text-align: center; margin-bottom: 0; display: flex; align-items: center; justify-content: center; gap: 8px;">
+    <a href="https://github.com/cz-6/AmbWebCrypt" target="_blank" style="color: var(--warn); text-decoration: none;">🐱</a>
+    🎉 2026新年快乐 🎉
+</div>
 </div>
 
 <div id="dec-warning-msg" style="display:none; color:orange; margin-bottom: 10px; padding: 5px; border: 1px solid orange; background-color: #332b00; border-radius: 3px;"></div>
@@ -373,7 +375,7 @@ button:disabled { background: #666 !important; color: #999 !important; cursor: n
 
     <script src="https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js"></script>
     <script>
-    const VER = "pd5c"; // 升级到 pd5c
+    const VER = "sd5d"; // 升级到 sd5d
     const PLIM = 100000; 
     const MAX_PIXELS = 10000000; 
     const MAP = "零一二三四五六七八九十个百千万服多来米发锁拉系骇古极你歪它他她啊波次的饿歌喝以几可了们呢喔屏群人是烫鱼绿写用这莱方录鹿卢凹折山葱仪厂长秧同草末音菜酸汤名口窝填田土木火水金风雨石竹鸟马牛羊虫花树云雷雪星光天海湖林点线面体条猫狗搜库炮进城管锚泡抛刨袍图如吐加键减肥乘出除处初厨楚乔恩奖江姜酱犟僵耳儿文静网热卡空虚拟想希丁克门付款啦放大哦扩对皮肤看快手内存成绩差登记机声第集平时都觉得就行打击哒西到哪咳嗽带飞辛苦老试怕漏刷未微位小众中从聪信新旧杨样阳提清青酒流留物里例理力丽礼李立事史视率形之只染然似防重饭洗头连叫扣宜";
@@ -493,10 +495,11 @@ async function coreRestore(rawBin, pwd, sniffSource, fileName, rawFileBuf) {
         // 核心判分：算法成功
         if ([1, 2, 4].includes(mode)) score += 4; // GCM/P-384/吱 解密成功
         if (currentEd.sigValid) score += 2;        // Ed签名验证成功
-
-        // 特征判定：GZIP
         let finalData = decrypted;
-        if (decrypted.length > 2 && decrypted[0] === 0x1f && decrypted[1] === 0x8b) {
+if (decrypted.length > 6 && 
+    decrypted[0] === 0x1f && decrypted[1] === 0x8b && 
+    decrypted[2] === 0x08 && decrypted[3] === 0x00 && 
+    decrypted[4] === 0x00 && decrypted[5] === 0x00) {
             try {
                 finalData = pako.ungzip(decrypted);
                 score += 0.5; // GZIP解压成功
@@ -587,35 +590,42 @@ function formatSpeed(bytesPerSec) {
     return (bytesPerSec / 1048576).toFixed(2) + " MB/s";
 }
 let edIdentity = {isEd: false, isAdmin: false };
-let decWarning = {active: false, message: "" }; // 用于在解密成功但有疑虑时显示警告
+let decWarning = {active: false, message: "" };
 function parseSixHeader(fileName, textContent, rawBuf) {
     const HEX_MAP = "哈嘿嘻咕吱吧哔嘚嘛嘞嘎嘟啸嘶嚷噗";
-    const scan = (str) => {
-        if (!str || typeof str !== 'string') return null;
+    
+    // 扫描文件名中的六字头
+    const scanFileName = (name) => {
+        if (!name || typeof name !== 'string') return null;
         let found = [];
-        const limit = Math.min(str.length, 500);
-        for (let i = 0; i < limit; i++) {
-            if (HEX_MAP.includes(str[i])) {
-                found.push(str[i]);
-                if (found.length === 6) return found;
+        for (let i = 0; i < name.length && found.length < 6; i++) {
+            if (HEX_MAP.includes(name[i])) {
+                found.push(name[i]);
             }
         }
-        return null;
+        return found.length === 6 ? found : null;
     };
-    // 嗅探地方1：文件流开头（针对导入的TXT文件）
-    let bufText = "";
-    if (rawBuf) {
-        try { bufText = new TextDecoder().decode(new Uint8Array(rawBuf).slice(0, 100)); } catch(e){}
+
+    const sixHeaderChars = scanFileName(fileName);
+    if (!sixHeaderChars) {
+        return { isValid: false };
     }
-    // 优先级：文件名 > 文件开头 > 文本框内容
-    let chars = scan(fileName) || scan(bufText) || scan(textContent);
-    if (!chars) return { isValid: false, cksumTarget: -1 };
-    const idx = chars.map(c => HEX_MAP.indexOf(c));
+
+    // --- 修复点：计算预期的校验和 ---
+    const cksum = (HEX_MAP.indexOf(sixHeaderChars[0]) << 12) |
+                  (HEX_MAP.indexOf(sixHeaderChars[1]) << 8)  |
+                  (HEX_MAP.indexOf(sixHeaderChars[2]) << 4)  |
+                  (HEX_MAP.indexOf(sixHeaderChars[3]));
+
+    const isGCM = sixHeaderChars[4] === "嘿";
+    const sixthCharIdx = HEX_MAP.indexOf(sixHeaderChars[5]);
+
     return {
         isValid: true,
-        cksumTarget: ((idx[0] << 12) | (idx[1] << 8) | (idx[2] << 4) | idx[3]) >>> 0, 
-        firstAlgo: idx[4], 
-        isEncrypted: idx[5] !== 5 
+        isGCM: isGCM,
+        cksumTarget: cksum, // 必须返回这个属性
+        firstFourChars: sixHeaderChars.slice(0,4).join(''),
+        sixthCharIdx: sixthCharIdx
     };
 }
 function checkEncIdentity() {
@@ -1080,7 +1090,52 @@ window.onload = async () => {
         const r = document.querySelector(`input[name="rmode"][value="${mode}"]`);
         if (r) {r.checked = true; handleModeChange(true, null, !!prVal); }
     }
+const webpcVal = p.get('webpc');
+    const imgCompCheckbox = $('img-comp');
+    if (imgCompCheckbox && webpcVal !== null) {
+        // 支持值：0/f→关闭，1/t→打开（不区分大小写）
+        const isWebpcOpen = ['1', 't', 'T'].includes(webpcVal);
+        imgCompCheckbox.checked = isWebpcOpen;
+        // 压缩状态变化后，刷新图像预览（若有已导入图像）
+        if (oFile && oFile.type.startsWith('image/')) {
+            reprocImg();
+        }
+    }
 
+    // 2. crypt参数：指定加密算法（CBC/0→0，GCM/1→1，P384/2→2，ED25519/3→3）
+    const cryptVal = p.get('crypt');
+    if (cryptVal !== null) {
+        let algoValue;
+        // 映射参数值到算法索引：CBC/0→0，GCM/1→1，P384/2→2，ED25519/3→3
+        switch (cryptVal.toLowerCase()) {
+            case 'cbc': case '0': algoValue = '0'; break;
+            case 'gcm': case '1': algoValue = '1'; break;
+            case 'p384': case '2': algoValue = '2'; break;
+            case 'ed25519': case '3': algoValue = '3'; break;
+            default: algoValue = null; // 无效值不处理
+        }
+        // 选中对应算法的单选按钮，并触发身份校验
+        const algoRadio = document.querySelector(`input[name="algo"][value="${algoValue}"]`);
+        if (algoRadio) {
+            algoRadio.checked = true;
+            checkEncIdentity(); // 同步更新身份提示
+        }
+    }
+
+    // 3. page参数：指定默认页签（1/enc→加密，2/dec→解密，3/keygen→密钥生成）
+    const pageVal = p.get('page');
+    if (pageVal !== null) {
+        let tabName;
+        // 映射参数值到页签名称：1/enc→encode，2/dec→decode，3/keygen→keygen
+        switch (pageVal.toLowerCase()) {
+            case '1': case 'enc': tabName = 'encode'; break;
+            case '2': case 'dec': tabName = 'decode'; break;
+            case '3': case 'keygen': tabName = 'keygen'; break;
+            default: tabName = 'encode'; // 无效值默认显示加密页
+        }
+        // 切换到指定页签（复用现有switchTab函数）
+        switchTab(tabName);
+    }
     if (targetUrl) {
         const loader = $('loader-screen');
         const bodyChildren = document.body.children;
@@ -1156,51 +1211,131 @@ async function doEncode() {
     await new Promise(r => setTimeout(r, 50));
     try {
         const txt = encodeText.value.trim(), algoMode = algoEl.value, keyStr = eKey.value.trim();
-        const oldH = parseSixHeader("", txt, eData) || { isValid: false, firstAlgo: -1 }; // 兜底默认值
-        // 判定“吱”模式：Algo 3 签名，且输入内容已经是 Algo 1 加密
-        const isSigningGCM = (oldH.isValid && oldH.firstAlgo === 1 && algoMode === "3");
-        let processedBin = (eData && eData.length > 0) ? eData : (isSigningGCM ? new Uint8Array([...(txt.includes("，")?txt.split("，")[1]:txt)].filter(c => MAP.includes(c)).map(c => C2B[c])) : new TextEncoder().encode(txt));
+        // 1. 判定吱模式：原文件是GCM（六字头第5字嘿）+当前选Ed25519签名
+        const originalSixHeader = parseSixHeader(oFile ? oFile.name : "", "", null);
+        const isSigningGCM = originalSixHeader.isValid && originalSixHeader.isGCM && algoMode === "3";
+
+        // 2. 处理待签名/加密的二进制数据
+        let processedBin;
+        if (eData && eData.length > 0) {
+            // 优先使用导入文件的二进制数据（如GCM加密文件）
+            processedBin = eData;
+        } else {
+            // 无文件时，使用文本框输入的内容（转为UTF-8字节）
+            processedBin = new TextEncoder().encode(txt);
+        }
         if (!processedBin || processedBin.length === 0) throw new Error("内容为空");
+
+        // 3. 计算SHA256校验和
         const cksum = await CryptoUtils.getShaChecksum(processedBin);
         let finalBin = processedBin, featFlags = 0;
+
+        // 4. Gzip压缩（仅非吱模式生效）
         if (gzipEnable.checked && !isSigningGCM) {
-            try { const gzipped = pako.gzip(processedBin); if (gzipped.length < processedBin.length) { finalBin = gzipped; featFlags |= 0x02; } } catch (e) {}
+            try {
+                const gzipped = pako.gzip(processedBin);
+                if (gzipped.length < processedBin.length) {
+                    finalBin = gzipped;
+                    featFlags |= 0x02; // 标记已压缩
+                }
+            } catch (e) {}
         }
+
+        // 5. 执行签名/加密逻辑
         if (algoMode === "3") {
-            if(!keyStr) throw new Error("签名需要私钥");
-            featFlags |= 0x01; const privKey = await importEdPrivKey(keyStr);
-            const sig = await window.crypto.subtle.sign({name: 'Ed25519' }, privKey, finalBin);
-            const combined = new Uint8Array(64 + finalBin.length); combined.set(new Uint8Array(sig)); combined.set(finalBin, 64);
+            // Ed25519签名（吱模式/纯签名模式）
+            if (!keyStr) throw new Error("签名需要私钥");
+            featFlags |= 0x01; // 标记已签名
+            const privKey = await importEdPrivKey(keyStr);
+            const sig = await window.crypto.subtle.sign({ name: 'Ed25519' }, privKey, finalBin);
+            // 拼接签名（前64字节）和原始数据
+            const combined = new Uint8Array(64 + finalBin.length);
+            combined.set(new Uint8Array(sig));
+            combined.set(finalBin, 64);
             finalBin = combined;
         } else if (keyStr) {
-            featFlags |= 0x01; const keyEnc = new TextEncoder(), keyHash = await window.crypto.subtle.digest('SHA-256', keyEnc.encode(keyStr));
+            // 其他加密模式（CBC/GCM/P384）
+            featFlags |= 0x01; // 标记已加密
+            const keyEnc = new TextEncoder();
+            const keyHash = await window.crypto.subtle.digest('SHA-256', keyEnc.encode(keyStr));
             let encrypted, combined;
+
             if (algoMode === "0") {
-                const iv = crypto.getRandomValues(new Uint8Array(16)), key = await crypto.subtle.importKey('raw', keyHash, 'AES-CBC', false, ['encrypt']);
-                encrypted = await crypto.subtle.encrypt({name:'AES-CBC', iv}, key, finalBin);
-                combined = new Uint8Array(16 + encrypted.byteLength); combined.set(iv); combined.set(new Uint8Array(encrypted), 16);
+                // CBC加密（旧版兼容）
+                const iv = crypto.getRandomValues(new Uint8Array(16));
+                const key = await crypto.subtle.importKey('raw', keyHash, 'AES-CBC', false, ['encrypt']);
+                encrypted = await crypto.subtle.encrypt({ name: 'AES-CBC', iv }, key, finalBin);
+                combined = new Uint8Array(16 + encrypted.byteLength);
+                combined.set(iv);
+                combined.set(new Uint8Array(encrypted), 16);
             } else if (algoMode === "1") {
-                const iv = crypto.getRandomValues(new Uint8Array(12)), key = await crypto.subtle.importKey('raw', keyHash, 'AES-GCM', false, ['encrypt']);
-                encrypted = await crypto.subtle.encrypt({name:'AES-GCM', iv}, key, finalBin);
-                combined = new Uint8Array(12 + encrypted.byteLength); combined.set(iv); combined.set(new Uint8Array(encrypted), 12);
+                // GCM加密
+                const iv = crypto.getRandomValues(new Uint8Array(12));
+                const key = await crypto.subtle.importKey('raw', keyHash, 'AES-GCM', false, ['encrypt']);
+                encrypted = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, finalBin);
+                combined = new Uint8Array(12 + encrypted.byteLength);
+                combined.set(iv);
+                combined.set(new Uint8Array(encrypted), 12);
             } else if (algoMode === "2") {
-                const ephKp = await crypto.subtle.generateKey({name:'ECDH', namedCurve:'P-384'}, true, ['deriveKey']), remotePub = await crypto.subtle.importKey('raw', hexToBuf(keyStr), {name:'ECDH', namedCurve:'P-384'}, false, []);
-                const shared = await crypto.subtle.deriveKey({name:'ECDH', public:remotePub}, ephKp.privateKey, {name:'AES-GCM', length:256}, false, ['encrypt']);
-                const iv = crypto.getRandomValues(new Uint8Array(12)), ephPub = await crypto.subtle.exportKey('raw', ephKp.publicKey);
-                encrypted = await crypto.subtle.encrypt({name:'AES-GCM', iv}, shared, finalBin);
-                combined = new Uint8Array(ephPub.byteLength + 12 + encrypted.byteLength); combined.set(new Uint8Array(ephPub)); combined.set(iv, ephPub.byteLength); combined.set(new Uint8Array(encrypted), ephPub.byteLength+12);
+                // P384加密
+                const ephKp = await crypto.subtle.generateKey({ name: 'ECDH', namedCurve: 'P-384' }, true, ['deriveKey']);
+                const remotePub = await crypto.subtle.importKey('raw', hexToBuf(keyStr), { name: 'ECDH', namedCurve: 'P-384' }, false, []);
+                const shared = await crypto.subtle.deriveKey({ name: 'ECDH', public: remotePub }, ephKp.privateKey, { name: 'AES-GCM', length: 256 }, false, ['encrypt']);
+                const iv = crypto.getRandomValues(new Uint8Array(12));
+                const ephPub = await crypto.subtle.exportKey('raw', ephKp.publicKey);
+                encrypted = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, shared, finalBin);
+                combined = new Uint8Array(ephPub.byteLength + 12 + encrypted.byteLength);
+                combined.set(new Uint8Array(ephPub));
+                combined.set(iv, ephPub.byteLength);
+                combined.set(new Uint8Array(encrypted), ephPub.byteLength + 12);
             }
             finalBin = combined;
         }
-        window.resBin = finalBin; isEncDataReady = true;
-        let finalAlgo = isSigningGCM ? 4 : parseInt(algoMode);
-        let h = HEX_MAP[(cksum>>12)&0xF] + HEX_MAP[(cksum>>8)&0xF] + HEX_MAP[(cksum>>4)&0xF] + HEX_MAP[cksum&0xF] + HEX_MAP[finalAlgo] + HEX_MAP[featFlags];
+
+        // 6. 确定算法标识（finalAlgo）
+        let finalAlgo;
+        if (isSigningGCM) {
+            // 吱模式：GCM+Ed25519签名，标识4（对应HEX_MAP[4] = "吱"）
+            finalAlgo = 4;
+        } else if (algoMode === "3") {
+            // 纯Ed25519签名：标识3（对应HEX_MAP[3] = "咕"）
+            finalAlgo = 3;
+        } else {
+            // 其他模式（CBC/GCM/P384）：用选择的算法值
+            finalAlgo = parseInt(algoMode);
+        }
+
+        // 7. 生成六字头（前4字复制原文件，第5字吱，第6字按原逻辑）
+        let h;
+        if (isSigningGCM && originalSixHeader.isValid) {
+            const firstFour = originalSixHeader.firstFourChars; // 原文件六字头前4字（如“吧哔咕嘿”）
+            const fifthChar = "吱"; // 固定第5字为“吱”
+            // 第6字：优先用原文件第6字索引，无则用featFlags
+            const sixthChar = originalSixHeader.sixthCharIdx >= 0 ? HEX_MAP[originalSixHeader.sixthCharIdx] : HEX_MAP[featFlags];
+            h = firstFour + fifthChar + sixthChar;
+        } else {
+            // 非吱模式：按原逻辑生成六字头
+            h = HEX_MAP[(cksum >> 12) & 0xF] + HEX_MAP[(cksum >> 8) & 0xF] + HEX_MAP[(cksum >> 4) & 0xF] + HEX_MAP[cksum & 0xF] + HEX_MAP[finalAlgo] + HEX_MAP[featFlags];
+        }
+
+        // 8. 保存结果并更新UI
+        window.resBin = finalBin;
+        isEncDataReady = true;
         window.resHeader = h;
-        window.resTxt = finalBin.length > PLIM ? `${h}，[规模较大（${finalBin.length.toLocaleString()} B），已禁用预览]` : `${h}，${Array.from(finalBin).map(b => B2C[b]).join('')}`;
-        eStats.innerHTML = `规模: ${finalBin.length.toLocaleString()} B | 算法: ${getAlgoName(finalAlgo)} | 用时: ${((Date.now()-encodeStartTime)/1000).toFixed(3)}s`;
-        resShowArea.value = window.resTxt; eResult.style.display = "block";
-    } catch (e) { alert(`❌ 编码失败：${e.message}`); }
-    finally { btn.disabled = false; btn.textContent = "🚀 执行编码"; }
+        // 生成最终编码文本（规模超限时提示）
+        window.resTxt = finalBin.length > PLIM 
+            ? `${h}，[规模较大（${finalBin.length.toLocaleString()} B），已禁用预览]` 
+            : `${h}，${Array.from(finalBin).map(b => B2C[b]).join('')}`;
+const showAlgoName = (["0", "1", "2"].includes(algoMode) && !keyStr.trim()) ? "明文" : getAlgoName(finalAlgo);
+eStats.innerHTML = `规模: ${finalBin.length.toLocaleString()} B | 算法: ${showAlgoName} | 用时: ${((Date.now() - encodeStartTime) / 1000).toFixed(3)}s`;
+        resShowArea.value = window.resTxt;
+        eResult.style.display = "block";
+    } catch (e) {
+        alert(`❌ 编码失败：${e.message}`);
+    } finally {
+        btn.disabled = false;
+        btn.textContent = "🚀 执行编码";
+    }
 }
 // 搜索并替换整个 dlRes 函数
 function dlRes(t) {
