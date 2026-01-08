@@ -5,7 +5,7 @@
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <link rel="apple-touch-icon" href="icon-192.png">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>AmbWebCrypt (ld5d)</title>
+    <title>AmbWebCrypt (sd5e)</title>
     <style>
 :root {
     --primary: #00ff41; 
@@ -104,6 +104,17 @@ button:disabled { background: #666 !important; color: #999 !important; cursor: n
 .drop-hint.show {
     display: flex; /* 只有在拖拽文件进入时才显示 */
 }
+/* 优化后的平滑强度计 */
+.pwd-meter { height: 6px; background: #1a1a1a; margin-top: 8px; border-radius: 3px; overflow: hidden; border: 1px solid #333; }
+.pwd-bar { height: 100%; width: 0%; transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1), background 0.4s ease; }
+
+/* 颜色状态类 */
+.bg-red { background: #ff4444; }
+.bg-orange { background: #ff9100; }
+.bg-yellow { background: #ffff00; }
+.bg-green { background: var(--primary); box-shadow: 0 0 10px var(--primary); }
+
+.pwd-label { font-size: 0.8rem; margin-top: 6px; color: #aaa; }
 </style>
 <link id="via_inject_css_blocker" type="text/css" rel="stylesheet" href="https://j.157126.xyz/via_inject_blocker.css"><style type="text/css" id="__via_marker__"></style></head>
 <body>
@@ -111,18 +122,18 @@ button:disabled { background: #666 !important; color: #999 !important; cursor: n
 <div id="loader-screen" style="display:none; max-width: 600px; margin: 30px auto; padding: 20px; background: #0a0a0a; border: 1px solid #333; color: #fff; font-family: Consolas, monospace; border-radius: 8px;">
 <!-- 修复后（直接替换loader-screen内的标题区域） -->
 <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 10px;">
-    <h1 style="font-size: clamp(16px, 5vw, 22px); white-space: nowrap; margin: 0; color: var(--primary); border: none; padding: 0;">🔤 AmbWebCrypt (ld5d)</h1>
+    <h1 style="font-size: clamp(16px, 5vw, 22px); white-space: nowrap; margin: 0; color: var(--primary); border: none; padding: 0;">🔤 AmbWebCrypt (sd5e)</h1>
     <button onclick="backupTool()" style="background: none; border: 1px solid #444; color: #888; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 11px; flex-shrink: 0; white-space: nowrap; margin: 0;">
         💾 保存本页
     </button>
 </div>
-<div style="font-size: clamp(14px, 3vw, 16px); color: var(--warn); font-weight: bold; text-align: center; margin-bottom: 0; display: flex; align-items: center; justify-content: center; gap: 8px;">
+<div style="font-size: clamp(14px, 3vw, 16px); color: var(--warn); font-weight: bold; text-align: center; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; gap: 8px;">
     <a href="https://github.com/cz-6/AmbWebCrypt" target="_blank" style="color: var(--warn); text-decoration: none;">🐱</a>
     🎉 2026新年快乐 🎉
 </div>
 
     <!-- 步骤 1 & 2 保持不变... -->
-    <div id="step1-box" style="margin-bottom: 20px;">
+    <div id="step1-box" style="margin-bottom: 18px;">
         <div id="step1-status" style="color: var(--warn); font-weight: bold;">(进行中) 1.下载原始数据流</div>
         <div id="progress-container" style="display: none; height: 10px; background: #222; border: 1px solid #444; margin: 10px 0; border-radius: 5px; overflow: hidden;">
             <div id="step1-fill" style="height: 100%; background: var(--primary); width: 0%;"></div>
@@ -130,13 +141,9 @@ button:disabled { background: #666 !important; color: #999 !important; cursor: n
         <div id="step1-stats" style="font-size: 0.85rem; color: #aaa; margin-top: 5px;">准备中...</div>
     </div>
 
-    <div id="step2-box" style="margin-bottom: 20px;">
+    <div id="step2-box" style="margin-bottom: 18px;">
         <div id="step2-status" style="color: #444; font-weight: bold;">(等待中) 2. 解密数据</div>
-        <div style="height: 4px; background: #222; margin-top: 8px; border-radius: 2px; overflow: hidden;">
-            <div id="step2-fill" style="height: 100%; background: var(--primary); width: 0%;"></div>
-        </div>
-    </div>
-
+</div>
     <!-- 步骤 3: 触发下载 -->
     <div id="step3-box" style="margin-bottom: 20px;">
         <div id="step3-status" style="color: #444; font-weight: bold;">(等待中) 3. 触发下载</div>
@@ -168,7 +175,7 @@ button:disabled { background: #666 !important; color: #999 !important; cursor: n
 <!-- 替换为下方带有 id 的版本 -->
 <div id="header-area" style="display: flex; flex-direction: column; gap: 8px; border-bottom: 2px solid var(--primary); margin-bottom: 20px; padding-bottom: 10px;">
     <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px;">
-        <h1 style="font-size: clamp(16px, 5vw, 22px); white-space: nowrap; margin: 0; color: var(--primary); border: none; padding: 0;">🔤 AmbWebCrypt (ld5d)</h1>
+        <h1 style="font-size: clamp(16px, 5vw, 22px); white-space: nowrap; margin: 0; color: var(--primary); border: none; padding: 0;">🔤 AmbWebCrypt (sd5e)</h1>
         <button onclick="backupTool()" style="background: none; border: 1px solid #444; color: #888; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 11px; flex-shrink: 0; white-space: nowrap; margin: 0;">
             💾 保存本页
         </button>
@@ -254,7 +261,10 @@ button:disabled { background: #666 !important; color: #999 !important; cursor: n
 </div>
 <!-- 密钥输入框 -->
 <input type="text" id="e-key" oninput="checkEncIdentity()" class="pwd-input" placeholder="加密密钥 (P384填公钥ED25519填私钥)">
-
+<div id="e-strength-wrap" style="display: none;">
+    <div class="pwd-meter"><div id="e-bar" class="pwd-bar"></div></div>
+    <div id="e-pwd-info" class="pwd-label"></div>
+</div>
 <!-- 新增：身份识别提示行 -->
 <div id="enc-identity-msg" style="font-size: 0.8rem; margin-top: 5px; min-height: 1.2em; padding-left: 5px;"></div>
         <!-- 编码执行按钮（在面板内） -->
@@ -375,7 +385,7 @@ button:disabled { background: #666 !important; color: #999 !important; cursor: n
 
     <script src="https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js"></script>
     <script>
-    const VER = "ld5d"; // 升级到 ld5d
+    const VER = "sd5e"; // 升级到 sd5e
     const PLIM = 100000; 
     const MAX_PIXELS = 10000000; 
     const MAP = "零一二三四五六七八九十个百千万服多来米发锁拉系骇古极你歪它他她啊波次的饿歌喝以几可了们呢喔屏群人是烫鱼绿写用这莱方录鹿卢凹折山葱仪厂长秧同草末音菜酸汤名口窝填田土木火水金风雨石竹鸟马牛羊虫花树云雷雪星光天海湖林点线面体条猫狗搜库炮进城管锚泡抛刨袍图如吐加键减肥乘出除处初厨楚乔恩奖江姜酱犟僵耳儿文静网热卡空虚拟想希丁克门付款啦放大哦扩对皮肤看快手内存成绩差登记机声第集平时都觉得就行打击哒西到哪咳嗽带飞辛苦老试怕漏刷未微位小众中从聪信新旧杨样阳提清青酒流留物里例理力丽礼李立事史视率形之只染然似防重饭洗头连叫扣宜";
@@ -649,32 +659,37 @@ return {
 function checkEncIdentity() {
     const valInput = $('e-key');
     const msgBox = $('enc-identity-msg');
+    const strengthWrap = $('e-strength-wrap'); // 获取强度计容器
     const algoEl = document.querySelector('input[name="algo"]:checked');
     
-    if (!valInput || !msgBox || !algoEl) return;
-    const val = valInput.value.trim().toLowerCase();
+    if (!valInput || !msgBox || !algoEl || !strengthWrap) return;
+    const val = valInput.value.trim();
     const algoMode = algoEl.value;
 
-    if (!val) {msgBox.innerHTML = ""; return; }
+    // 逻辑 A: 只有 CBC(0) 和 GCM(1) 显示强度计
+    if (algoMode === "0" || algoMode === "1") {
+        strengthWrap.style.display = "block";
+        checkStrength(val);
+    } else {
+        strengthWrap.style.display = "none";
+    }
 
-    // P-384 模式
+    // 逻辑 B: 原有的身份识别提示
+    if (!val) { msgBox.innerHTML = ""; return; }
+    const valLow = val.toLowerCase();
     if (algoMode === "2") {
-        if (val === ADMIN_P384_PUB_HEX.toLowerCase()) {
+        if (valLow === ADMIN_P384_PUB_HEX.toLowerCase()) {
             msgBox.innerHTML = `<span style="color:var(--primary)">✅ 正在向 <b>🛡️ 管理员</b> 发送加密信息</span>`;
         } else if (val.length > 20) {
             msgBox.innerHTML = `<span style="color:var(--warn)">👤 正在向 <b>非管理员</b> 发送加密信息</span>`;
         } else {
             msgBox.innerHTML = `<span style="color:var(--danger)">⚠️ 请输入正确的 P384 公钥</span>`;
         }
-    } 
-    // Ed25519 模式
-    else if (algoMode === "3") {
+    } else if (algoMode === "3") {
         msgBox.innerHTML = `<span style="color:var(--warn)">✍️ 正在为数据签名。实际不会加密数据。</span>`;
-    }
-    else if (algoMode === "0") {
-        msgBox.innerHTML = `<span style="color:var(--danger)">⚠️ CBC已停止支持，数据难以恢复且易被篡改。请转为GCM。</span>`;}
-    // 其他模式
-    else {
+    } else if (algoMode === "0") {
+        msgBox.innerHTML = `<span style="color:var(--danger)">⚠️ CBC已停止支持，数据难以恢复且易被篡改。请转为GCM。</span>`;
+    } else {
         msgBox.innerHTML = "";
     }
 }
@@ -1090,94 +1105,183 @@ async function tryRestore(rawBin, pwd, mode) {
         return null;
     } catch (e) { return null; }
 }
+function checkStrength(pwd) {
+    const bar = $('e-bar');
+    const info = $('e-pwd-info');
+
+    if (!pwd) {
+        if (bar) { bar.style.width = "0%"; bar.className = "pwd-bar"; }
+        if (info) info.innerHTML = "";
+        return;
+    }
+
+    // === 1. 视觉分割 ===
+    let chars;
+    if (typeof Intl !== 'undefined' && Intl.Segmenter) {
+        const segmenter = new Intl.Segmenter('en', { granularity: 'grapheme' });
+        chars = Array.from(segmenter.segment(pwd)).map(s => s.segment);
+    } else {
+        chars = Array.from(pwd);
+    }
+
+    // === 2. 序列库 ===
+    const DICTIONARY_PATTERNS = [
+        "3.14159265358979", "2.718281828459",
+        "qwertyuiopasdfghjklzxcvbnm", "mnbvcxzlkjhgfdsapoiuytrewq",
+        "qwertyuiop", "asdfghjkl", "zxcvbnm",
+        "1234567890", "0987654321",
+        "password", "admin", "root", "hello", "111111", "000000",
+        "我爱你", "你好", "密码"
+    ];
+
+    // === 3. 压缩引擎 ===
+    let effectiveLen = 0;
+    const MAX_PERIOD = 10;
+    let patternContinuity = new Array(MAX_PERIOD + 1).fill(0);
+
+    for (let i = 0; i < chars.length; i++) {
+        const curr = chars[i];
+        if (i === 0) { effectiveLen += 1; continue; }
+
+        const prev = chars[i-1];
+        let weight = 1.0; 
+
+        // A. 紧邻重复
+        if (curr === prev) weight = 0;
+
+        // B. 周期模式
+        else {
+            let isPeriod = false;
+            for (let p = 1; p <= MAX_PERIOD; p++) {
+                if (i >= p) {
+                    if (curr === chars[i - p]) patternContinuity[p]++;
+                    else patternContinuity[p] = 0;
+                    if (patternContinuity[p] > 1) { isPeriod = true; break; }
+                }
+            }
+            if (isPeriod) weight = 0;
+        }
+
+        // C. 序列与字典
+        if (weight > 0) {
+            const currL = curr.toLowerCase();
+            const prevL = prev.toLowerCase();
+            let isSeq = false;
+
+            for (const pattern of DICTIONARY_PATTERNS) {
+                const pIdx = pattern.indexOf(prevL);
+                if (pIdx !== -1 && pIdx < pattern.length - 1) {
+                    if (pattern[pIdx + 1] === currL) { isSeq = true; break; }
+                }
+            }
+            if (!isSeq && curr.length === 1 && prev.length === 1) {
+                if (Math.abs(curr.charCodeAt(0) - prev.charCodeAt(0)) === 1) isSeq = true;
+            }
+            if (isSeq) weight = 0; 
+        }
+        effectiveLen += weight;
+    }
+
+    // === 4. 桶位叠加池计算 ===
+    let poolSize = 0;
+    const has01 = /[0-1]/.test(pwd);
+    const has27 = /[2-7]/.test(pwd);
+    const has89 = /[8-9]/.test(pwd);
+    const hasAF_lower = /[a-f]/.test(pwd);
+    const hasGZ_lower = /[g-z]/.test(pwd);
+    const hasAF_upper = /[A-F]/.test(pwd);
+    const hasGZ_upper = /[G-Z]/.test(pwd);
+    const hasAsciiSymbol = /[\x20-\x2F\x3A-\x40\x5B-\x60\x7B-\x7E]/.test(pwd);
+    const hasUnicode = /[^\x00-\x7F]/.test(pwd);
+
+    if (has01) poolSize += 2;
+    if (has27) poolSize += 6;
+    if (has89) poolSize += 2;
+    if (hasAF_lower) poolSize += 6;
+    if (hasGZ_lower) poolSize += 20;
+    if (hasAF_upper) poolSize += 6;
+    if (hasGZ_upper) poolSize += 20;
+    if (hasAsciiSymbol) poolSize += 33;
+    if (hasUnicode) poolSize += 3000;
+
+    if (poolSize === 0) poolSize = 1;
+
+    // === 5. 结果计算 ===
+    const bits = effectiveLen * (Math.log(poolSize) / Math.log(2));
+    
+    // 进度条 (0-100)
+    let barPercent = Math.round(bits);
+    barPercent = Math.max(0, Math.min(100, barPercent));
+
+    // 显示数值
+    let displayStr = "";
+    if (bits <= 100) {
+        displayStr = Math.round(bits) + "%";
+    } else {
+        displayStr = (bits / 100).toFixed(2) + "x";
+    }
+
+    // === 6. UI 更新 (严苛版阈值) ===
+    let label = "", colorClass = "", colorHex = "";
+    
+    if (bits >= 100) {      // 100+
+        label = "夯";
+        colorClass = "bg-green";
+        colorHex = "var(--primary)";
+    } else if (bits >= 85) { // 85+
+        label = "顶级";
+        colorClass = "bg-green";
+        colorHex = "var(--primary)";
+    } else if (bits >= 70) { // 70+
+        label = "人上人";
+        colorClass = "bg-yellow";
+        colorHex = "#ffff00";
+    } else if (bits >= 55) { // 55+
+        label = "大众级";
+        colorClass = "bg-yellow";
+        colorHex = "#ffff00";
+    } else if (bits >= 40) { // 40+
+        label = "NPC";
+        colorClass = "bg-orange";
+        colorHex = "var(--warn)";
+    } else {                 // < 40
+        label = "拉完了";
+        colorClass = "bg-red";
+        colorHex = "var(--danger)";
+    }
+
+    if (bar) { bar.style.width = barPercent + "%"; bar.className = 'pwd-bar ' + colorClass; }
+    if (info) { info.innerHTML = `密码强度: <b style="color:${colorHex}">${label} (${displayStr})</b>`; }
+}
 window.onload = async () => {
     const p = new URLSearchParams(window.location.search);
-    const setVal = (id, val) => {if(val && $(id)) $(id).value = val; };
-    
-    const generalPwd = p.get('pwd'), enPwd = p.get('enpwd'), dePwd = p.get('depwd');
-    const gzipVal = p.get('gzip'), webpqVal = p.get('webpq'), ptVal = p.get('webpt'), prVal = p.get('webpr'), targetUrl = p.get('URL'); 
-    
-    if (generalPwd) {setVal('e-key', generalPwd); setVal('d-key', generalPwd); }
-    if (enPwd) setVal('e-key', enPwd); if (dePwd) setVal('d-key', dePwd);
-    if (gzipVal !== null) {const gz = $('gzip-enable'); if(gz) gz.checked = (gzipVal === 't' || gzipVal === '1'); }
-    if (webpqVal) setVal('img-q', webpqVal);
-    if (prVal) {setVal('img-val', prVal); if ($('img-comp').checked) reprocImg(); }
-    if (ptVal) {
-        const ptMap = {"1": "pixel", "2": "short", "3": "long", "4": "orig" };
-        const mode = ptMap[ptVal];
-        const r = document.querySelector(`input[name="rmode"][value="${mode}"]`);
-        if (r) {r.checked = true; handleModeChange(true, null, !!prVal); }
-    }
-const webpcVal = p.get('webpc');
-    const imgCompCheckbox = $('img-comp');
-    if (imgCompCheckbox && webpcVal !== null) {
-        // 支持值：0/f→关闭，1/t→打开（不区分大小写）
-        const isWebpcOpen = ['1', 't', 'T'].includes(webpcVal);
-        imgCompCheckbox.checked = isWebpcOpen;
-        // 压缩状态变化后，刷新图像预览（若有已导入图像）
-        if (oFile && oFile.type.startsWith('image/')) {
-            reprocImg();
-        }
-    }
+    const targetUrl = p.get('URL');
+    const generalPwd = p.get('pwd'), dePwd = p.get('depwd');
 
-    // 2. crypt参数：指定加密算法（CBC/0→0，GCM/1→1，P384/2→2，ED25519/3→3）
-    const cryptVal = p.get('crypt');
-    if (cryptVal !== null) {
-        let algoValue;
-        // 映射参数值到算法索引：CBC/0→0，GCM/1→1，P384/2→2，ED25519/3→3
-        switch (cryptVal.toLowerCase()) {
-            case 'cbc': case '0': algoValue = '0'; break;
-            case 'gcm': case '1': algoValue = '1'; break;
-            case 'p384': case '2': algoValue = '2'; break;
-            case 'ed25519': case '3': algoValue = '3'; break;
-            default: algoValue = null; // 无效值不处理
-        }
-        // 选中对应算法的单选按钮，并触发身份校验
-        const algoRadio = document.querySelector(`input[name="algo"][value="${algoValue}"]`);
-        if (algoRadio) {
-            algoRadio.checked = true;
-            checkEncIdentity(); // 同步更新身份提示
-        }
-    }
-
-    // 3. page参数：指定默认页签（1/enc→加密，2/dec→解密，3/keygen→密钥生成）
-    const pageVal = p.get('page');
-    if (pageVal !== null) {
-        let tabName;
-        // 映射参数值到页签名称：1/enc→encode，2/dec→decode，3/keygen→keygen
-        switch (pageVal.toLowerCase()) {
-            case '1': case 'enc': tabName = 'encode'; break;
-            case '2': case 'dec': tabName = 'decode'; break;
-            case '3': case 'keygen': tabName = 'keygen'; break;
-            default: tabName = 'encode'; // 无效值默认显示加密页
-        }
-        // 切换到指定页签（复用现有switchTab函数）
-        switchTab(tabName);
-    }
+    // ==========================================
+    // 优先级 1: URL 自动下载模式 (最高优先级)
+    // ==========================================
     if (targetUrl) {
         const loader = $('loader-screen');
-        const bodyChildren = document.body.children;
-        for (let i = 0; i < bodyChildren.length; i++) {
-            if (bodyChildren[i].id !== 'loader-screen' && bodyChildren[i].id !== 'drop-hint') {
-                bodyChildren[i].style.display = 'none';
-            }
-        }
+        // 彻底隐藏主 UI，防止冲突
+        const header = $('header-area'), tabs = document.querySelector('.tabs');
+        if (header) header.style.display = 'none';
+        if (tabs) tabs.style.display = 'none';
+        document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
         if (loader) loader.style.display = 'block';
         
         const s1Status = $('step1-status'), s1Fill = $('step1-fill'), s1Stats = $('step1-stats'), progCont = $('progress-container');
-        const s2Status = $('step2-status'), s2Fill = $('step2-fill');
-        const s3Status = $('step3-status'), manualDlBtn = $('manual-dl-btn');
-        
+        const s2Status = $('step2-status');
+        const manualDlBtn = $('manual-dl-btn');
+
         try {
             const response = await fetch(targetUrl);
-            if (!response.ok) throw new Error(`下载失败: ${response.status}`);
-            
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
             const total = parseInt(response.headers.get('content-length'), 10);
             if (!isNaN(total)) progCont.style.display = 'block';
             
             const reader = response.body.getReader();
             let loaded = 0, chunks = [], startTime = Date.now();
-            
             while(true) {
                 const {done, value} = await reader.read();
                 if (done) break; chunks.push(value); loaded += value.length;
@@ -1187,38 +1291,70 @@ const webpcVal = p.get('webpc');
                     const percent = Math.round((loaded / total) * 100);
                     s1Fill.style.width = percent + "%";
                     s1Stats.innerText = `${percent}% | ${formatSpeed(speed)} | 剩余: ${formatTime((total - loaded) / speed)}`;
-                } else {
-                    s1Stats.innerText = `${(loaded/1024/1024).toFixed(1)}MB | ${formatSpeed(speed)}`;
-                }
+                } else { s1Stats.innerText = `${(loaded/1024/1024).toFixed(1)}MB | ${formatSpeed(speed)}`; }
             }
 
-            // 拼装原始二进制
             const rawBin = new Uint8Array(loaded);
             let pos = 0;
             for(let chunk of chunks) { rawBin.set(chunk, pos); pos += chunk.length; }
             chunks = null;
 
+            // 更新 UI 状态
+            s1Fill.style.width = "100%";
             s1Status.innerText = "(已完成) 1.下载原始数据流"; s1Status.style.color = "var(--primary)";
             s2Status.innerText = "(进行中) 2. 解密数据"; s2Status.style.color = "var(--warn)";
-
             decodeFileName = decodeURIComponent(targetUrl.split('/').pop());
-
-            // --- 核心修复：始终信任为 BIN，sniffText 传空字符串强制跳过文字识别 ---
-            const result = await coreRestore(rawBin, dePwd || generalPwd || "", "", decodeFileName, rawBin);
             
+            // 等待 50ms 渲染 UI
+            await new Promise(r => setTimeout(r, 50)); 
+
+            const result = await coreRestore(rawBin, dePwd || generalPwd || "", "", decodeFileName, rawBin);
             if (result) {
                 dData = result; renderDec(result); 
-                s2Fill.style.width = "100%";
                 s2Status.innerText = "(已完成) 2. 解密数据"; s2Status.style.color = "var(--primary)";
-                s3Status.innerText = "(已完成) 3. 触发下载"; s3Status.style.color = "var(--primary)";
                 manualDlBtn.disabled = false;
                 manualDlBtn.style.background = "var(--primary)"; manualDlBtn.style.color = "#000";
-                dlDec(); 
-            } else throw new Error("还原失败：结果无效");
+                dlDec(); $('step3-status').innerText = "(已完成) 3. 触发下载"; $('step3-status').style.color = "var(--primary)";
+            } else throw new Error("还原失败");
         } catch (e) {
             s1Status.innerText = "(失败) " + e.message; s1Status.style.color = "var(--danger)";
-            s2Status.innerText = "(终止) 无法处理数据";
         }
+        return; // 处理完 URL 直接退出，不再执行后续 UI 代码
+    }
+
+    // ==========================================
+    // 优先级 2: 正常 UI 模式初始化
+    // ==========================================
+    const setVal = (id, val) => { if(val && $(id)) $(id).value = val; };
+    if (generalPwd) { setVal('e-key', generalPwd); setVal('d-key', generalPwd); }
+    const enPwd = p.get('enpwd');
+    if (enPwd) setVal('e-key', enPwd);
+    if (dePwd) setVal('d-key', dePwd);
+    
+    // 初始化界面提示
+    checkEncIdentity();
+
+    // 其他 UI 参数处理
+    const gzipVal = p.get('gzip'), webpqVal = p.get('webpq'), ptVal = p.get('webpt'), prVal = p.get('webpr');
+    if (gzipVal !== null) { const gz = $('gzip-enable'); if(gz) gz.checked = (gzipVal === 't' || gzipVal === '1'); }
+    if (webpqVal) setVal('img-q', webpqVal);
+    if (prVal) { setVal('img-val', prVal); if ($('img-comp').checked) reprocImg(); }
+    if (ptVal) {
+        const ptMap = {"1": "pixel", "2": "short", "3": "long", "4": "orig" };
+        const mode = ptMap[ptVal];
+        const r = document.querySelector(`input[name="rmode"][value="${mode}"]`);
+        if (r) { r.checked = true; handleModeChange(true, null, !!prVal); }
+    }
+    const cryptVal = p.get('crypt');
+    if (cryptVal !== null) {
+        let algo = (['0','cbc'].includes(cryptVal)) ? '0' : (['1','gcm'].includes(cryptVal) ? '1' : (['2','p384'].includes(cryptVal) ? '2' : '3'));
+        const r = document.querySelector(`input[name="algo"][value="${algo}"]`);
+        if (r) { r.checked = true; checkEncIdentity(); }
+    }
+    const pageVal = p.get('page');
+    if (pageVal !== null) {
+        let t = (['2','dec'].includes(pageVal)) ? 'decode' : (['3','keygen'].includes(pageVal) ? 'keygen' : 'encode');
+        switchTab(t);
     }
 };
 async function doEncode() {
