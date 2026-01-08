@@ -5,7 +5,7 @@
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <link rel="apple-touch-icon" href="icon-192.png">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>AmbWebCrypt (sd5e)</title>
+    <title>AmbWebCrypt (ld5e)</title>
     <style>
 :root {
     --primary: #00ff41; 
@@ -122,7 +122,7 @@ button:disabled { background: #666 !important; color: #999 !important; cursor: n
 <div id="loader-screen" style="display:none; max-width: 600px; margin: 30px auto; padding: 20px; background: #0a0a0a; border: 1px solid #333; color: #fff; font-family: Consolas, monospace; border-radius: 8px;">
 <!-- 修复后（直接替换loader-screen内的标题区域） -->
 <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 10px;">
-    <h1 style="font-size: clamp(16px, 5vw, 22px); white-space: nowrap; margin: 0; color: var(--primary); border: none; padding: 0;">🔤 AmbWebCrypt (sd5e)</h1>
+    <h1 style="font-size: clamp(16px, 5vw, 22px); white-space: nowrap; margin: 0; color: var(--primary); border: none; padding: 0;">🔤 AmbWebCrypt (ld5e)</h1>
     <button onclick="backupTool()" style="background: none; border: 1px solid #444; color: #888; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 11px; flex-shrink: 0; white-space: nowrap; margin: 0;">
         💾 保存本页
     </button>
@@ -175,7 +175,7 @@ button:disabled { background: #666 !important; color: #999 !important; cursor: n
 <!-- 替换为下方带有 id 的版本 -->
 <div id="header-area" style="display: flex; flex-direction: column; gap: 8px; border-bottom: 2px solid var(--primary); margin-bottom: 20px; padding-bottom: 10px;">
     <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px;">
-        <h1 style="font-size: clamp(16px, 5vw, 22px); white-space: nowrap; margin: 0; color: var(--primary); border: none; padding: 0;">🔤 AmbWebCrypt (sd5e)</h1>
+        <h1 style="font-size: clamp(16px, 5vw, 22px); white-space: nowrap; margin: 0; color: var(--primary); border: none; padding: 0;">🔤 AmbWebCrypt (ld5e)</h1>
         <button onclick="backupTool()" style="background: none; border: 1px solid #444; color: #888; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 11px; flex-shrink: 0; white-space: nowrap; margin: 0;">
             💾 保存本页
         </button>
@@ -385,7 +385,7 @@ button:disabled { background: #666 !important; color: #999 !important; cursor: n
 
     <script src="https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js"></script>
     <script>
-    const VER = "sd5e"; // 升级到 sd5e
+    const VER = "ld5e"; // 升级到 ld5e
     const PLIM = 100000; 
     const MAX_PIXELS = 10000000; 
     const MAP = "零一二三四五六七八九十个百千万服多来米发锁拉系骇古极你歪它他她啊波次的饿歌喝以几可了们呢喔屏群人是烫鱼绿写用这莱方录鹿卢凹折山葱仪厂长秧同草末音菜酸汤名口窝填田土木火水金风雨石竹鸟马牛羊虫花树云雷雪星光天海湖林点线面体条猫狗搜库炮进城管锚泡抛刨袍图如吐加键减肥乘出除处初厨楚乔恩奖江姜酱犟僵耳儿文静网热卡空虚拟想希丁克门付款啦放大哦扩对皮肤看快手内存成绩差登记机声第集平时都觉得就行打击哒西到哪咳嗽带飞辛苦老试怕漏刷未微位小众中从聪信新旧杨样阳提清青酒流留物里例理力丽礼李立事史视率形之只染然似防重饭洗头连叫扣宜";
@@ -910,22 +910,23 @@ async function generateP384Keys(forceGenerate = false) {
         privKeyDisplay.value = '尚未生成...'; // 失败时重置
         pubKeyDisplay.value = '尚未生成...';
     }
-}// Ed25519 密钥生成函数
+}
 async function generateEd25519Keys(forceGenerate = false) {
     const privKeyDisplay = $('ed25519-priv-key-display');
     const pubKeyDisplay = $('ed25519-pub-key-display');
-    const idBox = $('ed25519-identity-info'); // Ed25519 专用的身份提示框
+    const idBox = $('ed25519-identity-info');
 
-    // 更精确地检查 Ed25519 密钥是否已生成 (通过检查输入框的值是否为默认占位符)
+    // 只有 switchTab 调用时 forceGenerate 才会是 true，代表自动执行
+    const isAuto = (forceGenerate === true);
+
+    // 如果是手动点击（isAuto 为 false），且已有密钥，则需要确认
     const hasKeys = (privKeyDisplay.value !== '尚未生成...' && pubKeyDisplay.value !== '尚未生成...');
-
-    if (hasKeys && !forceGenerate) {
+    if (hasKeys && !isAuto) {
         if (!confirm("检测到 Ed25519 密钥已生成。刷新将丢失当前密钥，确定要重新生成吗？")) {
-            return; // 用户取消，不执行生成
+            return; 
         }
     }
 
-    // 准备生成，清空显示并更新状态
     idBox.innerHTML = "⌛ 正在生成 Ed25519 密钥...";
     privKeyDisplay.value = '尚未生成...'; 
     pubKeyDisplay.value = '尚未生成...';
@@ -936,21 +937,21 @@ async function generateEd25519Keys(forceGenerate = false) {
         const pub = await window.crypto.subtle.exportKey("raw", kp.publicKey);
         const priv = await window.crypto.subtle.exportKey("pkcs8", kp.privateKey);
 
-        const pubHex = bufToHex(pub);
         privKeyDisplay.value = bufToHex(priv);
-        pubKeyDisplay.value = pubHex;
-
-        // 生成成功后，只显示“Ed25519 密钥已生成”。
-        // 管理员身份的判断只在加载时（switchTab）进行，因为用户不可能生成管理员密钥。
+        pubKeyDisplay.value = bufToHex(pub);
         idBox.innerHTML = " <b class='guest-mark'> 👤 Ed25519 密钥已生成 </b> ";
     } catch (e) {
-        alert("Ed25519 密钥生成失败: " + e.message); 
-        idBox.innerHTML = "Ed25519 密钥生成失败";
-        privKeyDisplay.value = '尚未生成...'; // 失败时重置
+        // 核心改动：界面始终显示该提示
+        idBox.innerHTML = "<span style='color:var(--danger)'>Ed25519密钥生成失败（需要chrome137+）</span>";
+        privKeyDisplay.value = '尚未生成...'; 
         pubKeyDisplay.value = '尚未生成...';
+
+        // 核心逻辑：如果是手动点按钮（!isAuto），则弹出 alert 强提示
+        if (!isAuto) {
+            alert("Ed25519密钥生成失败（需要chrome137+）\n\n当前浏览器环境不支持该算法。");
+        }
     }
 }
-// 辅助函数：处理 Ed25519 私钥导入
 async function importEdPrivKey(keyStr) {
     if (keyStr.length >= 64 && /^[0-9a-fA-F]+$/.test(keyStr)) {
         const rawPriv = hexToBuf(keyStr);
@@ -1136,7 +1137,7 @@ function checkStrength(pwd) {
 
     // === 3. 压缩引擎 ===
     let effectiveLen = 0;
-    const MAX_PERIOD = 10;
+    const MAX_PERIOD = 255;
     let patternContinuity = new Array(MAX_PERIOD + 1).fill(0);
 
     for (let i = 0; i < chars.length; i++) {
