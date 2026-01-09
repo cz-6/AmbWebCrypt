@@ -5,7 +5,7 @@
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <link rel="apple-touch-icon" href="icon-192.png">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>AmbWebCrypt (ld5e)</title>
+    <title>AmbWebCrypt (sd5f)</title>
     <style>
 :root {
     --primary: #00ff41; 
@@ -118,11 +118,9 @@ button:disabled { background: #666 !important; color: #999 !important; cursor: n
 </style>
 <link id="via_inject_css_blocker" type="text/css" rel="stylesheet" href="https://j.157126.xyz/via_inject_blocker.css"><style type="text/css" id="__via_marker__"></style></head>
 <body>
-<!-- 自动处理全屏界面 -->
 <div id="loader-screen" style="display:none; max-width: 600px; margin: 30px auto; padding: 20px; background: #0a0a0a; border: 1px solid #333; color: #fff; font-family: Consolas, monospace; border-radius: 8px;">
-<!-- 修复后（直接替换loader-screen内的标题区域） -->
 <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 10px;">
-    <h1 style="font-size: clamp(16px, 5vw, 22px); white-space: nowrap; margin: 0; color: var(--primary); border: none; padding: 0;">🔤 AmbWebCrypt (ld5e)</h1>
+    <h1 style="font-size: clamp(16px, 5vw, 22px); white-space: nowrap; margin: 0; color: var(--primary); border: none; padding: 0;">🔤 AmbWebCrypt (sd5f)</h1>
     <button onclick="backupTool()" style="background: none; border: 1px solid #444; color: #888; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 11px; flex-shrink: 0; white-space: nowrap; margin: 0;">
         💾 保存本页
     </button>
@@ -130,6 +128,7 @@ button:disabled { background: #666 !important; color: #999 !important; cursor: n
 <div style="font-size: clamp(14px, 3vw, 16px); color: var(--warn); font-weight: bold; text-align: center; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; gap: 8px;">
     <a href="https://github.com/cz-6/AmbWebCrypt" target="_blank" style="color: var(--warn); text-decoration: none;">🐱</a>
     🎉 2026新年快乐 🎉
+    <a href="https://j.157126.xyz/utils.htm" style="color: var(--warn); text-decoration: none;">🛠️</a>
 </div>
 
     <!-- 步骤 1 & 2 保持不变... -->
@@ -163,8 +162,6 @@ button:disabled { background: #666 !important; color: #999 !important; cursor: n
         <div id="loader-preview-img" style="display:none; text-align:center; background:#000; padding:10px; border:1px solid #222;">
             <div id="loader-img"></div>
         </div>
-        
-        <!-- 文本预览 -->
         <div id="loader-preview-txt" style="display:none;">
             <textarea id="loader-txt-area" readonly="" style="width:100%; height:200px; background:#000; color:#fff; border:1px solid #444; font-family:inherit; padding:10px; font-size:12px;"></textarea>
         </div>
@@ -175,7 +172,7 @@ button:disabled { background: #666 !important; color: #999 !important; cursor: n
 <!-- 替换为下方带有 id 的版本 -->
 <div id="header-area" style="display: flex; flex-direction: column; gap: 8px; border-bottom: 2px solid var(--primary); margin-bottom: 20px; padding-bottom: 10px;">
     <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px;">
-        <h1 style="font-size: clamp(16px, 5vw, 22px); white-space: nowrap; margin: 0; color: var(--primary); border: none; padding: 0;">🔤 AmbWebCrypt (ld5e)</h1>
+        <h1 style="font-size: clamp(16px, 5vw, 22px); white-space: nowrap; margin: 0; color: var(--primary); border: none; padding: 0;">🔤 AmbWebCrypt (sd5f)</h1>
         <button onclick="backupTool()" style="background: none; border: 1px solid #444; color: #888; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 11px; flex-shrink: 0; white-space: nowrap; margin: 0;">
             💾 保存本页
         </button>
@@ -183,6 +180,7 @@ button:disabled { background: #666 !important; color: #999 !important; cursor: n
 <div style="font-size: clamp(14px, 3vw, 16px); color: var(--warn); font-weight: bold; text-align: center; margin-bottom: 0; display: flex; align-items: center; justify-content: center; gap: 8px;">
     <a href="https://github.com/cz-6/AmbWebCrypt" target="_blank" style="color: var(--warn); text-decoration: none;">🐱</a>
     🎉 2026新年快乐 🎉
+    <a href="https://j.157126.xyz/utils.htm" style="color: var(--warn); text-decoration: none;">🛠️</a>
 </div>
 </div>
 
@@ -321,10 +319,13 @@ button:disabled { background: #666 !important; color: #999 !important; cursor: n
         <span class="size-info" id="d-stats" style="margin-left:15px"></span>
     </div>
     <div id="d-preview-img" class="preview-area" style="display:none"><label>🖼️ 媒体预览</label><div id="d-img"></div></div>
-    <div id="d-preview-txt" class="preview-area" style="display:none">
-        <label>📝 文本内容 (上限100K):</label>
-        <textarea id="d-txt-area" class="res-textarea" style="height:300px; color:#fff; border-color:#444"></textarea>
+<div id="d-preview-txt" class="preview-area" style="display:none">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+        <label style="margin:0;">📝 文本内容 (上限100K):</label>
+        <button class="btn-secondary" onclick="copyDecText('d-txt-area')" style="margin:0; padding:4px 10px; font-size:12px;">📋 复制文字</button>
     </div>
+    <textarea id="d-txt-area" class="res-textarea" style="height:300px; color:#fff; border-color:#444"></textarea>
+</div>
 </div>
 </div>
 <div id="keygen-tab" class="tab-content">
@@ -385,7 +386,7 @@ button:disabled { background: #666 !important; color: #999 !important; cursor: n
 
     <script src="https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js"></script>
     <script>
-    const VER = "ld5e"; // 升级到 ld5e
+    const VER = "sd5f"; // 升级到 sd5f
     const PLIM = 100000; 
     const MAX_PIXELS = 10000000; 
     const MAP = "零一二三四五六七八九十个百千万服多来米发锁拉系骇古极你歪它他她啊波次的饿歌喝以几可了们呢喔屏群人是烫鱼绿写用这莱方录鹿卢凹折山葱仪厂长秧同草末音菜酸汤名口窝填田土木火水金风雨石竹鸟马牛羊虫花树云雷雪星光天海湖林点线面体条猫狗搜库炮进城管锚泡抛刨袍图如吐加键减肥乘出除处初厨楚乔恩奖江姜酱犟僵耳儿文静网热卡空虚拟想希丁克门付款啦放大哦扩对皮肤看快手内存成绩差登记机声第集平时都觉得就行打击哒西到哪咳嗽带飞辛苦老试怕漏刷未微位小众中从聪信新旧杨样阳提清青酒流留物里例理力丽礼李立事史视率形之只染然似防重饭洗头连叫扣宜";
@@ -1626,7 +1627,14 @@ function showLog(m, type="danger"){
     l.style.color = type === "warn" ? "var(--warn)" : "var(--danger)";
     alert(m);
 }
-// 替换原有的 copyKey, copyRes, fallbackCopy
+function copyDecText(areaId) {
+    const text = $(areaId).value;
+    if (text && text !== "[二进制或不支持预览的格式]") {
+        copyTo(text, "解码文本已复制");
+    } else {
+        alert("无有效文本内容可复制");
+    }
+}
 async function copyTo(text, msg = "已复制") {
     try {
         if (navigator.clipboard && window.isSecureContext) {
@@ -1644,8 +1652,6 @@ async function copyTo(text, msg = "已复制") {
         alert("复制失败，请手动选择复制");
     }
 }
-
-// 对应的 copyRes 简化版
 async function copyRes() {
     if (!window.resBin) return alert("没有内容可复制");
     if (window.resBin.length > 2000000) return alert("数据过大，请使用【下载TXT】");
@@ -1653,8 +1659,6 @@ async function copyRes() {
     for (let i = 0; i < window.resBin.length; i++) chunks.push(B2C[window.resBin[i]]);
     copyTo(chunks.join(''), "全量编码已复制");
 }
-
-// 对应的 copyKey 简化版
 function copyKey(id) {
     const val = $(id).value;
     if (val && !val.includes("尚未")) copyTo(val, "密钥已复制");
