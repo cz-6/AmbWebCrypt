@@ -5,7 +5,7 @@
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <link rel="apple-touch-icon" href="icon-192.png">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>AmbWebCrypt (sd5f)</title>
+    <title>AmbWebCrypt (sd5h)</title>
     <style>
 :root {
     --primary: #00ff41; 
@@ -120,7 +120,7 @@ button:disabled { background: #666 !important; color: #999 !important; cursor: n
 <body>
 <div id="loader-screen" style="display:none; max-width: 600px; margin: 30px auto; padding: 20px; background: #0a0a0a; border: 1px solid #333; color: #fff; font-family: Consolas, monospace; border-radius: 8px;">
 <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 10px;">
-    <h1 style="font-size: clamp(16px, 5vw, 22px); white-space: nowrap; margin: 0; color: var(--primary); border: none; padding: 0;">🔤 AmbWebCrypt (sd5f)</h1>
+    <h1 style="font-size: clamp(16px, 5vw, 22px); white-space: nowrap; margin: 0; color: var(--primary); border: none; padding: 0;">🔤 AmbWebCrypt (sd5h)</h1>
     <button onclick="backupTool()" style="background: none; border: 1px solid #444; color: #888; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 11px; flex-shrink: 0; white-space: nowrap; margin: 0;">
         💾 保存本页
     </button>
@@ -130,8 +130,6 @@ button:disabled { background: #666 !important; color: #999 !important; cursor: n
     🎉 2026新年快乐 🎉
     <a href="https://j.157126.xyz/utils.htm" style="color: var(--warn); text-decoration: none;">🛠️</a>
 </div>
-
-    <!-- 步骤 1 & 2 保持不变... -->
     <div id="step1-box" style="margin-bottom: 18px;">
         <div id="step1-status" style="color: var(--warn); font-weight: bold;">(进行中) 1.下载原始数据流</div>
         <div id="progress-container" style="display: none; height: 10px; background: #222; border: 1px solid #444; margin: 10px 0; border-radius: 5px; overflow: hidden;">
@@ -139,11 +137,9 @@ button:disabled { background: #666 !important; color: #999 !important; cursor: n
         </div>
         <div id="step1-stats" style="font-size: 0.85rem; color: #aaa; margin-top: 5px;">准备中...</div>
     </div>
-
     <div id="step2-box" style="margin-bottom: 18px;">
         <div id="step2-status" style="color: #444; font-weight: bold;">(等待中) 2. 解密数据</div>
 </div>
-    <!-- 步骤 3: 触发下载 -->
     <div id="step3-box" style="margin-bottom: 20px;">
         <div id="step3-status" style="color: #444; font-weight: bold;">(等待中) 3. 触发下载</div>
         <p style="font-size: 0.8rem; color: #666; margin: 10px 0 8px 0;">若浏览器未自动下载，请点击下方按钮：</p>
@@ -152,13 +148,9 @@ button:disabled { background: #666 !important; color: #999 !important; cursor: n
         </button>
         <div id="loader-warning-msg" style="display:none; color:orange; margin-bottom: 10px; padding: 5px; border: 1px solid orange; background-color: #332b00; border-radius: 3px;"></div>
     </div>
-
-    <!-- 新增：自动下载界面的结果预览区 -->
     <div id="loader-result" style="display:none; border-top: 1px solid #333; padding-top: 15px; margin-top: 15px;">
         <div id="loader-identity" style="margin-bottom: 10px; font-size: 0.9rem;"></div>
         <div id="loader-stats" style="font-size: 0.8rem; color: #888; margin-bottom: 10px;"></div>
-        
-        <!-- 媒体预览 -->
         <div id="loader-preview-img" style="display:none; text-align:center; background:#000; padding:10px; border:1px solid #222;">
             <div id="loader-img"></div>
         </div>
@@ -168,11 +160,9 @@ button:disabled { background: #666 !important; color: #999 !important; cursor: n
     </div>
 </div>
 <div class="drop-hint" id="drop-hint">📁 释放文件以导入</div>
-
-<!-- 替换为下方带有 id 的版本 -->
 <div id="header-area" style="display: flex; flex-direction: column; gap: 8px; border-bottom: 2px solid var(--primary); margin-bottom: 20px; padding-bottom: 10px;">
     <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px;">
-        <h1 style="font-size: clamp(16px, 5vw, 22px); white-space: nowrap; margin: 0; color: var(--primary); border: none; padding: 0;">🔤 AmbWebCrypt (sd5f)</h1>
+        <h1 style="font-size: clamp(16px, 5vw, 22px); white-space: nowrap; margin: 0; color: var(--primary); border: none; padding: 0;">🔤 AmbWebCrypt (sd5h)</h1>
         <button onclick="backupTool()" style="background: none; border: 1px solid #444; color: #888; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 11px; flex-shrink: 0; white-space: nowrap; margin: 0;">
             💾 保存本页
         </button>
@@ -183,32 +173,28 @@ button:disabled { background: #666 !important; color: #999 !important; cursor: n
     <a href="https://j.157126.xyz/utils.htm" style="color: var(--warn); text-decoration: none;">🛠️</a>
 </div>
 </div>
-
 <div id="dec-warning-msg" style="display:none; color:orange; margin-bottom: 10px; padding: 5px; border: 1px solid orange; background-color: #332b00; border-radius: 3px;"></div>
-    <!-- 标签切换栏 -->
     <div class="tabs">
         <button class="tab-btn active" onclick="switchTab('encode')">🔢 加密</button>
         <button class="tab-btn" onclick="switchTab('decode')">🔤 解密</button>
         <button class="tab-btn" onclick="switchTab('keygen')">🔑 密钥生成</button>
     </div>
-
-    <!-- 1. 编码面板 -->
     <div id="encode-tab" class="tab-content active">
-<!-- 替换加密面板的“选择文件”区域 -->
 <div class="input-group">
     <label>1. 内容录入</label>
     <textarea id="encode-text" placeholder="在此输入文字..." style="height: 300px;"></textarea>
-    <div style="display: flex; gap: 10px; margin-top: 10px;">
-        <!-- 关键：label的for属性与input的id绑定，确保点击标签触发输入框 -->
-        <label for="encode-file-input" class="file-btn" style="margin: 0; flex: 1; text-align: center; background: #333; border: 1px solid #444; padding: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; color: #fff; font-weight: bold; border-radius: 4px;">
-            📁 选择文件
-        </label>
-        <!-- 隐藏的文件输入框，id必须与label的for一致 -->
-        <input type="file" id="encode-file-input" style="display:none" onchange="handleFile(this.files[0], 'encode')">
-        <button class="btn-secondary" onclick="clearAll('encode')" style="margin: 0; flex: 1; display: flex; align-items: center; justify-content: center; gap: 5px; height: 44px; border-radius: 4px;">
-            🧹 清空
-        </button>
-    </div>
+<div style="display: flex !important; flex-direction: row; gap: 10px; margin-top: 10px; width: 100%;">
+    <label class="file-btn" style="margin: 0; flex: 1; text-align: center; background: #333; border: 1px solid #444; padding: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; color: #fff; font-weight: bold; border-radius: 4px; white-space: nowrap;">
+        📁 选择文件 <input type="file" style="display:none" onchange="handleFile(this.files[0], 'encode')">
+    </label>
+    <button class="btn-secondary" onclick="pasteToEncode()" style="margin: 0; flex: 1; display: flex; align-items: center; justify-content: center; gap: 5px; height: 46px; border-radius: 4px; white-space: nowrap; width: auto;">
+        📋 粘贴
+    </button>
+    <!-- 这里修正为 'encode' -->
+    <button class="btn-secondary" onclick="clearAll('encode')" style="margin: 0; flex: 1; display: flex; align-items: center; justify-content: center; gap: 5px; height: 46px; border-radius: 4px; white-space: nowrap; width: auto;">
+        🧹 清空
+    </button>
+</div>
     <div class="file-info" id="e-file-info" style="display: none;"></div>
 </div>
 <div class="opt-group">
@@ -284,10 +270,15 @@ button:disabled { background: #666 !important; color: #999 !important; cursor: n
         <div class="input-group">
             <label>1. 编码录入 (支持拖入文件)</label>
 <textarea id="decode-input" placeholder="粘贴编码文字..." style="height: 160px;" oninput="syncBinCheckbox()"></textarea>
+<!-- 找到这个 div 并替换其内容 -->
 <div style="display: flex !important; flex-direction: row; gap: 10px; margin-top: 10px; width: 100%;">
     <label class="file-btn" style="margin: 0; flex: 1; text-align: center; background: #333; border: 1px solid #444; padding: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; color: #fff; font-weight: bold; border-radius: 4px; white-space: nowrap;">
         📁 选择文件 <input type="file" style="display:none" onchange="handleFile(this.files[0], 'decode')">
     </label>
+    <!-- 新增：粘贴按钮 -->
+    <button class="btn-secondary" onclick="pasteToDecode()" style="margin: 0; flex: 1; display: flex; align-items: center; justify-content: center; gap: 5px; height: 46px; border-radius: 4px; white-space: nowrap; width: auto;">
+        📋 粘贴
+    </button>
     <button class="btn-secondary" onclick="clearAll('decode')" style="margin: 0; flex: 1; display: flex; align-items: center; justify-content: center; gap: 5px; height: 46px; border-radius: 4px; white-space: nowrap; width: auto;">
         🧹 清空
     </button>
@@ -297,6 +288,9 @@ button:disabled { background: #666 !important; color: #999 !important; cursor: n
     <label style="cursor:pointer; font-size: 0.85rem; display: flex; align-items: center; gap: 8px; color: #fff;">
         <input type="checkbox" id="is-bin" style="margin:0;"> 导入的文件是二进制 (.bin)
     </label>
+    <label style="cursor:pointer; font-size: 0.85rem; display: flex; align-items: center; gap: 8px; color: #fff; margin-top:5px;">
+    <input type="checkbox" id="fast-mode" checked> ⚡ 流畅模式 (减少不必要的检查和尝试)
+</label>
 </div>
         </div>
 
@@ -386,7 +380,7 @@ button:disabled { background: #666 !important; color: #999 !important; cursor: n
 
     <script src="https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js"></script>
     <script>
-    const VER = "sd5f"; // 升级到 sd5f
+    const VER = "sd5h"; // 升级到 sd5h
     const PLIM = 100000; 
     const MAX_PIXELS = 10000000; 
     const MAP = "零一二三四五六七八九十个百千万服多来米发锁拉系骇古极你歪它他她啊波次的饿歌喝以几可了们呢喔屏群人是烫鱼绿写用这莱方录鹿卢凹折山葱仪厂长秧同草末音菜酸汤名口窝填田土木火水金风雨石竹鸟马牛羊虫花树云雷雪星光天海湖林点线面体条猫狗搜库炮进城管锚泡抛刨袍图如吐加键减肥乘出除处初厨楚乔恩奖江姜酱犟僵耳儿文静网热卡空虚拟想希丁克门付款啦放大哦扩对皮肤看快手内存成绩差登记机声第集平时都觉得就行打击哒西到哪咳嗽带飞辛苦老试怕漏刷未微位小众中从聪信新旧杨样阳提清青酒流留物里例理力丽礼李立事史视率形之只染然似防重饭洗头连叫扣宜";
@@ -476,107 +470,6 @@ function getAutoExtension(bin) {
     return ''; 
 }
 let deferredPrompt;
-async function coreRestore(rawBin, pwd, sniffSource, fileName, rawFileBuf) {
-    const sixHeader = parseSixHeader(fileName, sniffSource, rawFileBuf);
-    const startTime = Date.now();
-    const isSixHeaderValid = !!(sixHeader && sixHeader.isValid);
-    const targetCksum = isSixHeaderValid ? sixHeader.cksumTarget : -1;
-
-    let algoOrder = [1, 2, 4, 5, 3, 0]; 
-    if (isSixHeaderValid) algoOrder = [sixHeader.firstAlgo, ...algoOrder.filter(a => a !== sixHeader.firstAlgo)];
-
-    let candidates = [];
-    let triedAlgoCount = 0;
-
-    for (const mode of algoOrder) {
-        if ((mode <= 2 || mode === 4) && !pwd) continue; 
-        
-        triedAlgoCount++;
-        let currentEd = { isEd: false, isAdmin: false, usedPubKey: null, sigValid: false };
-        let backupEd = edIdentity; 
-        edIdentity = currentEd;
-
-        let decrypted = null;
-        try { decrypted = await tryRestore(rawBin, pwd, mode); } catch (e) {}
-        edIdentity = backupEd; 
-
-        if (!decrypted || !decrypted.length) continue;
-
-        let score = 0;
-        // 核心判分：算法成功
-        if ([1, 2, 4].includes(mode)) score += 4; // GCM/P-384/吱 解密成功
-        if (currentEd.sigValid) score += 2;        // Ed签名验证成功
-        let finalData = decrypted;
-if (decrypted.length > 6 && 
-    decrypted[0] === 0x1f && decrypted[1] === 0x8b && 
-    decrypted[2] === 0x08 && decrypted[3] === 0x00 && 
-    decrypted[4] === 0x00 && decrypted[5] === 0x00) {
-            try {
-                finalData = pako.ungzip(decrypted);
-                score += 0.5; // GZIP解压成功
-            } catch (e) { finalData = decrypted; }
-        }
-// --- 核心判分：校验和 ---
-        const h = new Uint8Array(await window.crypto.subtle.digest('SHA-256', finalData));
-        const currentCksum = ((h[16] << 8) | h[17]) >>> 0;
-        
-        // 定义变量，确保名称一致
-        const cksumMatched = isSixHeaderValid && currentCksum === targetCksum;
-        if (cksumMatched) score += 1;
-
-        // --- 弱特征判分 (守住你的 BIN/RIFF 红线) ---
-        const autoExt = getAutoExtension(finalData);
-        if (autoExt) score += 0.25; 
-        if (autoExt === '.bin') score -= 0.25;
-        if (autoExt === '.riff') score -= 0.125;
-        if (bufToHex(finalData.slice(0, 4)).startsWith('000000')) score += 0.125;
-
-        // 把结果塞进候选名单
-        candidates.push({ 
-            data: finalData, 
-            score: score, 
-            mode: mode, 
-            edState: currentEd, 
-            cksum: currentCksum 
-        });
-
-        // --- 核心退出逻辑 ---
-        // A. 强加密算法(GCM/P384)成功，4分直接走人
-        if (score >= 4) break;
-        
-        // B. 不加密文件(哈/嘻)且校验和中了，1.xx分也直接走人，不许盲试
-        if (sixHeader.isValid && !sixHeader.isEncrypted && mode === 5 && cksumMatched) {
-            break; 
-        }
-    }
-if (!candidates.length) return null;
-    
-    // 1. 优化排序：评分高者优先；平分(0分)时，明文(Mode 5)排在最前
-    candidates.sort((a, b) => (b.score - a.score) || (a.mode === 5 ? -1 : (b.mode === 5 ? 1 : 0)));
-    
-    const best = candidates[0];
-    window.lastDecMode = best.mode;
-    window.lastDecScore = best.score;
-    window.edIdentity = best.edState;
-    window.decryptStats = { 
-        usedTime: ((Date.now() - startTime) / 1000).toFixed(3),
-        triedAlgoCount: triedAlgoCount 
-    };
-
-    // 2. 校验和判定
-    decWarning.active = (isSixHeaderValid && targetCksum !== 0 && best.cksum !== targetCksum);
-    if (decWarning.active) {
-        decWarning.message = `⚠️ 校验和不匹配 (预期:${targetCksum.toString(16)} 实际:${best.cksum.toString(16)})`;
-        
-        // --- 新增：并列0分且校验失败时弹出 Alert ---
-        if (best.score <= 0) {
-            alert("⚠️ 还原预警：\n校验和不匹配且未检测到任何有效的数据特征（评分 0.000）。\n请检查密钥是否正确，或数据是否完整。");
-        }
-    }
-
-    return best.data;
-}
-// 搜索并替换 getAlgoName 函数
 function getAlgoName(m) {
     return ["CBC", "GCM", "P384", "Ed25519", "管理员签名的加密文件", "明文"][m] || "未知";
 }
@@ -971,58 +864,50 @@ async function importEdPrivKey(keyStr) {
         return await window.crypto.subtle.importKey('pkcs8', wrapped, {name: 'Ed25519' }, false, ['sign']);
     }
 }
-async function doDecode() {
-    const btn = $('btn-do-decode'), 
-          inputArea = $('decode-input'), 
-          isBinChecked = $('is-bin').checked, 
-          keyStr = $('d-key').value.trim();
-    
-    if (!btn || !inputArea) return;
-    btn.disabled = true; 
-    btn.textContent = "⌛ 还原中..."; 
-    
-    await new Promise(r => setTimeout(r, 50));
-    
+async function pasteToEncode() {
     try {
-        let rawBin = null; 
-        const currentVal = inputArea.value;
-        const isPlaceholder = currentVal.includes("已载入") && currentVal.includes("文件:");
+        if (!navigator.clipboard) throw new Error("浏览器不支持剪切板访问");
+        const text = await navigator.clipboard.readText();
+        if (text) {
+            // 核心修复：粘贴文字时，必须清空之前载入的文件状态
+            // 否则执行编码时会优先加密旧文件
+            oFile = null;
+            eData = null;
+            $('e-file-info').innerHTML = '';
+            $('e-file-info').style.display = 'none';
+            const eInput = $('encode-file-input');
+            if (eInput) eInput.value = ''; // 重置文件选择框
 
-        // --- 优化后的逻辑逻辑 ---
-        // 只有当“勾选了BIN”且“确实存在物理文件流”时，才使用原始二进制
-        if (isBinChecked && decodeRawBuffer) {
-            rawBin = new Uint8Array(decodeRawBuffer);
-        } 
-        // 否则（没勾选BIN，或者勾选了BIN但没传文件只是粘贴了文字），一律尝试解析汉字编码
-        else {
-            // 如果是占位符，说明文件是拖入的TXT，去读文件流转出的汉字；否则读框里的文字
-            let textToParse = (isPlaceholder && decodeRawBuffer) ? new TextDecoder().decode(decodeRawBuffer) : currentVal;
-            let temp = new Uint8Array(textToParse.length), count = 0;
+            // 写入加密文本框
+            $('encode-text').value = text;
             
-            for (let i = 0; i < textToParse.length; i++) {
-                const b = C2B[textToParse[i]]; 
-                if (b !== undefined) temp[count++] = b;
-            }
-            
-            if (count === 0) {
-                throw new Error(isBinChecked ? "未检测到物理文件流，且文本框内无有效编码" : "无有效编码字符");
-            }
-            rawBin = temp.slice(0, count);
+            showLog("已粘贴到内容录入", "warn");
+            setTimeout(hideLog, 1000);
         }
-        // --- 逻辑结束 ---
-
-        const result = await coreRestore(rawBin, keyStr, currentVal, decodeFileName, decodeRawBuffer);
-        if (result) { 
-            dData = result; 
-            renderDec(result); 
-        } else {
-            throw new Error("还原失败");
+    } catch (e) {
+        alert("粘贴失败: " + (e.message.includes("Secure Context") ? "需要 HTTPS 环境" : e.message));
+    }
+}
+async function pasteToDecode() {
+    try {
+        if (!navigator.clipboard) throw new Error("浏览器不支持剪切板访问");
+        const text = await navigator.clipboard.readText();
+        if (text) {
+            if ($('decode-input').value.includes("已载入")) {
+                decodeRawBuffer = null; decodeFileName = "";
+                $('d-file-info').style.display = 'none';
+            }
+            $('decode-input').value = text;
+            syncBinCheckbox();
+            showLog("已成功从剪切板粘贴", "warn");
+            setTimeout(hideLog, 1000);
         }
-    } catch (e) { 
-        alert("❌ 失败: " + e.message); 
-    } finally { 
-        btn.disabled = false; 
-        btn.textContent = "🔓 执行还原"; 
+    } catch (e) {
+        let msg = "粘贴失败: " + e.message;
+        if (e.name === "NotAllowedError" || e.message.includes("permission denied")) {
+            msg = "粘贴失败：剪切板权限被拒绝。\n\n请点击浏览器地址栏左侧的“锁”图标，重新开启“剪切板”权限。";
+        }
+        alert(msg);
     }
 }
 async function tryRestore(rawBin, pwd, mode) {
@@ -1030,9 +915,9 @@ async function tryRestore(rawBin, pwd, mode) {
         const keyEncoder = new TextEncoder();
         const data = new Uint8Array(rawBin);
         const cleanPwd = pwd ? pwd.trim() : "";
+        const isFast = document.getElementById('fast-mode')?.checked;
 
-        // 模式 0: CBC (旧版兼容)
-        if (mode === 0) {
+        if (mode === 0) { // CBC
             if (data.length < 16) return null;
             const iv = data.slice(0, 16), ciphertext = data.slice(16);
             const keyHash = await window.crypto.subtle.digest('SHA-256', keyEncoder.encode(pwd));
@@ -1040,8 +925,7 @@ async function tryRestore(rawBin, pwd, mode) {
             return new Uint8Array(await window.crypto.subtle.decrypt({name: 'AES-CBC', iv: iv}, cryptoKey, ciphertext));
         }
 
-        // 模式 1: GCM
-        if (mode === 1) {
+        if (mode === 1) { // GCM
             if (data.length < 28) return null;
             const iv = data.slice(0, 12), ciphertext = data.slice(12);
             const keyHash = await window.crypto.subtle.digest('SHA-256', keyEncoder.encode(pwd));
@@ -1049,8 +933,7 @@ async function tryRestore(rawBin, pwd, mode) {
             return new Uint8Array(await window.crypto.subtle.decrypt({name: 'AES-GCM', iv: iv}, cryptoKey, ciphertext));
         }
 
-        // 模式 2: P384
-        if (mode === 2) {
+        if (mode === 2) { // P384
             if (data.length < 109) return null;
             const privBuf = hexToBuf(pwd);
             if (!privBuf) return null;
@@ -1060,29 +943,31 @@ async function tryRestore(rawBin, pwd, mode) {
             return new Uint8Array(await window.crypto.subtle.decrypt({name: 'AES-GCM', iv: data.slice(97, 109)}, sharedKey, data.slice(109)));
         }
 
-        // 模式 3 & 4: Ed25519 逻辑修复
         if (mode === 3 || mode === 4) {
             const sig = data.slice(0, 64);
             const payload = data.slice(64);
-            edIdentity.isEd = true;
-            edIdentity.sigValid = false;
-
-            // 确定验证用的公钥池
-            let pubKeys = [];
-            if (mode === 4) {
-                // 模式 4：始终且仅用管理员公钥验证签名
-                pubKeys = [ADMIN_ED_PUB_HEX.toLowerCase()];
-            } else {
-                // 模式 3：优先用密码框里的公钥，没填就试管理员
-                if (cleanPwd && cleanPwd.length >= 64) pubKeys.push(cleanPwd.toLowerCase());
-                pubKeys.push(ADMIN_ED_PUB_HEX.toLowerCase());
+            
+            if (mode === 4) { // 模式 4 解密 GCM
+                if (!pwd) return null;
+                const iv = payload.slice(0, 12), ciphertext = payload.slice(12);
+                const keyHash = await window.crypto.subtle.digest('SHA-256', keyEncoder.encode(pwd));
+                const cryptoKey = await window.crypto.subtle.importKey('raw', keyHash, {name: 'AES-GCM'}, false, ['decrypt']);
+                const decrypted = new Uint8Array(await window.crypto.subtle.decrypt({name: 'AES-GCM', iv: iv}, cryptoKey, ciphertext));
+                if (isFast) return decrypted; // 流畅模式：命中即返回
+                edIdentity.decryptedPayload = decrypted;
             }
 
-            // 验证签名
+            if (mode === 3 && isFast) return payload; // 流畅模式：模式3直接返回
+
+            // 非流畅模式：执行身份签名验证
+            edIdentity.isEd = true;
+            edIdentity.sigValid = false;
+            let pubKeys = (mode === 4) ? [ADMIN_ED_PUB_HEX.toLowerCase()] : 
+                          (cleanPwd && cleanPwd.length >= 64 ? [cleanPwd.toLowerCase(), ADMIN_ED_PUB_HEX.toLowerCase()] : [ADMIN_ED_PUB_HEX.toLowerCase()]);
+
             for (let pkHex of pubKeys) {
                 try {
-                    const pubKeyBuf = hexToBuf(pkHex);
-                    const pubKey = await window.crypto.subtle.importKey('raw', pubKeyBuf, {name: 'Ed25519'}, false, ['verify']);
+                    const pubKey = await window.crypto.subtle.importKey('raw', hexToBuf(pkHex), {name: 'Ed25519'}, false, ['verify']);
                     if (await window.crypto.subtle.verify({name: 'Ed25519'}, pubKey, sig, payload)) {
                         edIdentity.sigValid = true;
                         edIdentity.usedPubKey = pkHex;
@@ -1090,22 +975,160 @@ async function tryRestore(rawBin, pwd, mode) {
                     }
                 } catch (e) {}
             }
-
-            // 模式 4 解密 GCM 部分
-            if (mode === 4) {
-                if (!pwd) return null;
-                const iv = payload.slice(0, 12), ciphertext = payload.slice(12);
-                const keyHash = await window.crypto.subtle.digest('SHA-256', keyEncoder.encode(pwd));
-                const cryptoKey = await window.crypto.subtle.importKey('raw', keyHash, {name: 'AES-GCM'}, false, ['decrypt']);
-                return new Uint8Array(await window.crypto.subtle.decrypt({name: 'AES-GCM', iv: iv}, cryptoKey, ciphertext));
-            }
-
-            return payload; // 模式 3 直接返回
+            return (mode === 4) ? edIdentity.decryptedPayload : payload;
         }
 
         if (mode === 5) return data;
         return null;
     } catch (e) { return null; }
+}
+async function doDecode() {
+    const btn = $('btn-do-decode'), inputArea = $('decode-input'), 
+          isBinChecked = $('is-bin').checked, keyStr = $('d-key').value.trim();
+    if (!btn || !inputArea) return;
+
+    // 1. 计时起点包含预处理耗时，确保用时显示真实感官卡顿
+    const startTime = Date.now(); 
+    btn.disabled = true; btn.textContent = "⌛ 还原中..."; 
+    await new Promise(r => setTimeout(r, 50)); 
+
+    // 字符转字节的核心工具
+    const getBinaryData = (text, buffer) => {
+        if (isBinChecked && buffer) return new Uint8Array(buffer);
+        let str = text || (buffer ? new TextDecoder().decode(buffer) : "");
+        if (!str) return null;
+        let temp = new Uint8Array(str.length), count = 0;
+        for (let i = 0; i < str.length; i++) {
+            const b = C2B[str[i]]; 
+            if (b !== undefined) temp[count++] = b;
+        }
+        return count > 0 ? temp.slice(0, count) : null;
+    };
+
+    try {
+        let finalBin = null;
+        let finalSourceText = "";
+        let finalName = "";
+
+        const currentVal = inputArea.value.trim();
+        const isPlaceholder = currentVal.includes("已载入") && decodeRawBuffer;
+
+        // --- 逻辑分层 ---
+
+        // 第一步：先看输入框或已加载的文件
+        if (isPlaceholder) {
+            finalBin = getBinaryData(null, decodeRawBuffer);
+            finalName = decodeFileName;
+        } else if (currentVal) {
+            finalBin = getBinaryData(currentVal, null);
+            finalSourceText = currentVal;
+        }
+
+        // 第二步：最后的保底 - 如果前面“炸干净了”（没有提取到任何有效MAP字符）
+        if (!finalBin && !isBinChecked && navigator.clipboard) {
+            try {
+                const clipText = await navigator.clipboard.readText();
+                if (clipText && clipText.length > 5) {
+                    finalBin = getBinaryData(clipText, null);
+                    if (finalBin) {
+                        finalSourceText = clipText;
+                        // 仅更新输入框，不再调用 showLog，避免遮挡底部
+                        inputArea.value = clipText.substring(0, 100) + "...(已自动读取剪切板)";
+                        syncBinCheckbox();
+                    }
+                }
+            } catch (e) { console.warn("剪切板保底尝试失败"); }
+        }
+
+        // 第三步：执行核心还原
+        if (finalBin) {
+            // coreRestore 需要支持 externalStartTime 以校准“用时”显示
+            const result = await coreRestore(finalBin, keyStr, finalSourceText, finalName, decodeRawBuffer, startTime);
+            if (result) {
+                dData = result; 
+                renderDec(result);
+            } else {
+                throw new Error("还原失败：密钥错误或数据损坏。");
+            }
+        } else {
+            throw new Error("未发现有效编码字符。请粘贴内容或选择文件。");
+        }
+
+    } catch (e) {
+        alert("❌ " + e.message);
+    } finally {
+        btn.disabled = false;
+        btn.textContent = "🔓 执行还原";
+    }
+}
+async function coreRestore(rawBin, pwd, sniffSource, fileName, rawFileBuf, externalStartTime) {
+    const sixHeader = parseSixHeader(fileName, sniffSource, rawFileBuf);
+    const startTime = externalStartTime || Date.now(); // 使用传入的起点
+    const isSixHeaderValid = !!(sixHeader && sixHeader.isValid);
+    const targetCksum = isSixHeaderValid ? sixHeader.cksumTarget : -1;
+    
+    const isFastRequested = document.getElementById('fast-mode')?.checked !== false;
+    const isSmoothActive = isFastRequested && rawBin.length > 102400; 
+
+    let algoOrder = [1, 2, 4, 5, 3, 0]; 
+    if (isSixHeaderValid) algoOrder = [sixHeader.firstAlgo, ...algoOrder.filter(a => a !== sixHeader.firstAlgo)];
+    let candidates = [], triedAlgoCount = 0;
+
+    const fastExit = (data, score, mode, ed, ck, ckCalculated) => {
+        window.lastDecMode = mode; window.lastDecScore = score; window.edIdentity = ed;
+        // 这里的用时就会包含 C2B 的转换时间了
+        window.decryptStats = { usedTime: ((Date.now() - startTime) / 1000).toFixed(3), triedAlgoCount };
+        decWarning.active = false;
+        if (isSixHeaderValid && targetCksum > 0) {
+            if (ckCalculated && ck !== targetCksum) {
+                decWarning.active = true;
+                decWarning.message = `⚠️ 校验和不匹配 (预期:${targetCksum.toString(16)} 实际:${ck.toString(16)})`;
+                if (score <= 0) alert(`⚠️ 还原预警：校验和不匹配且未检测到任何特征。`);
+            }
+        }
+        return data;
+    };
+
+    for (const mode of algoOrder) {
+        if ((mode <= 2 || mode === 4) && !pwd) continue; 
+        triedAlgoCount++;
+        let currentEd = { isEd: false, isAdmin: false, usedPubKey: null, sigValid: false };
+        let backupEd = edIdentity; edIdentity = currentEd;
+        let decrypted = null;
+        try { decrypted = await tryRestore(rawBin, pwd, mode); } catch (e) {}
+        edIdentity = backupEd; 
+
+        if (!decrypted || !decrypted.length) continue;
+
+        if (isSmoothActive && [1, 2, 4].includes(mode)) {
+            return fastExit(decrypted, 4.0, mode, currentEd, 0, false);
+        }
+
+        let finalData = decrypted;
+        let score = ([1, 2, 4].includes(mode) ? 4.0 : 0) + (currentEd.sigValid ? 2.0 : 0);
+        const isGzip = decrypted.length > 6 && decrypted[0] === 0x1f && decrypted[1] === 0x8b && decrypted[2] === 0x08;
+        if (isGzip && !isSmoothActive) {
+            try { finalData = pako.ungzip(decrypted); score += 0.5; } catch (e) {}
+        }
+        const autoExt = getAutoExtension(finalData);
+        if (autoExt) score += (autoExt === '.bin' || autoExt === '.riff') ? 0.125 : 0.25;
+
+        if (isSmoothActive && [0, 3, 5].includes(mode) && score >= 0.125) {
+            return fastExit(finalData, score, mode, currentEd, 0, false);
+        }
+
+        const h = new Uint8Array(await window.crypto.subtle.digest('SHA-256', finalData));
+        const currentCksum = ((h[16] << 8) | h[17]) >>> 0;
+        const cksumMatched = isSixHeaderValid && targetCksum > 0 && currentCksum === targetCksum;
+        if (cksumMatched) score += 1.0;
+        candidates.push({ data: finalData, mode, edState: currentEd, cksum: currentCksum, score });
+        if (score >= 4.0 && (!isSixHeaderValid || targetCksum <= 0 || cksumMatched)) break;
+    }
+
+    if (!candidates.length) return null;
+    candidates.sort((a, b) => b.score - a.score);
+    const best = candidates[0];
+    return fastExit(best.data, best.score, best.mode, best.edState, best.cksum, (rawBin.length <= 102400 || !isFastRequested));
 }
 function checkStrength(pwd) {
     const bar = $('e-bar');
@@ -1306,8 +1329,6 @@ window.onload = async () => {
             s1Status.innerText = "(已完成) 1.下载原始数据流"; s1Status.style.color = "var(--primary)";
             s2Status.innerText = "(进行中) 2. 解密数据"; s2Status.style.color = "var(--warn)";
             decodeFileName = decodeURIComponent(targetUrl.split('/').pop());
-            
-            // 等待 50ms 渲染 UI
             await new Promise(r => setTimeout(r, 50)); 
 
             const result = await coreRestore(rawBin, dePwd || generalPwd || "", "", decodeFileName, rawBin);
