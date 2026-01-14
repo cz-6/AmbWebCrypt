@@ -5,7 +5,7 @@
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <link rel="apple-touch-icon" href="icon-192.png">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>AmbWebCrypt (sd5h)</title>
+    <title>AmbWebCrypt (sd5j)</title>
     <style>
 :root {
     --primary: #00ff41; 
@@ -120,7 +120,7 @@ button:disabled { background: #666 !important; color: #999 !important; cursor: n
 <body>
 <div id="loader-screen" style="display:none; max-width: 600px; margin: 30px auto; padding: 20px; background: #0a0a0a; border: 1px solid #333; color: #fff; font-family: Consolas, monospace; border-radius: 8px;">
 <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 10px;">
-    <h1 style="font-size: clamp(16px, 5vw, 22px); white-space: nowrap; margin: 0; color: var(--primary); border: none; padding: 0;">🔤 AmbWebCrypt (sd5h)</h1>
+    <h1 style="font-size: clamp(16px, 5vw, 22px); white-space: nowrap; margin: 0; color: var(--primary); border: none; padding: 0;">🔤 AmbWebCrypt (sd5j)</h1>
     <button onclick="backupTool()" style="background: none; border: 1px solid #444; color: #888; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 11px; flex-shrink: 0; white-space: nowrap; margin: 0;">
         💾 保存本页
     </button>
@@ -162,7 +162,7 @@ button:disabled { background: #666 !important; color: #999 !important; cursor: n
 <div class="drop-hint" id="drop-hint">📁 释放文件以导入</div>
 <div id="header-area" style="display: flex; flex-direction: column; gap: 8px; border-bottom: 2px solid var(--primary); margin-bottom: 20px; padding-bottom: 10px;">
     <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px;">
-        <h1 style="font-size: clamp(16px, 5vw, 22px); white-space: nowrap; margin: 0; color: var(--primary); border: none; padding: 0;">🔤 AmbWebCrypt (sd5h)</h1>
+        <h1 style="font-size: clamp(16px, 5vw, 22px); white-space: nowrap; margin: 0; color: var(--primary); border: none; padding: 0;">🔤 AmbWebCrypt (sd5j)</h1>
         <button onclick="backupTool()" style="background: none; border: 1px solid #444; color: #888; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 11px; flex-shrink: 0; white-space: nowrap; margin: 0;">
             💾 保存本页
         </button>
@@ -184,14 +184,14 @@ button:disabled { background: #666 !important; color: #999 !important; cursor: n
     <label>1. 内容录入</label>
     <textarea id="encode-text" placeholder="在此输入文字..." style="height: 300px;"></textarea>
 <div style="display: flex !important; flex-direction: row; gap: 10px; margin-top: 10px; width: 100%;">
-    <label class="file-btn" style="margin: 0; flex: 1; text-align: center; background: #333; border: 1px solid #444; padding: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; color: #fff; font-weight: bold; border-radius: 4px; white-space: nowrap;">
+    <!-- 统一样式：高度42px，去掉默认padding改用flex居中，字体14px -->
+    <label class="file-btn" style="margin: 0; flex: 1; height: 42px; background: #333; border: 1px solid #444; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; color: #fff; font-weight: bold; font-size: 14px; border-radius: 4px; white-space: nowrap;">
         📁 选择文件 <input type="file" style="display:none" onchange="handleFile(this.files[0], 'encode')">
     </label>
-    <button class="btn-secondary" onclick="pasteToEncode()" style="margin: 0; flex: 1; display: flex; align-items: center; justify-content: center; gap: 5px; height: 46px; border-radius: 4px; white-space: nowrap; width: auto;">
+    <button class="btn-secondary" onclick="pasteToEncode()" style="margin: 0; flex: 1; height: 42px; padding: 0; display: flex; align-items: center; justify-content: center; gap: 5px; border-radius: 4px; white-space: nowrap; font-size: 14px;">
         📋 粘贴
     </button>
-    <!-- 这里修正为 'encode' -->
-    <button class="btn-secondary" onclick="clearAll('encode')" style="margin: 0; flex: 1; display: flex; align-items: center; justify-content: center; gap: 5px; height: 46px; border-radius: 4px; white-space: nowrap; width: auto;">
+    <button class="btn-secondary" onclick="clearAll('encode')" style="margin: 0; flex: 1; height: 42px; padding: 0; display: flex; align-items: center; justify-content: center; gap: 5px; border-radius: 4px; white-space: nowrap; font-size: 14px;">
         🧹 清空
     </button>
 </div>
@@ -272,14 +272,14 @@ button:disabled { background: #666 !important; color: #999 !important; cursor: n
 <textarea id="decode-input" placeholder="粘贴编码文字..." style="height: 160px;" oninput="syncBinCheckbox()"></textarea>
 <!-- 找到这个 div 并替换其内容 -->
 <div style="display: flex !important; flex-direction: row; gap: 10px; margin-top: 10px; width: 100%;">
-    <label class="file-btn" style="margin: 0; flex: 1; text-align: center; background: #333; border: 1px solid #444; padding: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; color: #fff; font-weight: bold; border-radius: 4px; white-space: nowrap;">
+    <!-- 统一样式：高度42px，去掉默认padding改用flex居中，字体14px -->
+    <label class="file-btn" style="margin: 0; flex: 1; height: 42px; background: #333; border: 1px solid #444; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; color: #fff; font-weight: bold; font-size: 14px; border-radius: 4px; white-space: nowrap;">
         📁 选择文件 <input type="file" style="display:none" onchange="handleFile(this.files[0], 'decode')">
     </label>
-    <!-- 新增：粘贴按钮 -->
-    <button class="btn-secondary" onclick="pasteToDecode()" style="margin: 0; flex: 1; display: flex; align-items: center; justify-content: center; gap: 5px; height: 46px; border-radius: 4px; white-space: nowrap; width: auto;">
+    <button class="btn-secondary" onclick="pasteToDecode()" style="margin: 0; flex: 1; height: 42px; padding: 0; display: flex; align-items: center; justify-content: center; gap: 5px; border-radius: 4px; white-space: nowrap; font-size: 14px;">
         📋 粘贴
     </button>
-    <button class="btn-secondary" onclick="clearAll('decode')" style="margin: 0; flex: 1; display: flex; align-items: center; justify-content: center; gap: 5px; height: 46px; border-radius: 4px; white-space: nowrap; width: auto;">
+    <button class="btn-secondary" onclick="clearAll('decode')" style="margin: 0; flex: 1; height: 42px; padding: 0; display: flex; align-items: center; justify-content: center; gap: 5px; border-radius: 4px; white-space: nowrap; font-size: 14px;">
         🧹 清空
     </button>
 </div>
@@ -380,7 +380,7 @@ button:disabled { background: #666 !important; color: #999 !important; cursor: n
 
     <script src="https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js"></script>
     <script>
-    const VER = "sd5h"; // 升级到 sd5h
+    const VER = "sd5j"; // 升级到 sd5j
     const PLIM = 100000; 
     const MAX_PIXELS = 10000000; 
     const MAP = "零一二三四五六七八九十个百千万服多来米发锁拉系骇古极你歪它他她啊波次的饿歌喝以几可了们呢喔屏群人是烫鱼绿写用这莱方录鹿卢凹折山葱仪厂长秧同草末音菜酸汤名口窝填田土木火水金风雨石竹鸟马牛羊虫花树云雷雪星光天海湖林点线面体条猫狗搜库炮进城管锚泡抛刨袍图如吐加键减肥乘出除处初厨楚乔恩奖江姜酱犟僵耳儿文静网热卡空虚拟想希丁克门付款啦放大哦扩对皮肤看快手内存成绩差登记机声第集平时都觉得就行打击哒西到哪咳嗽带飞辛苦老试怕漏刷未微位小众中从聪信新旧杨样阳提清青酒流留物里例理力丽礼李立事史视率形之只染然似防重饭洗头连叫扣宜";
@@ -915,7 +915,9 @@ async function tryRestore(rawBin, pwd, mode) {
         const keyEncoder = new TextEncoder();
         const data = new Uint8Array(rawBin);
         const cleanPwd = pwd ? pwd.trim() : "";
-        const isFast = document.getElementById('fast-mode')?.checked;
+        // 修改点：内层解密时，也必须同时满足“勾选”且“数据大于10MB”才跳过验签。
+        // 这样对于文本或小文件，即使勾选了流畅模式，也会强制进行验签，从而获得正确的评分和身份提示。
+        const isFast = document.getElementById('fast-mode')?.checked && data.length > 10485760;
 
         if (mode === 0) { // CBC
             if (data.length < 16) return null;
@@ -1068,7 +1070,9 @@ async function coreRestore(rawBin, pwd, sniffSource, fileName, rawFileBuf, exter
     const targetCksum = isSixHeaderValid ? sixHeader.cksumTarget : -1;
     
     const isFastRequested = document.getElementById('fast-mode')?.checked !== false;
-    const isSmoothActive = isFastRequested && rawBin.length > 102400; 
+    // 修改点：增加 && !!rawFileBuf 条件。
+    // 只有当 rawFileBuf 存在（即通过文件导入，而非文本粘贴）且大于 10MB 时，才允许流畅模式。
+    const isSmoothActive = isFastRequested && rawBin.length > 10485760 && !!rawFileBuf; 
 
     let algoOrder = [1, 2, 4, 5, 3, 0]; 
     if (isSixHeaderValid) algoOrder = [sixHeader.firstAlgo, ...algoOrder.filter(a => a !== sixHeader.firstAlgo)];
@@ -1128,7 +1132,7 @@ async function coreRestore(rawBin, pwd, sniffSource, fileName, rawFileBuf, exter
     if (!candidates.length) return null;
     candidates.sort((a, b) => b.score - a.score);
     const best = candidates[0];
-    return fastExit(best.data, best.score, best.mode, best.edState, best.cksum, (rawBin.length <= 102400 || !isFastRequested));
+    return fastExit(best.data, best.score, best.mode, best.edState, best.cksum, (rawBin.length <= 10485760 || !isFastRequested));
 }
 function checkStrength(pwd) {
     const bar = $('e-bar');
@@ -1389,7 +1393,8 @@ async function doEncode() {
     try {
         const txt = encodeText.value.trim(), algoMode = algoEl.value, keyStr = eKey.value.trim();
         // 1. 判定吱模式：原文件是GCM（六字头第5字嘿）+当前选Ed25519签名
-        const originalSixHeader = parseSixHeader(oFile ? oFile.name : "", "", null);
+        // 修改点：第二个参数传入 txt，确保能从粘贴的文本中读取原Header
+        const originalSixHeader = parseSixHeader(oFile ? oFile.name : "", txt, null);
         const isSigningGCM = originalSixHeader.isValid && originalSixHeader.isGCM && algoMode === "3";
 
         // 2. 处理待签名/加密的二进制数据
@@ -1398,8 +1403,21 @@ async function doEncode() {
             // 优先使用导入文件的二进制数据（如GCM加密文件）
             processedBin = eData;
         } else {
-            // 无文件时，使用文本框输入的内容（转为UTF-8字节）
-            processedBin = new TextEncoder().encode(txt);
+            // 无文件时
+            // 核心修复：如果是 GCM 签名模式 (isSigningGCM)，说明用户粘贴了 GCM 密文文本
+            // 此时必须先进行 C2B 反向映射，还原为二进制，否则会对“密文的文字编码”进行签名，导致解密后是Base256文本而非原始数据
+            if (isSigningGCM) {
+                const temp = new Uint8Array(txt.length);
+                let count = 0;
+                for (let i = 0; i < txt.length; i++) {
+                    const b = C2B[txt[i]]; // 使用全局 C2B 映射表
+                    if (b !== undefined) temp[count++] = b;
+                }
+                // 如果能还原出数据，则使用还原后的二进制；否则保底回退到 UTF-8 (防止空内容等异常)
+                processedBin = count > 0 ? temp.slice(0, count) : new TextEncoder().encode(txt);
+            } else {
+                processedBin = new TextEncoder().encode(txt);
+            }
         }
         if (!processedBin || processedBin.length === 0) throw new Error("内容为空");
 
