@@ -5,7 +5,7 @@
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <link rel="apple-touch-icon" href="icon-192.png">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>AmbWebCrypt (sd5j)</title>
+    <title>AmbWebCrypt (sd5k)</title>
     <style>
 :root {
     --primary: #00ff41; 
@@ -14,6 +14,7 @@
     --bg: #111; 
     --panel: #0a0a0a; 
     --text: #d1d1d1; 
+    color-scheme: dark; /* 添加这一行 */
 }
 * {box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -23,19 +24,51 @@ body {font-family: Consolas, monospace;background: var(--bg);color: var(--text);
 @media (max-width: 600px) {body{padding:5px;}
 .container{padding:10px;border: none;}/*手机端去掉大边框*/.opt-group {padding:8px;}}
 
-.tabs {display:flex;margin:15px 0;border:1px solid #333;border-radius:4px;overflow: hidden; }
-.tab-btn {flex: 1; 
-    padding: 12px 5px; 
-    background: #1a1a1a; 
-    border: none; 
-    color: #999; 
-    cursor: pointer; 
-    font-family: inherit; 
-    font-size: 14px;
-    white-space: nowrap;
+.tabs {
+    display: flex;
+    margin: 6px 0 15px 0;
+    /* 去掉父容器的 overflow: hidden 和 border */
+    background: none; 
 }
-.tab-btn.active {background: var(--primary); color: #000; }
 
+.tab-btn {
+    flex: 1;
+    padding: 12px 5px;
+    background: #1a1a1a;
+    /* 每个按钮自带全周边框 */
+    border: 1px solid #333; 
+    /* 核心逻辑：向左移动 1px，使按钮间的边框重叠，防止双倍边框 */
+    margin-left: -1px; 
+    color: #999;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: bold;
+    white-space: nowrap;
+    border-radius: 0;
+    transition: none;
+    box-sizing: border-box; /* 确保边框不撑大按钮 */
+}
+
+/* 第一个按钮不需要左移 */
+.tab-btn:first-child {
+    margin-left: 0;
+}
+
+.tab-btn.active {
+    background: var(--primary);
+    color: #000;
+    /* 激活时，边框颜色设为绿色或保持暗色，建议设为绿色以实现视觉无缝 */
+    border-color: var(--primary); 
+    /* 提升层级，确保激活按钮的绿色边框压在相邻按钮的暗色边框上 */
+    z-index: 1; 
+}
+
+.tab-btn:hover:not(.active) {
+    color: #fff;
+    background: #222;
+    z-index: 2; /* 悬停时也稍微提升层级，防止边框被遮挡 */
+}
 .tab-content {display: none; }
 .tab-content.active {display: block; }
 
@@ -120,7 +153,7 @@ button:disabled { background: #666 !important; color: #999 !important; cursor: n
 <body>
 <div id="loader-screen" style="display:none; max-width: 600px; margin: 30px auto; padding: 20px; background: #0a0a0a; border: 1px solid #333; color: #fff; font-family: Consolas, monospace; border-radius: 8px;">
 <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 10px;">
-    <h1 style="font-size: clamp(16px, 5vw, 22px); white-space: nowrap; margin: 0; color: var(--primary); border: none; padding: 0;">🔤 AmbWebCrypt (sd5j)</h1>
+    <h1 style="font-size: clamp(16px, 5vw, 22px); white-space: nowrap; margin: 0; color: var(--primary); border: none; padding: 0;">🔤 AmbWebCrypt (sd5k)</h1>
     <button onclick="backupTool()" style="background: none; border: 1px solid #444; color: #888; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 11px; flex-shrink: 0; white-space: nowrap; margin: 0;">
         💾 保存本页
     </button>
@@ -160,9 +193,9 @@ button:disabled { background: #666 !important; color: #999 !important; cursor: n
     </div>
 </div>
 <div class="drop-hint" id="drop-hint">📁 释放文件以导入</div>
-<div id="header-area" style="display: flex; flex-direction: column; gap: 8px; border-bottom: 2px solid var(--primary); margin-bottom: 20px; padding-bottom: 10px;">
+<div id="header-area" style="display: flex; flex-direction: column; gap: 8px; border-bottom: 2px solid var(--primary); margin-bottom: 0px; padding-bottom: 10px;">
     <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px;">
-        <h1 style="font-size: clamp(16px, 5vw, 22px); white-space: nowrap; margin: 0; color: var(--primary); border: none; padding: 0;">🔤 AmbWebCrypt (sd5j)</h1>
+        <h1 style="font-size: clamp(16px, 5vw, 22px); white-space: nowrap; margin: 0; color: var(--primary); border: none; padding: 0;">🔤 AmbWebCrypt (sd5k)</h1>
         <button onclick="backupTool()" style="background: none; border: 1px solid #444; color: #888; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 11px; flex-shrink: 0; white-space: nowrap; margin: 0;">
             💾 保存本页
         </button>
@@ -380,7 +413,7 @@ button:disabled { background: #666 !important; color: #999 !important; cursor: n
 
     <script src="https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js"></script>
     <script>
-    const VER = "sd5j"; // 升级到 sd5j
+    const VER = "sd5k"; // 升级到 sd5k
     const PLIM = 100000; 
     const MAX_PIXELS = 10000000; 
     const MAP = "零一二三四五六七八九十个百千万服多来米发锁拉系骇古极你歪它他她啊波次的饿歌喝以几可了们呢喔屏群人是烫鱼绿写用这莱方录鹿卢凹折山葱仪厂长秧同草末音菜酸汤名口窝填田土木火水金风雨石竹鸟马牛羊虫花树云雷雪星光天海湖林点线面体条猫狗搜库炮进城管锚泡抛刨袍图如吐加键减肥乘出除处初厨楚乔恩奖江姜酱犟僵耳儿文静网热卡空虚拟想希丁克门付款啦放大哦扩对皮肤看快手内存成绩差登记机声第集平时都觉得就行打击哒西到哪咳嗽带飞辛苦老试怕漏刷未微位小众中从聪信新旧杨样阳提清青酒流留物里例理力丽礼李立事史视率形之只染然似防重饭洗头连叫扣宜";
