@@ -1506,7 +1506,8 @@ async function doEncode() {
         // 4. Gzip压缩（仅非吱模式生效）
         if (gzipEnable.checked && !isSigningGCM) {
             try {
-                const gzipped = pako.gzip(processedBin);
+                // 强制开启 Level 9 最高压缩率
+                const gzipped = pako.gzip(processedBin, { level: 9 });
                 if (gzipped.length < processedBin.length) {
                     finalBin = gzipped;
                     featFlags |= 0x02; // 标记已压缩
