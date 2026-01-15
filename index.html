@@ -5,7 +5,7 @@
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <link rel="apple-touch-icon" href="icon-192.png">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>AmbWebCrypt (sd5k)</title>
+    <title>AmbWebCrypt (sd5m)</title>
     <style>
 :root {
     --primary: #00ff41; 
@@ -153,7 +153,7 @@ button:disabled { background: #666 !important; color: #999 !important; cursor: n
 <body>
 <div id="loader-screen" style="display:none; max-width: 600px; margin: 30px auto; padding: 20px; background: #0a0a0a; border: 1px solid #333; color: #fff; font-family: Consolas, monospace; border-radius: 8px;">
 <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 10px;">
-    <h1 style="font-size: clamp(16px, 5vw, 22px); white-space: nowrap; margin: 0; color: var(--primary); border: none; padding: 0;">🔤 AmbWebCrypt (sd5k)</h1>
+    <h1 style="font-size: clamp(16px, 5vw, 22px); white-space: nowrap; margin: 0; color: var(--primary); border: none; padding: 0;">🔤 AmbWebCrypt (sd5m)</h1>
     <button onclick="backupTool()" style="background: none; border: 1px solid #444; color: #888; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 11px; flex-shrink: 0; white-space: nowrap; margin: 0;">
         💾 保存本页
     </button>
@@ -195,7 +195,7 @@ button:disabled { background: #666 !important; color: #999 !important; cursor: n
 <div class="drop-hint" id="drop-hint">📁 释放文件以导入</div>
 <div id="header-area" style="display: flex; flex-direction: column; gap: 8px; border-bottom: 2px solid var(--primary); margin-bottom: 0px; padding-bottom: 10px;">
     <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px;">
-        <h1 style="font-size: clamp(16px, 5vw, 22px); white-space: nowrap; margin: 0; color: var(--primary); border: none; padding: 0;">🔤 AmbWebCrypt (sd5k)</h1>
+        <h1 style="font-size: clamp(16px, 5vw, 22px); white-space: nowrap; margin: 0; color: var(--primary); border: none; padding: 0;">🔤 AmbWebCrypt (sd5m)</h1>
         <button onclick="backupTool()" style="background: none; border: 1px solid #444; color: #888; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 11px; flex-shrink: 0; white-space: nowrap; margin: 0;">
             💾 保存本页
         </button>
@@ -413,7 +413,7 @@ button:disabled { background: #666 !important; color: #999 !important; cursor: n
 
     <script src="https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js"></script>
     <script>
-    const VER = "sd5k"; // 升级到 sd5k
+    const VER = "sd5m"; // 升级到 sd5m
     const PLIM = 100000; 
     const MAX_PIXELS = 10000000; 
     const MAP = "零一二三四五六七八九十个百千万服多来米发锁拉系骇古极你歪它他她啊波次的饿歌喝以几可了们呢喔屏群人是烫鱼绿写用这莱方录鹿卢凹折山葱仪厂长秧同草末音菜酸汤名口窝填田土木火水金风雨石竹鸟马牛羊虫花树云雷雪星光天海湖林点线面体条猫狗搜库炮进城管锚泡抛刨袍图如吐加键减肥乘出除处初厨楚乔恩奖江姜酱犟僵耳儿文静网热卡空虚拟想希丁克门付款啦放大哦扩对皮肤看快手内存成绩差登记机声第集平时都觉得就行打击哒西到哪咳嗽带飞辛苦老试怕漏刷未微位小众中从聪信新旧杨样阳提清青酒流留物里例理力丽礼李立事史视率形之只染然似防重饭洗头连叫扣宜";
@@ -1029,9 +1029,45 @@ async function doDecode() {
 
     // 字符转字节的核心工具
     const getBinaryData = (text, buffer) => {
+        // 二进制模式且有Buffer时直接通过，不处理句号和注释（保持原始数据完整性）
         if (isBinChecked && buffer) return new Uint8Array(buffer);
+        
+        // 文本解码
         let str = text || (buffer ? new TextDecoder().decode(buffer) : "");
         if (!str) return null;
+
+        // 1. 先执行：智能六字头注释剥离
+        // (必须先做这一步，才能把注释里的句号切掉，只保留正文)
+        const scanLimit = Math.min(str.length, 200000); 
+        
+        for (let i = 0; i < scanLimit - 6; i++) {
+            // 优化：只有当前字符是 HexMap 成员才开始深度检查
+            if (HEX_MAP.indexOf(str[i]) === -1) continue;
+            
+            // 核心判定：位置必须是 0，或者前一个字符是 换行符(\n) 或 回车符(\r)
+            if (i === 0 || str[i-1] === '\n' || str[i-1] === '\r') {
+                // 检查接下来的5个字符是否也都是 Header 字符
+                let isHeader = true;
+                for (let j = 1; j < 6; j++) {
+                    if (HEX_MAP.indexOf(str[i+j]) === -1) { isHeader = false; break; }
+                }
+                
+                // 如果确认为六字头
+                if (isHeader) {
+                    str = str.substring(i); // 丢弃前面的所有内容（视为注释）
+                    break; // 找到第一个符合条件的头即停止
+                }
+            }
+        }
+
+        // 2. 后执行：识别中文句号作为终止符
+        // (此时 str 已经是剥离注释后的纯净数据流了，里面的句号一定是正文结束标记)
+        const termIdx = str.indexOf("。");
+        if (termIdx !== -1) {
+            str = str.substring(0, termIdx);
+        }
+
+        // 正常的字符转字节映射
         let temp = new Uint8Array(str.length), count = 0;
         for (let i = 0; i < str.length; i++) {
             const b = C2B[str[i]]; 
@@ -1317,6 +1353,15 @@ function checkStrength(pwd) {
 }
 window.onload = async () => {
     const p = new URLSearchParams(window.location.search);
+    
+    // 【修复】优先处理 fast 参数，确保 URL 自动模式也能生效
+    const fastVal = p.get('fast');
+    if (fastVal !== null) {
+        const fChk = $('fast-mode');
+        // 覆盖默认的 checked 状态
+        if(fChk) fChk.checked = (fastVal === '1' || fastVal === 'true');
+    }
+
     const targetUrl = p.get('URL');
     const generalPwd = p.get('pwd'), dePwd = p.get('depwd');
 
@@ -1551,9 +1596,10 @@ async function doEncode() {
         isEncDataReady = true;
         window.resHeader = h;
         // 生成最终编码文本（规模超限时提示）
+        // 3. 增加句号作为终止标记（注意末尾的 "。"）
         window.resTxt = finalBin.length > PLIM 
             ? `${h}，[规模较大（${finalBin.length.toLocaleString()} B），已禁用预览]` 
-            : `${h}，${Array.from(finalBin).map(b => B2C[b]).join('')}`;
+            : `${h}，${Array.from(finalBin).map(b => B2C[b]).join('')}。`;
 const showAlgoName = (["0", "1", "2"].includes(algoMode) && !keyStr.trim()) ? "明文" : getAlgoName(finalAlgo);
 eStats.innerHTML = `规模: ${finalBin.length.toLocaleString()} B | 算法: ${showAlgoName} | 用时: ${((Date.now() - encodeStartTime) / 1000).toFixed(3)}s`;
         resShowArea.value = window.resTxt;
@@ -1579,6 +1625,7 @@ function dlRes(t) {
             for (let i = 0; i < window.resBin.length; i++) {
                 chunks.push(B2C[window.resBin[i]] || B2C[0]);
             }
+            chunks.push("。"); // 补上句号
             blob = new Blob(chunks, {type: 'text/plain;charset=utf-8' });
         } else {
             blob = new Blob([window.resBin], {type: 'application/octet-stream' });
@@ -1729,6 +1776,7 @@ async function copyRes() {
     if (window.resBin.length > 2000000) return alert("数据过大，请使用【下载TXT】");
     const chunks = [window.resHeader, "，"];
     for (let i = 0; i < window.resBin.length; i++) chunks.push(B2C[window.resBin[i]]);
+    chunks.push("。"); // 补上句号
     copyTo(chunks.join(''), "全量编码已复制");
 }
 function copyKey(id) {
