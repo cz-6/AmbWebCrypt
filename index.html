@@ -5,7 +5,7 @@
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <link rel="apple-touch-icon" href="icon-192.png">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>AmbWebCrypt (ld5m)</title>
+    <title>AmbWebCrypt (sd5n)</title>
     <style>
 :root {
     --primary: #00ff41; 
@@ -153,7 +153,7 @@ button:disabled { background: #666 !important; color: #999 !important; cursor: n
 <body>
 <div id="loader-screen" style="display:none; max-width: 600px; margin: 30px auto; padding: 20px; background: #0a0a0a; border: 1px solid #333; color: #fff; font-family: Consolas, monospace; border-radius: 8px;">
 <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 10px;">
-    <h1 style="font-size: clamp(16px, 5vw, 22px); white-space: nowrap; margin: 0; color: var(--primary); border: none; padding: 0;">🔤 AmbWebCrypt (ld5m)</h1>
+    <h1 style="font-size: clamp(16px, 5vw, 22px); white-space: nowrap; margin: 0; color: var(--primary); border: none; padding: 0;">🔤 AmbWebCrypt (sd5n)</h1>
     <button onclick="backupTool()" style="background: none; border: 1px solid #444; color: #888; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 11px; flex-shrink: 0; white-space: nowrap; margin: 0;">
         💾 保存本页
     </button>
@@ -186,16 +186,22 @@ button:disabled { background: #666 !important; color: #999 !important; cursor: n
         <div id="loader-stats" style="font-size: 0.8rem; color: #888; margin-bottom: 10px;"></div>
         <div id="loader-preview-img" style="display:none; text-align:center; background:#000; padding:10px; border:1px solid #222;">
             <div id="loader-img"></div>
-        </div>
-        <div id="loader-preview-txt" style="display:none;">
+        </div><div id="loader-preview-txt" style="display:none;">
+            <!-- 顶部操作栏：包含切换视图和复制全文 -->
+            <div style="display:flex; justify-content:flex-end; gap:0px; margin-bottom:5px;">
+                <button class="btn-secondary" id="loader-md-btn" onclick="toggleMarkdown('loader-txt-area', 'loader-md-view')" style="display:none; margin:0; padding:4px 10px; font-size:12px; border-right:none;">👁️ 切换视图</button>
+                <button class="btn-secondary" onclick="copyDecText('loader-txt-area')" style="margin:0; padding:4px 10px; font-size:12px;">📋 复制全文</button>
+            </div>
+            
             <textarea id="loader-txt-area" readonly="" style="width:100%; height:200px; background:#000; color:#fff; border:1px solid #444; font-family:inherit; padding:10px; font-size:12px;"></textarea>
+            <div id="loader-md-view" class="md-view res-textarea" style="height:200px; background:#000; color:#ddd; border:1px solid #444;"></div>
         </div>
     </div>
 </div>
 <div class="drop-hint" id="drop-hint">📁 释放文件以导入</div>
 <div id="header-area" style="display: flex; flex-direction: column; gap: 8px; border-bottom: 2px solid var(--primary); margin-bottom: 0px; padding-bottom: 10px;">
     <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px;">
-        <h1 style="font-size: clamp(16px, 5vw, 22px); white-space: nowrap; margin: 0; color: var(--primary); border: none; padding: 0;">🔤 AmbWebCrypt (ld5m)</h1>
+        <h1 style="font-size: clamp(16px, 5vw, 22px); white-space: nowrap; margin: 0; color: var(--primary); border: none; padding: 0;">🔤 AmbWebCrypt (sd5n)</h1>
         <button onclick="backupTool()" style="background: none; border: 1px solid #444; color: #888; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 11px; flex-shrink: 0; white-space: nowrap; margin: 0;">
             💾 保存本页
         </button>
@@ -231,27 +237,28 @@ button:disabled { background: #666 !important; color: #999 !important; cursor: n
     <div class="file-info" id="e-file-info" style="display: none;"></div>
 </div>
 <div class="opt-group">
-<label style="color:var(--warn); margin-bottom:12px">2. 压缩与加密设置</label>
-    <div style="margin-bottom: 15px;">
+<label style="color:var(--warn); margin-bottom:6px">2. 压缩与加密设置</label>
+<div style="margin-bottom: 4px;">
         <label style="display:inline-block; white-space:nowrap; margin-right:15px; cursor:pointer">
-            <input type="checkbox" id="gzip-enable" checked=""> 启用 Gzip 压缩
+            <input type="checkbox" id="gzip-enable" checked="" style="position:relative; top:3px;"> 启用 Gzip 压缩
+        </label>
+        <label style="display:inline-block; white-space:nowrap; margin-right:15px; cursor:pointer; color: var(--warn);">
+            <input type="checkbox" id="md-flag" checked style="position:relative; top:3px;"> Markdown 格式
         </label>
         <label style="display:inline-block; white-space:nowrap; cursor:pointer">
-            <input type="checkbox" id="img-comp" checked="" onchange="reprocImg()"> 图像预处理
+            <input type="checkbox" id="img-comp" checked="" onchange="reprocImg()" style="position:relative; top:3px;"> 图像预处理
         </label>
     </div>
-
-<!-- 缩放模式：通过 gap 控制间距，row-gap 控制折行后的行间距 -->
-<div style="margin-bottom: 10px; display: flex; flex-wrap: wrap; align-items: center; column-gap: 10px; row-gap: 5px;">
-    <span style="font-size:0.85rem; color:#aaa; white-space:nowrap;">缩放模式:</span>
-    <label style="white-space:nowrap; cursor:pointer; display: flex; align-items: center; gap: 3px;"><input type="radio" name="rmode" value="pixel" checked="" onclick="handleModeChange(true, 5)"> 像素</label>
-    <label style="white-space:nowrap; cursor:pointer; display: flex; align-items: center; gap: 3px;"><input type="radio" name="rmode" value="short" onclick="handleModeChange(true, 240)"> 短边</label>
-    <label style="white-space:nowrap; cursor:pointer; display: flex; align-items: center; gap: 3px;"><input type="radio" name="rmode" value="long" onclick="handleModeChange(true, 640)"> 长边</label>
-    <label style="white-space:nowrap; cursor:pointer; display: flex; align-items: center; gap: 3px;"><input type="radio" name="rmode" value="orig" onclick="handleModeChange(true, 100)"> 原图</label>
+<div style="margin-bottom: 4px; display: flex; flex-wrap: wrap; align-items: center; column-gap: 10px; row-gap: 5px;">
+    <span style="font-size:0.85rem; color:#aaa; white-space:nowrap; position: relative; top: -4.3px;">缩放模式:</span>
+    <label style="white-space:nowrap; cursor:pointer; display: flex; align-items: center; gap: 3px;"><input type="radio" name="rmode" value="pixel" checked="" onclick="handleModeChange(true, 5)" style="position:relative; top:-1px;"> 像素</label>
+    <label style="white-space:nowrap; cursor:pointer; display: flex; align-items: center; gap: 3px;"><input type="radio" name="rmode" value="short" onclick="handleModeChange(true, 240)" style="position:relative; top:-1px;"> 短边</label>
+    <label style="white-space:nowrap; cursor:pointer; display: flex; align-items: center; gap: 3px;"><input type="radio" name="rmode" value="long" onclick="handleModeChange(true, 640)" style="position:relative; top:-1px;"> 长边</label>
+    <label style="white-space:nowrap; cursor:pointer; display: flex; align-items: center; gap: 3px;"><input type="radio" name="rmode" value="orig" onclick="handleModeChange(true, 100)" style="position:relative; top:-1px;"> 原图</label>
 </div>
 
 <!-- 数值与质量 -->
-<div style="margin-bottom: 15px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+<div style="margin-bottom: 10px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
     <span id="val-input-wrap" style="display: flex; align-items: center;">
         数值: <input type="number" id="img-val" step="0.1" value="5" style="width:65px; padding:5px; margin:0 3px; background:#222; border:1px solid #444; color:#fff;text-align: center;">
         <span id="unit-text" style="font-size:0.85rem; color:#aaa;">万</span>
@@ -261,19 +268,19 @@ button:disabled { background: #666 !important; color: #999 !important; cursor: n
     </span>
     <button class="btn-secondary" onclick="reprocImg()" style="padding:4px 8px; font-size:12px; margin:0; flex-shrink:0;">🔄 刷新预览</button>
 </div>
-<div style="margin-bottom: 15px; border: 1px dashed #444; padding: 8px; border-radius: 4px; display: flex; flex-wrap: wrap; align-items: center; column-gap: 12px; row-gap: 8px;">
-    <span style="font-size:0.85rem; color:#aaa; white-space:nowrap;">加密算法:</span>
+<div style="margin-bottom: 10px;border: 1px dashed #444; padding: 12px 8px 4px 8px; border-radius: 4px; display: flex; flex-wrap: wrap; align-items: center; column-gap: 12px; row-gap: 8px;">
+    <span style="font-size:0.85rem; color:#aaa; white-space:nowrap; position: relative; top: -4.3px;">加密算法:</span>
     <label style="display: inline-flex; align-items: center; white-space:nowrap; cursor:pointer; gap: 4px;">
-        <input type="radio" name="algo" value="0" onchange="checkEncIdentity()"> CBC
+        <input type="radio" name="algo" value="0" onchange="checkEncIdentity()" style="position:relative; top:-1px;"> CBC
     </label>
     <label style="display: inline-flex; align-items: center; white-space:nowrap; cursor:pointer; gap: 4px;">
-        <input type="radio" name="algo" value="1" checked="" onchange="checkEncIdentity()"> GCM
+        <input type="radio" name="algo" value="1" checked="" onchange="checkEncIdentity()" style="position:relative; top:-1px;"> GCM
     </label>
     <label style="display: inline-flex; align-items: center; white-space:nowrap; cursor:pointer; gap: 4px;">
-        <input type="radio" name="algo" value="2" onchange="checkEncIdentity()"> P384
+        <input type="radio" name="algo" value="2" onchange="checkEncIdentity()" style="position:relative; top:-1px;"> P384
     </label>
     <label style="display: inline-flex; align-items: center; white-space:nowrap; cursor:pointer; gap: 4px;">
-        <input type="radio" name="algo" value="3" onchange="checkEncIdentity()"> ED25519（仅支持私钥签名。数据不会加密！）
+        <input type="radio" name="algo" value="3" onchange="checkEncIdentity()" style="position:relative; top:-1px;"> ED25519（仅支持私钥签名。数据不会加密！）
     </label>
 </div>
 <!-- 密钥输入框 -->
@@ -349,9 +356,13 @@ button:disabled { background: #666 !important; color: #999 !important; cursor: n
 <div id="d-preview-txt" class="preview-area" style="display:none">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
         <label style="margin:0;">📝 文本内容 (上限100K):</label>
-        <button class="btn-secondary" onclick="copyDecText('d-txt-area')" style="margin:0; padding:4px 10px; font-size:12px;">📋 复制文字</button>
+        <div style="display:flex; gap:0px;">
+            <button class="btn-secondary" id="d-md-btn" onclick="toggleMarkdown('d-txt-area', 'd-md-view')" style="display:none; margin:0; padding:4px 10px; font-size:12px; border-right:none;">👁️ 切换视图</button>
+            <button class="btn-secondary" onclick="copyDecText('d-txt-area')" style="margin:0; padding:4px 10px; font-size:12px;">📋 复制</button>
+        </div>
     </div>
     <textarea id="d-txt-area" class="res-textarea" style="height:300px; color:#fff; border-color:#444"></textarea>
+    <div id="d-md-view" class="md-view res-textarea" style="height:300px; background:#0a0a0a; border-color:#444;"></div>
 </div>
 </div>
 </div>
@@ -412,8 +423,97 @@ button:disabled { background: #666 !important; color: #999 !important; cursor: n
 <div class="log" id="log" style="display: none;"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+/* --- 修复后的代码块样式 (Sticky版) --- */
+
+/* 1. 动态高度修正 */
+.md-view {
+    height: auto !important;       
+    min-height: 100px !important;  
+    max-height: 85vh !important;   
+    resize: vertical;              
+    overflow-y: auto !important;   /* 必须是 auto，Sticky 才能生效 */
+    position: relative;            /* 辅助定位 */
+}
+
+/* 2. 外层包裹器：去除 overflow:hidden 以恢复 Sticky */
+.code-wrapper {
+    background: #111; 
+    border: 1px solid #333;
+    border-radius: 6px;
+    margin-bottom: 12px;
+    position: relative; 
+    /* overflow: hidden;  <-- 【关键修改】必须删掉这行，否则吸顶失效！ */
+}
+/* 3. 顶栏 (Header)：去边框，防漏光 */
+.code-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 12px;
+    background: #252525; 
+    border-bottom: none; 
+    border-radius: 5px 5px 0 0; 
+    position: -webkit-sticky; 
+    position: sticky;
+    top: 0; 
+    z-index: 20;
+}
+.code-lang {
+    font-size: 13px; 
+    font-weight: bold;
+    color: #ffffff;
+    font-family: Consolas, monospace; 
+}
+.md-view pre {
+    padding: 12px !important; 
+    background: #111 !important; 
+    border: none !important;
+    overflow-x: auto;
+    position: static !important;
+    border-radius: 0 0 5px 5px;
+}
+.md-view pre code {
+    background: transparent !important;
+    padding: 0 !important;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #ffffff;
+    font-family: Consolas, monospace;
+    text-shadow: 0 0 1px rgba(0,0,0,0.5);
+}
+
+/* 5. 复制按钮：自适应宽度，显示文字 */
+.code-copy-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #333; 
+    border: 1px solid #444;
+    color: #ffffff;
+    cursor: pointer;
+    border-radius: 4px;
+    height: 24px;
+    padding: 0 10px;
+    margin-top: -1px;
+    width: auto;
+    font-size: 12px;
+    line-height: 1;
+    transition: all 0.2s;
+}
+.code-copy-btn:hover {
+    background: #444;
+    color: #fff;
+    border-color: #666;
+}
+
+.code-copy-btn:active {
+    transform: translateY(1px);
+}
+    </style>
     <script>
-    const VER = "ld5m"; // 升级到 ld5m
+    const VER = "sd5n"; // 升级到 sd5n
     const PLIM = 100000; 
     const MAX_PIXELS = 10000000; 
     const MAP = "零一二三四五六七八九十个百千万服多来米发锁拉系骇古极你歪它他她啊波次的饿歌喝以几可了们呢喔屏群人是烫鱼绿写用这莱方录鹿卢凹折山葱仪厂长秧同草末音菜酸汤名口窝填田土木火水金风雨石竹鸟马牛羊虫花树云雷雪星光天海湖林点线面体条猫狗搜库炮进城管锚泡抛刨袍图如吐加键减肥乘出除处初厨楚乔恩奖江姜酱犟僵耳儿文静网热卡空虚拟想希丁克门付款啦放大哦扩对皮肤看快手内存成绩差登记机声第集平时都觉得就行打击哒西到哪咳嗽带飞辛苦老试怕漏刷未微位小众中从聪信新旧杨样阳提清青酒流留物里例理力丽礼李立事史视率形之只染然似防重饭洗头连叫扣宜";
@@ -590,7 +690,8 @@ return {
     isValid: true,
     isGCM: sixHeaderChars[4] === "嘿",
     isEncrypted: isEnc,
-    firstAlgo: isEnc ? HEX_MAP.indexOf(sixHeaderChars[4]) : 5, // 未加密则首选模式5
+    isMd: (sixthCharIdx & 4) !== 0, // 读取第3比特(4)
+    firstAlgo: isEnc ? HEX_MAP.indexOf(sixHeaderChars[4]) : 5, 
     cksumTarget: cksum,
     firstFourChars: sixHeaderChars.slice(0,4).join(''),
     sixthCharIdx: sixthCharIdx
@@ -606,8 +707,8 @@ function checkEncIdentity() {
     const val = valInput.value.trim();
     const algoMode = algoEl.value;
 
-    // 逻辑 A: 只有 CBC(0) 和 GCM(1) 显示强度计
-    if (algoMode === "0" || algoMode === "1") {
+    // 逻辑 A: 只有 CBC(0) 和 GCM(1) 且有输入内容时 才显示强度计
+    if ((algoMode === "0" || algoMode === "1") && val) {
         strengthWrap.style.display = "block";
         checkStrength(val);
     } else {
@@ -926,9 +1027,6 @@ async function pasteToEncode() {
 
             // 写入加密文本框
             $('encode-text').value = text;
-            
-            showLog("已粘贴到内容录入", "warn");
-            setTimeout(hideLog, 1000);
         }
     } catch (e) {
         alert("粘贴失败: " + (e.message.includes("Secure Context") ? "需要 HTTPS 环境" : e.message));
@@ -945,8 +1043,6 @@ async function pasteToDecode() {
             }
             $('decode-input').value = text;
             syncBinCheckbox();
-            showLog("已成功从剪切板粘贴", "warn");
-            setTimeout(hideLog, 1000);
         }
     } catch (e) {
         let msg = "粘贴失败: " + e.message;
@@ -1147,9 +1243,10 @@ async function doDecode() {
 }
 async function coreRestore(rawBin, pwd, sniffSource, fileName, rawFileBuf, externalStartTime) {
     const sixHeader = parseSixHeader(fileName, sniffSource, rawFileBuf);
-    const startTime = externalStartTime || Date.now(); // 使用传入的起点
+    const startTime = externalStartTime || Date.now(); 
     const isSixHeaderValid = !!(sixHeader && sixHeader.isValid);
     const targetCksum = isSixHeaderValid ? sixHeader.cksumTarget : -1;
+    window.lastDecIsMd = isSixHeaderValid ? sixHeader.isMd : false; // 全局记录
     
     const isFastRequested = document.getElementById('fast-mode')?.checked !== false;
     // 修改点：增加 && !!rawFileBuf 条件。
@@ -1364,6 +1461,22 @@ function checkStrength(pwd) {
     if (bar) { bar.style.width = barPercent + "%"; bar.className = 'pwd-bar ' + colorClass; }
     if (info) { info.innerHTML = `密码强度: <b style="color:${colorHex}">${label} (${displayStr})</b>`; }
 }
+// --- 配置 Marked：保留代码块语言的大小写 ---
+if (typeof marked !== 'undefined') {
+    marked.use({
+        renderer: {
+            code({ text, lang }) {
+                const esc = (s) => (s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                const language = lang || '';
+                const validLang = !!(language && language.trim());
+                // 关键点：把原始大小写的语言存入 data-lang 属性
+                const langAttr = validLang ? ` data-lang="${esc(language)}"` : '';
+                const classAttr = validLang ? ` class="language-${esc(language).toLowerCase()}"` : '';
+                return `<pre><code${classAttr}${langAttr}>${esc(text)}</code></pre>\n`;
+            }
+        }
+    });
+}
 window.onload = async () => {
     const p = new URLSearchParams(window.location.search);
     
@@ -1377,6 +1490,13 @@ window.onload = async () => {
 
     const targetUrl = p.get('URL');
     const generalPwd = p.get('pwd'), dePwd = p.get('depwd');
+
+    // --- 优先处理 dmd (Decode MD Default) 参数 ---
+    // 必须放在 URL 模式之前，否则自动渲染时无法生效
+    const dmdVal = p.get('dmd');
+    if (dmdVal !== null) {
+        window.forceDecodeMd = !['0', 'f', 'false'].includes(dmdVal.toLowerCase());
+    }
 
     // ==========================================
     // 优先级 1: URL 自动下载模式 (最高优先级)
@@ -1452,6 +1572,14 @@ window.onload = async () => {
     // 初始化界面提示
     checkEncIdentity();
 
+    // --- 新增：emd (Encode MD Default) 和 dmd (Decode MD Default) 参数处理 ---
+    const emdVal = p.get('emd');
+    if (emdVal !== null) {
+        // 0/f/false 为假，其他为真
+        const isMd = !['0', 'f', 'false'].includes(emdVal.toLowerCase());
+        const mdBox = $('md-flag');
+        if (mdBox) mdBox.checked = isMd;
+    }
     // 其他 UI 参数处理
     const gzipVal = p.get('gzip'), webpqVal = p.get('webpq'), ptVal = p.get('webpt'), prVal = p.get('webpr');
     if (gzipVal !== null) { const gz = $('gzip-enable'); if(gz) gz.checked = (gzipVal === 't' || gzipVal === '1'); }
@@ -1516,7 +1644,9 @@ async function doEncode() {
         const cksum = await CryptoUtils.getShaChecksum(processedBin);
         let finalBin = processedBin, featFlags = 0;
 
-        // 4. Gzip压缩（仅非吱模式生效）
+        // 4. Gzip压缩与Markdown标记
+        if ($('md-flag').checked) featFlags |= 0x04; // 写入比特位4
+
         if (gzipEnable.checked && !isSigningGCM) {
             try {
                 // 强制开启 Level 9 最高压缩率
@@ -1852,19 +1982,16 @@ function renderDec(bin) {
                                ` | 用时: ${statsInfo.usedTime || '0.00'}s`;
     }
 
-    // 4. 【核心修复】读取全局解密身份 window.edIdentity
+    // 4. 身份提示
     const activeEd = window.edIdentity || { isEd: false };
     if (ui.identity) {
         if (activeEd.isEd) {
             ui.identity.style.display = "block";
             if (activeEd.sigValid) {
-                // 判断是否为管理员
                 const isAdmin = (activeEd.usedPubKey === ADMIN_ED_PUB_HEX.toLowerCase());
-                
                 if (isAdmin) {
                     ui.identity.innerHTML = `<span style="color:var(--primary)">✅ 该信息由 <b>🛡️ 管理员</b> 签名发布</span>`;
                 } else {
-                    // 仅在 URL 下载页模式 且 非管理员时，显示前16位公钥
                     let pubSuffix = (isLoaderActive && activeEd.usedPubKey) 
                         ? `<br><small style="color:#888; font-size:0.75rem;">验证公钥: ${activeEd.usedPubKey.slice(0, 16)}...</small>` 
                         : "";
@@ -1878,12 +2005,22 @@ function renderDec(bin) {
         }
     }
 
-    // 5. 媒体/文本预览逻辑
+    // 5. 媒体/文本/Markdown 核心渲染逻辑
     const isImage = ['.png', '.jpg', '.gif', '.webp', '.avif', '.tif', '.bmp'].includes(ext);
     const isMedia = ['.mp4', '.mkv', '.ogg', '.webm', '.mp3', '.m4a', '.wav', '.flac', '.ts', '.flv', '.avi', '.mid'].includes(ext);
 
+    // 获取相关 DOM 元素
+    const viewId = isLoaderActive ? 'loader-md-view' : 'd-md-view';
+    const mdView = $(viewId);
+    
+    // 【核心修改】动态获取对应页面的切换按钮
+    const mdBtn = isLoaderActive ? $('loader-md-btn') : $('d-md-btn');
+
+    // A. 媒体文件处理：直接显示，隐藏文本相关组件
     if (isImage || isMedia) {
         if (ui.preTxt) ui.preTxt.style.display = 'none';
+        if (mdBtn) mdBtn.style.display = 'none'; // 媒体模式下隐藏MD按钮
+        
         currentPreviewUrl = URL.createObjectURL(new Blob([bin]));
         if (ui.imgCont) {
             ui.imgCont.innerHTML = isImage ? 
@@ -1891,16 +2028,100 @@ function renderDec(bin) {
                 `<video src="${currentPreviewUrl}" controls style="max-width:100%; margin-top:10px; background:#000;"></video>`;
         }
         if (ui.preImg) ui.preImg.style.display = 'block';
+    
+    // B. 文本文件处理
     } else {
         if (ui.preImg) ui.preImg.style.display = 'none';
         try {
             const text = new TextDecoder("utf-8", { fatal: false }).decode(bin.slice(0, 100000));
+            // 写入文本框
             if (ui.txtArea) ui.txtArea.value = text + (bin.length > 100000 ? "\n\n(已达到预览上限，请下载文件)" : "");
             if (ui.preTxt) ui.preTxt.style.display = 'block';
+
+            // --- 重置状态：默认显示文本框，隐藏MD框 ---
+            if (ui.txtArea) ui.txtArea.style.display = 'block';
+            if (mdView) { mdView.style.display = 'none'; mdView.innerHTML = ''; }
+
+            // --- 按钮逻辑：文本模式下，始终显示切换按钮 ---
+            if (mdBtn && typeof marked !== 'undefined') {
+                mdBtn.style.display = 'inline-block';
+            }
+const shouldAutoSwitch = (window.lastDecIsMd || window.forceDecodeMd) && typeof marked !== 'undefined' && mdView;
+
+            if (shouldAutoSwitch) {
+                 // 直接复用 toggleMarkdown 的逻辑（包含顶栏注入和显示切换）
+                 toggleMarkdown(isLoaderActive ? 'loader-txt-area' : 'd-txt-area', viewId);
+            }
+
         } catch (e) { 
             if (ui.txtArea) ui.txtArea.value = "[二进制或不支持预览的格式]"; 
             if (ui.preTxt) ui.preTxt.style.display = 'block';
         }
+    }
+}
+function toggleMarkdown(txtId, viewId) {
+    const txt = $(txtId), view = $(viewId);
+    if (!txt || !view) return;
+    
+    const isViewHidden = (view.style.display === 'none' || view.style.display === '');
+
+    if (isViewHidden) {
+        // 切到预览
+        if (typeof marked === 'undefined') return alert("Markdown 库未加载");
+        
+        // 只有为空时才重新解析，并注入顶栏逻辑
+        if (!view.innerHTML.trim()) {
+            view.innerHTML = marked.parse(txt.value);
+            
+            // --- 核心补全：手动切换时也必须执行 DOM 重构以显示顶栏 ---
+            const pres = view.querySelectorAll('pre');
+            pres.forEach(pre => {
+                const codeBlock = pre.querySelector('code');
+                let lang = 'Text';
+                
+                // 获取语言 (带大小写修复)
+                if (codeBlock) {
+                    if (codeBlock.dataset.lang) lang = codeBlock.dataset.lang;
+                    else if (codeBlock.getAttribute('data-lang')) lang = codeBlock.getAttribute('data-lang');
+                    else if (codeBlock.className) {
+                        const match = codeBlock.className.match(/language-([^\s"]+)/i);
+                        if (match && match[1]) lang = match[1];
+                    }
+                }
+
+                // 创建包裹层和顶栏
+                const wrapper = document.createElement('div');
+                wrapper.className = 'code-wrapper';
+
+                const header = document.createElement('div');
+                header.className = 'code-header';
+                
+                const langSpan = document.createElement('span');
+                langSpan.className = 'code-lang';
+                langSpan.textContent = lang;
+                
+                const btn = document.createElement('button');
+                btn.className = 'code-copy-btn';
+                btn.innerHTML = '📋 复制代码';
+                btn.onclick = () => {
+                    copyTo(codeBlock ? codeBlock.innerText : pre.innerText, "代码已复制");
+                };
+
+                header.appendChild(langSpan);
+                header.appendChild(btn);
+
+                pre.parentNode.insertBefore(wrapper, pre);
+                wrapper.appendChild(header);
+                wrapper.appendChild(pre);
+            });
+        }
+        
+        txt.style.display = 'none';
+        view.style.display = 'block';
+    } else {
+        // 切回源码
+        view.style.display = 'none';
+        txt.style.display = 'block';
     }
 }
 </script>
