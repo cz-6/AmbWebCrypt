@@ -5,7 +5,7 @@
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <link rel="apple-touch-icon" href="icon-192.png">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>AmbWebCrypt (sd5n)</title>
+    <title>AmbWebCrypt (ld5n)</title>
     <style>
 :root {
     --primary: #00ff41; 
@@ -153,7 +153,7 @@ button:disabled { background: #666 !important; color: #999 !important; cursor: n
 <body>
 <div id="loader-screen" style="display:none; max-width: 600px; margin: 30px auto; padding: 20px; background: #0a0a0a; border: 1px solid #333; color: #fff; font-family: Consolas, monospace; border-radius: 8px;">
 <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 10px;">
-    <h1 style="font-size: clamp(16px, 5vw, 22px); white-space: nowrap; margin: 0; color: var(--primary); border: none; padding: 0;">🔤 AmbWebCrypt (sd5n)</h1>
+    <h1 style="font-size: clamp(16px, 5vw, 22px); white-space: nowrap; margin: 0; color: var(--primary); border: none; padding: 0;">🔤 AmbWebCrypt (ld5n)</h1>
     <button onclick="backupTool()" style="background: none; border: 1px solid #444; color: #888; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 11px; flex-shrink: 0; white-space: nowrap; margin: 0;">
         💾 保存本页
     </button>
@@ -201,7 +201,7 @@ button:disabled { background: #666 !important; color: #999 !important; cursor: n
 <div class="drop-hint" id="drop-hint">📁 释放文件以导入</div>
 <div id="header-area" style="display: flex; flex-direction: column; gap: 8px; border-bottom: 2px solid var(--primary); margin-bottom: 0px; padding-bottom: 10px;">
     <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px;">
-        <h1 style="font-size: clamp(16px, 5vw, 22px); white-space: nowrap; margin: 0; color: var(--primary); border: none; padding: 0;">🔤 AmbWebCrypt (sd5n)</h1>
+        <h1 style="font-size: clamp(16px, 5vw, 22px); white-space: nowrap; margin: 0; color: var(--primary); border: none; padding: 0;">🔤 AmbWebCrypt (ld5n)</h1>
         <button onclick="backupTool()" style="background: none; border: 1px solid #444; color: #888; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 11px; flex-shrink: 0; white-space: nowrap; margin: 0;">
             💾 保存本页
         </button>
@@ -513,7 +513,7 @@ button:disabled { background: #666 !important; color: #999 !important; cursor: n
 }
     </style>
     <script>
-    const VER = "sd5n"; // 升级到 sd5n
+    const VER = "ld5n"; // 升级到 ld5n
     const PLIM = 100000; 
     const MAX_PIXELS = 10000000; 
     const MAP = "零一二三四五六七八九十个百千万服多来米发锁拉系骇古极你歪它他她啊波次的饿歌喝以几可了们呢喔屏群人是烫鱼绿写用这莱方录鹿卢凹折山葱仪厂长秧同草末音菜酸汤名口窝填田土木火水金风雨石竹鸟马牛羊虫花树云雷雪星光天海湖林点线面体条猫狗搜库炮进城管锚泡抛刨袍图如吐加键减肥乘出除处初厨楚乔恩奖江姜酱犟僵耳儿文静网热卡空虚拟想希丁克门付款啦放大哦扩对皮肤看快手内存成绩差登记机声第集平时都觉得就行打击哒西到哪咳嗽带飞辛苦老试怕漏刷未微位小众中从聪信新旧杨样阳提清青酒流留物里例理力丽礼李立事史视率形之只染然似防重饭洗头连叫扣宜";
@@ -894,20 +894,44 @@ async function handleFile(fileOrInput, mode) {
         else {
             eData = new Uint8Array(await f.arrayBuffer());
             $('e-file-info').innerHTML = `<span class="meta-tag">载入: ${f.name} (${f.size.toLocaleString()} B)</span>`;
-        }
-    } else {
+        }} else {
         decodeFileName = f.name; const buf = await f.arrayBuffer(); decodeRawBuffer = buf;
-        // 三点采样：开头、中间、结尾
-        const view = new Uint8Array(buf), sampleLen = 200;
-        const positions = [0, Math.floor(buf.byteLength/2), Math.max(0, buf.byteLength - sampleLen)];
-        let match = 0, total = 0;
-        positions.forEach(pos => {
-            try {
-                const text = new TextDecoder().decode(view.slice(pos, pos + sampleLen));
-                for(let c of text) { if(c.trim()) { total++; if(C2B[c] !== undefined) match++; } }
-            } catch(e){}
-        });
-        const isText = total > 0 && (match / total) > 0.3;
+        const view = new Uint8Array(buf);
+        let isText = false;
+        try {
+            const headText = new TextDecoder().decode(view.slice(0, 65536));
+            // 1. 寻找疑似六字头起点
+            let headerIdx = -1;
+            for (let i = 0; i < headText.length - 7; i++) {
+                let seq = 0;
+                while (seq < 6 && HEX_MAP.indexOf(headText[i+seq]) !== -1) seq++;
+                if (seq === 6 && headText[i+6] === '，') { headerIdx = i; break; }
+            }
+
+            // 2. 采样判定：如果找到头，取头后几百字；否则取文件中段采样
+            let match = 0, total = 0;
+            const sampleLen = 400;
+            let sample = "";
+            
+            if (headerIdx !== -1) {
+                // 采样疑似密文段落（跳过头和逗号）
+                sample = headText.substring(headerIdx + 7, headerIdx + 7 + sampleLen);
+            } else {
+                // 无头文件，采样正中间
+                const mid = Math.floor(view.length / 2);
+                sample = new TextDecoder().decode(view.slice(mid, mid + sampleLen));
+            }
+
+            for (let c of sample) {
+                if (!/\s/.test(c)) {
+                    total++;
+                    if (C2B[c] !== undefined || HEX_MAP.indexOf(c) !== -1 || c === '，' || c === '。') match++;
+                }
+            }
+            // 3. 核心判定：30% 密度为主
+            isText = total > 0 && (match / total) > 0.3;
+        } catch(e){}
+        
         $('is-bin').checked = !isText;
         $('decode-input').value = `[已载入 (${isText?'文本':'二进制'}) 文件: ${f.name}]`;
         $('d-file-info').style.display = 'block';
@@ -1013,41 +1037,52 @@ async function importEdPrivKey(keyStr) {
 }
 async function pasteToEncode() {
     try {
-        if (!navigator.clipboard) throw new Error("浏览器不支持剪切板访问");
+        if (!navigator.clipboard) throw new Error("环境不支持剪切板接口(需HTTPS)");
         const text = await navigator.clipboard.readText();
-        if (text) {
+        if (text && text.trim()) {
             // 核心修复：粘贴文字时，必须清空之前载入的文件状态
-            // 否则执行编码时会优先加密旧文件
             oFile = null;
             eData = null;
             $('e-file-info').innerHTML = '';
             $('e-file-info').style.display = 'none';
-            const eInput = $('encode-file-input');
-            if (eInput) eInput.value = ''; // 重置文件选择框
+            
+            // 尝试查找文件框并清空（兼容旧ID和通用选择器）
+            const eInput = $('encode-file-input') || document.querySelector('#encode-tab input[type="file"]');
+            if (eInput) eInput.value = ''; 
 
             // 写入加密文本框
             $('encode-text').value = text;
-        }
-    } catch (e) {
-        alert("粘贴失败: " + (e.message.includes("Secure Context") ? "需要 HTTPS 环境" : e.message));
-    }
-}
-async function pasteToDecode() {
-    try {
-        if (!navigator.clipboard) throw new Error("浏览器不支持剪切板访问");
-        const text = await navigator.clipboard.readText();
-        if (text) {
-            if ($('decode-input').value.includes("已载入")) {
-                decodeRawBuffer = null; decodeFileName = "";
-                $('d-file-info').style.display = 'none';
-            }
-            $('decode-input').value = text;
-            syncBinCheckbox();
+        } else {
+            alert("剪切板内容为空");
         }
     } catch (e) {
         let msg = "粘贴失败: " + e.message;
         if (e.name === "NotAllowedError" || e.message.includes("permission denied")) {
-            msg = "粘贴失败：剪切板权限被拒绝。\n\n请点击浏览器地址栏左侧的“锁”图标，重新开启“剪切板”权限。";
+            msg = "粘贴失败：权限被拒绝。请在浏览器设置中允许该页面访问剪切板。";
+        } else if (e.message.includes("is not a function")) {
+            msg = "粘贴失败：当前浏览器或协议(HTTP)不支持自动化剪切板，请手动 Ctrl+V。";
+        }
+        alert(msg);
+    }
+}
+async function pasteToDecode() {
+    try {
+        if (!navigator.clipboard) throw new Error("环境不支持剪切板(需HTTPS)");
+        const text = await navigator.clipboard.readText();
+        if (text && text.trim()) {
+            // 彻底清除旧文件引用，防止解密时优先读取旧文件
+            decodeRawBuffer = null; decodeFileName = "";
+            $('d-file-info').innerHTML = '';
+            $('d-file-info').style.display = 'none';
+            $('decode-input').value = text;
+            syncBinCheckbox();
+        } else {
+            alert("剪切板内容为空");
+        }
+    } catch (e) {
+        let msg = "粘贴失败: " + e.message;
+        if (e.name === "NotAllowedError" || e.message.includes("permission denied")) {
+            msg = "粘贴失败：权限被拒绝。请在浏览器设置中允许该页面访问剪切板。";
         }
         alert(msg);
     }
@@ -1131,71 +1166,77 @@ async function doDecode() {
           isBinChecked = $('is-bin').checked, keyStr = $('d-key').value.trim();
     if (!btn || !inputArea) return;
 
-    // 1. 计时起点包含预处理耗时，确保用时显示真实感官卡顿
+    let finalBin = null, finalSourceText = "", finalName = "";
+    let currentVal = inputArea.value.trim();
+    let isPlaceholder = currentVal.includes("已载入") && decodeRawBuffer;
+
+    // --- 黑科技核心：自动抓取 ---
+    if ((!currentVal || (currentVal.includes("已载入") && !decodeRawBuffer)) && !isBinChecked && navigator.clipboard) {
+        try {
+            const clipText = await navigator.clipboard.readText();
+            if (clipText && clipText.length > 5) {
+                decodeRawBuffer = null; decodeFileName = "";
+                $('d-file-info').style.display = 'none';
+                isPlaceholder = false;
+                currentVal = clipText; // 变量存全量，确保后续解密不截断
+                finalSourceText = clipText;
+                // 输入框显示提示语，不影响变量
+                inputArea.value = `[已抓取剪切板: ${clipText.substring(0, 15).replace(/\n/g,' ')}... (${clipText.length.toLocaleString()}字)]`;
+                syncBinCheckbox();
+            }
+        } catch (e) { console.warn("抓取失败:", e.message); }
+    }
+
     const startTime = Date.now(); 
     btn.disabled = true; btn.textContent = "⌛ 还原中..."; 
     await new Promise(r => setTimeout(r, 50)); 
 
-    // 字符转字节的核心工具
     const getBinaryData = (text, buffer) => {
-        // 二进制模式且有Buffer时直接通过，不处理句号和注释（保持原始数据完整性）
         if (isBinChecked && buffer) return new Uint8Array(buffer);
-        
-        // 文本解码
         let str = text || (buffer ? new TextDecoder().decode(buffer) : "");
         if (!str) return null;
 
-        // 1. 先执行：智能六字头注释剥离
-        // (必须先做这一步，才能把注释里的句号切掉，只保留正文)
-        const scanLimit = Math.min(str.length, 200000); 
+        // 1. 扫描定位疑似六字头起点
+        let headerIdx = -1;
+        const scanLen = Math.min(str.length, 65536);
+        for (let i = 0; i < scanLen - 7; i++) {
+            let seq = 0;
+            while (seq < 6 && HEX_MAP.indexOf(str[i+seq]) !== -1) seq++;
+            if (seq === 6 && str[i+6] === '，') { headerIdx = i; break; }
+        }
         
-        for (let i = 0; i < scanLimit - 6; i++) {
-            // 优化：只有当前字符是 HexMap 成员才开始深度检查
-            if (HEX_MAP.indexOf(str[i]) === -1) continue;
-            
-            // 核心判定：位置必须是 0，或者前一个字符是 换行符(\n) 或 回车符(\r)
-            if (i === 0 || str[i-1] === '\n' || str[i-1] === '\r') {
-                // 检查接下来的5个字符是否也都是 Header 字符
-                let isHeader = true;
-                for (let j = 1; j < 6; j++) {
-                    if (HEX_MAP.indexOf(str[i+j]) === -1) { isHeader = false; break; }
-                }
-                
-                // 如果确认为六字头
-                if (isHeader) {
-                    str = str.substring(i); // 丢弃前面的所有内容（视为注释）
-                    break; // 找到第一个符合条件的头即停止
-                }
+        // 2. 动态密度判定：以疑似起点后的内容为准进行采样
+        const startPos = (headerIdx !== -1) ? headerIdx : 0;
+        let match = 0, total = 0, sample = str.substring(startPos + (headerIdx !== -1 ? 7 : 0), startPos + 500);
+        for (let c of sample) {
+            if (!/\s/.test(c)) {
+                total++;
+                if (C2B[c] !== undefined || HEX_MAP.indexOf(c) !== -1 || c === "，" || c === "。") match++;
             }
         }
+        
+        // 3. 决策：如果采样区密度 > 30% 且找到了头（或密度极高），则执行 C2B
+        // 即使有头，如果后面采样密度不足 30%，依然判定为“明文”
+        const isEncoded = total > 0 && (match / total) > 0.3;
 
-        // 2. 后执行：识别中文句号作为终止符
-        // (此时 str 已经是剥离注释后的纯净数据流了，里面的句号一定是正文结束标记)
-        const termIdx = str.indexOf("。");
-        if (termIdx !== -1) {
-            str = str.substring(0, termIdx);
+        if (isEncoded) {
+            // 剥离起点前的感言
+            let core = (headerIdx !== -1) ? str.substring(headerIdx) : str;
+            const termIdx = core.indexOf("。");
+            if (termIdx !== -1) core = core.substring(0, termIdx);
+            
+            let temp = new Uint8Array(core.length), count = 0;
+            for (let i = 0; i < core.length; i++) {
+                const b = C2B[core[i]]; if (b !== undefined) temp[count++] = b;
+            }
+            return count > 0 ? temp.slice(0, count) : null;
+        } else {
+            // 密度不足，视为普通明文（支持 markdown/html/感言预览）
+            return new TextEncoder().encode(str);
         }
-
-        // 正常的字符转字节映射
-        let temp = new Uint8Array(str.length), count = 0;
-        for (let i = 0; i < str.length; i++) {
-            const b = C2B[str[i]]; 
-            if (b !== undefined) temp[count++] = b;
-        }
-        return count > 0 ? temp.slice(0, count) : null;
     };
 
     try {
-        let finalBin = null;
-        let finalSourceText = "";
-        let finalName = "";
-
-        const currentVal = inputArea.value.trim();
-        const isPlaceholder = currentVal.includes("已载入") && decodeRawBuffer;
-
-        // --- 逻辑分层 ---
-
-        // 第一步：先看输入框或已加载的文件
         if (isPlaceholder) {
             finalBin = getBinaryData(null, decodeRawBuffer);
             finalName = decodeFileName;
@@ -1204,42 +1245,14 @@ async function doDecode() {
             finalSourceText = currentVal;
         }
 
-        // 第二步：最后的保底 - 如果前面“炸干净了”（没有提取到任何有效MAP字符）
-        if (!finalBin && !isBinChecked && navigator.clipboard) {
-            try {
-                const clipText = await navigator.clipboard.readText();
-                if (clipText && clipText.length > 5) {
-                    finalBin = getBinaryData(clipText, null);
-                    if (finalBin) {
-                        finalSourceText = clipText;
-                        // 仅更新输入框，不再调用 showLog，避免遮挡底部
-                        inputArea.value = clipText.substring(0, 100) + "...(已自动读取剪切板)";
-                        syncBinCheckbox();
-                    }
-                }
-            } catch (e) { console.warn("剪切板保底尝试失败"); }
-        }
-
-        // 第三步：执行核心还原
         if (finalBin) {
-            // coreRestore 需要支持 externalStartTime 以校准“用时”显示
             const result = await coreRestore(finalBin, keyStr, finalSourceText, finalName, decodeRawBuffer, startTime);
             if (result) {
-                dData = result; 
-                renderDec(result);
-            } else {
-                throw new Error("还原失败：密钥错误或数据损坏。");
-            }
-        } else {
-            throw new Error("未发现有效编码字符。请粘贴内容或选择文件。");
-        }
-
-    } catch (e) {
-        alert("❌ " + e.message);
-    } finally {
-        btn.disabled = false;
-        btn.textContent = "🔓 执行还原";
-    }
+                dData = result; renderDec(result);
+            } else throw new Error("还原失败：密码错误或数据损坏。");
+        } else throw new Error("未发现有效内容。");
+    } catch (e) { alert("❌ " + e.message); } 
+    finally { btn.disabled = false; btn.textContent = "🔓 执行还原"; }
 }
 async function coreRestore(rawBin, pwd, sniffSource, fileName, rawFileBuf, externalStartTime) {
     const sixHeader = parseSixHeader(fileName, sniffSource, rawFileBuf);
@@ -1265,8 +1278,8 @@ async function coreRestore(rawBin, pwd, sniffSource, fileName, rawFileBuf, exter
         if (isSixHeaderValid && targetCksum > 0) {
             if (ckCalculated && ck !== targetCksum) {
                 decWarning.active = true;
-                decWarning.message = `⚠️ 校验和不匹配 (预期:${targetCksum.toString(16)} 实际:${ck.toString(16)})`;
-                if (score <= 0) alert(`⚠️ 还原预警：校验和不匹配且未检测到任何特征。`);
+                decWarning.message = `⚠️ 文件指纹不匹配 (预期:${targetCksum.toString(16)} 实际:${ck.toString(16)})`;
+                if (score <= 0) alert(`⚠️ 数据损坏或密码错误`);
             }
         }
         return data;
@@ -1764,10 +1777,18 @@ function dlRes(t) {
     try {
         let blob;
         if (t === 'txt') {
-            // 核心修复：直接将数组交给 Blob，不要使用 .join('')，防止内存爆表
+            // 性能优化：分块构建字符串，避免创建数百万长度的数组导致浏览器崩溃
             const chunks = [window.resHeader, "，"];
-            for (let i = 0; i < window.resBin.length; i++) {
-                chunks.push(B2C[window.resBin[i]] || B2C[0]);
+            const len = window.resBin.length;
+            const CHUNK_SIZE = 4096; // 每次处理4KB，兼顾速度与内存
+            
+            for (let i = 0; i < len; i += CHUNK_SIZE) {
+                let s = "";
+                const end = Math.min(i + CHUNK_SIZE, len);
+                for (let j = i; j < end; j++) {
+                    s += (B2C[window.resBin[j]] || B2C[0]);
+                }
+                chunks.push(s);
             }
             chunks.push("。"); // 补上句号
             blob = new Blob(chunks, {type: 'text/plain;charset=utf-8' });
@@ -2071,7 +2092,12 @@ function toggleMarkdown(txtId, viewId) {
         
         // 只有为空时才重新解析，并注入顶栏逻辑
         if (!view.innerHTML.trim()) {
-            view.innerHTML = marked.parse(txt.value);
+            let h = marked.parse(txt.value);
+            // 只剔除JS：删掉 <script> 标签、on事件(如onerror) 和 javascript: 协议
+            h = h.replace(/<script[\s\S]*?<\/script>/gi, "");
+            h = h.replace(/on\w+\s*=\s*(?:'[^']*'|"[^"]*"|[^\s>]+)/gi, "");
+            h = h.replace(/href\s*=\s*(?:'javascript:[^']*'|"javascript:[^"]*"|javascript:[^\s>]+)/gi, 'href="#"');
+            view.innerHTML = h;
             
             // --- 核心补全：手动切换时也必须执行 DOM 重构以显示顶栏 ---
             const pres = view.querySelectorAll('pre');
