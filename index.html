@@ -564,6 +564,9 @@ function getAutoExtension(bin) {
     if (h.startsWith('1f8b08000000')) return '.gz';
     if (h.startsWith('377abcaf271c')) return '.7z';
     if (h.startsWith('504b0304')) return '.zip';
+    if (h.startsWith('425a337631')) return '.bz3';
+    if (h.startsWith('62726f746c69')) return '.br';
+    if (h.startsWith('425a68')) return '.bz2';
     if (h.startsWith('89504e47')) return '.png';
     if (h.startsWith('ffd8ff')) return '.jpg';
     if (h.startsWith('53514c69746520666f726d61742033')) return '.sqlite';
@@ -582,7 +585,7 @@ function getAutoExtension(bin) {
     if (h.startsWith('4d5a') && h.includes('000000')) return '.exe';
     if (h.startsWith('52494646')) {
         if (bin.length >= 12) {
-            const type = h.substring(16, 24);
+            const type = h.substring(16,24);
             if (type === '57454250') return '.webp';
             if (type === '57415645') return '.wav';
             if (type === '41564920') return '.avi';
