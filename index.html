@@ -1168,13 +1168,15 @@ async function doDecode() {
 
     let finalBin = null, finalSourceText = "", finalName = "";
     let currentVal = inputArea.value.trim();
+    // 修复：严谨判定（必须头尾格式都匹配系统提示语，才视为无效占位符）
+    if (currentVal.startsWith("[已抓取剪切板:") && currentVal.endsWith("字)]")) currentVal = "";
     let isPlaceholder = currentVal.includes("已载入") && decodeRawBuffer;
 
     // --- 黑科技核心：自动抓取 ---
     if ((!currentVal || (currentVal.includes("已载入") && !decodeRawBuffer)) && !isBinChecked && navigator.clipboard) {
         try {
             const clipText = await navigator.clipboard.readText();
-            if (clipText && clipText.length > 5) {
+            if (clipText && clipText.length > 0) {
                 decodeRawBuffer = null; decodeFileName = "";
                 $('d-file-info').style.display = 'none';
                 isPlaceholder = false;
