@@ -1176,7 +1176,7 @@ async function doDecode() {
     let isPlaceholder = currentVal.includes("已载入") && decodeRawBuffer;
 
     // --- 黑科技核心：自动抓取 ---
-    if ((!currentVal || (currentVal.includes("已载入") && !decodeRawBuffer)) && !isBinChecked && navigator.clipboard) {
+    if ((!currentVal || (currentVal.includes("已载入") && !decodeRawBuffer)) && navigator.clipboard) {
         try {
             const clipText = await navigator.clipboard.readText();
             if (clipText && clipText.length > 0) {
