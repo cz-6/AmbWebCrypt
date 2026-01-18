@@ -5,7 +5,7 @@
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <link rel="apple-touch-icon" href="icon-192.png">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>AmbWebCrypt (ld5n)</title>
+    <title>AmbWebCrypt (sd5p)</title>
     <style>
 :root {
     --primary: #00ff41; 
@@ -153,7 +153,7 @@ button:disabled { background: #666 !important; color: #999 !important; cursor: n
 <body>
 <div id="loader-screen" style="display:none; max-width: 600px; margin: 30px auto; padding: 20px; background: #0a0a0a; border: 1px solid #333; color: #fff; font-family: Consolas, monospace; border-radius: 8px;">
 <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 10px;">
-    <h1 style="font-size: clamp(16px, 5vw, 22px); white-space: nowrap; margin: 0; color: var(--primary); border: none; padding: 0;">🔤 AmbWebCrypt (ld5n)</h1>
+    <h1 style="font-size: clamp(16px, 5vw, 22px); white-space: nowrap; margin: 0; color: var(--primary); border: none; padding: 0;">🔤 AmbWebCrypt (sd5p)</h1>
     <button onclick="backupTool()" style="background: none; border: 1px solid #444; color: #888; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 11px; flex-shrink: 0; white-space: nowrap; margin: 0;">
         💾 保存本页
     </button>
@@ -201,7 +201,7 @@ button:disabled { background: #666 !important; color: #999 !important; cursor: n
 <div class="drop-hint" id="drop-hint">📁 释放文件以导入</div>
 <div id="header-area" style="display: flex; flex-direction: column; gap: 8px; border-bottom: 2px solid var(--primary); margin-bottom: 0px; padding-bottom: 10px;">
     <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px;">
-        <h1 style="font-size: clamp(16px, 5vw, 22px); white-space: nowrap; margin: 0; color: var(--primary); border: none; padding: 0;">🔤 AmbWebCrypt (ld5n)</h1>
+        <h1 style="font-size: clamp(16px, 5vw, 22px); white-space: nowrap; margin: 0; color: var(--primary); border: none; padding: 0;">🔤 AmbWebCrypt (sd5p)</h1>
         <button onclick="backupTool()" style="background: none; border: 1px solid #444; color: #888; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 11px; flex-shrink: 0; white-space: nowrap; margin: 0;">
             💾 保存本页
         </button>
@@ -513,7 +513,7 @@ button:disabled { background: #666 !important; color: #999 !important; cursor: n
 }
     </style>
     <script>
-    const VER = "ld5n"; // 升级到 ld5n
+    const VER = "sd5p"; // 升级到 sd5p
     const PLIM = 100000; 
     const MAX_PIXELS = 10000000; 
     const MAP = "零一二三四五六七八九十个百千万服多来米发锁拉系骇古极你歪它他她啊波次的饿歌喝以几可了们呢喔屏群人是烫鱼绿写用这莱方录鹿卢凹折山葱仪厂长秧同草末音菜酸汤名口窝填田土木火水金风雨石竹鸟马牛羊虫花树云雷雪星光天海湖林点线面体条猫狗搜库炮进城管锚泡抛刨袍图如吐加键减肥乘出除处初厨楚乔恩奖江姜酱犟僵耳儿文静网热卡空虚拟想希丁克门付款啦放大哦扩对皮肤看快手内存成绩差登记机声第集平时都觉得就行打击哒西到哪咳嗽带飞辛苦老试怕漏刷未微位小众中从聪信新旧杨样阳提清青酒流留物里例理力丽礼李立事史视率形之只染然似防重饭洗头连叫扣宜";
@@ -1498,30 +1498,32 @@ if (typeof marked !== 'undefined') {
 window.onload = async () => {
     const p = new URLSearchParams(window.location.search);
     
-    // 【修复】优先处理 fast 参数，确保 URL 自动模式也能生效
+    // 1. 定义统一布尔值判断工具 (放在最前，供全局使用)
+    // 逻辑：只有 0, f, false 为假，其余（如 1, t, true, on）均为真
+    const isTrue = (v) => !['0', 'f', 'false'].includes(v.toLowerCase());
+
+    // 2. 优先处理影响核心行为的参数 (fast, dmd)
     const fastVal = p.get('fast');
     if (fastVal !== null) {
         const fChk = $('fast-mode');
-        // 覆盖默认的 checked 状态
-        if(fChk) fChk.checked = (fastVal === '1' || fastVal === 'true');
+        // 【修复】统一使用 isTrue，支持 fast=t 或 fast=on
+        if(fChk) fChk.checked = isTrue(fastVal);
     }
-
-    const targetUrl = p.get('URL');
-    const generalPwd = p.get('pwd'), dePwd = p.get('depwd');
-
     // --- 优先处理 dmd (Decode MD Default) 参数 ---
     // 必须放在 URL 模式之前，否则自动渲染时无法生效
     const dmdVal = p.get('dmd');
     if (dmdVal !== null) {
-        window.forceDecodeMd = !['0', 'f', 'false'].includes(dmdVal.toLowerCase());
+        // 使用新变量 dmdParam 以实现三态控制：存在即覆盖(true/false)，不存在则undefined
+        window.dmdParam = !['0', 'f', 'false'].includes(dmdVal.toLowerCase());
     }
+    const targetUrl = p.get('URL');
+    const generalPwd = p.get('pwd'), dePwd = p.get('depwd');
 
     // ==========================================
     // 优先级 1: URL 自动下载模式 (最高优先级)
     // ==========================================
     if (targetUrl) {
         const loader = $('loader-screen');
-        // 彻底隐藏主 UI，防止冲突
         const header = $('header-area'), tabs = document.querySelector('.tabs');
         if (header) header.style.display = 'none';
         if (tabs) tabs.style.display = 'none';
@@ -1557,7 +1559,6 @@ window.onload = async () => {
             for(let chunk of chunks) { rawBin.set(chunk, pos); pos += chunk.length; }
             chunks = null;
 
-            // 更新 UI 状态
             s1Fill.style.width = "100%";
             s1Status.innerText = "(已完成) 1.下载原始数据流"; s1Status.style.color = "var(--primary)";
             s2Status.innerText = "(进行中) 2. 解密数据"; s2Status.style.color = "var(--warn)";
@@ -1575,7 +1576,7 @@ window.onload = async () => {
         } catch (e) {
             s1Status.innerText = "(失败) " + e.message; s1Status.style.color = "var(--danger)";
         }
-        return; // 处理完 URL 直接退出，不再执行后续 UI 代码
+        return; // URL 模式下不再执行后续 UI 初始化
     }
 
     // ==========================================
@@ -1587,34 +1588,41 @@ window.onload = async () => {
     if (enPwd) setVal('e-key', enPwd);
     if (dePwd) setVal('d-key', dePwd);
     
-    // 初始化界面提示
-    checkEncIdentity();
-
-    // --- 新增：emd (Encode MD Default) 和 dmd (Decode MD Default) 参数处理 ---
+    // --- UI 参数处理 (统一使用 isTrue) ---
     const emdVal = p.get('emd');
-    if (emdVal !== null) {
-        // 0/f/false 为假，其他为真
-        const isMd = !['0', 'f', 'false'].includes(emdVal.toLowerCase());
-        const mdBox = $('md-flag');
-        if (mdBox) mdBox.checked = isMd;
-    }
-    // 其他 UI 参数处理
-    const gzipVal = p.get('gzip'), webpqVal = p.get('webpq'), ptVal = p.get('webpt'), prVal = p.get('webpr');
-    if (gzipVal !== null) { const gz = $('gzip-enable'); if(gz) gz.checked = (gzipVal === 't' || gzipVal === '1'); }
+    if (emdVal !== null) { const mdBox = $('md-flag'); if (mdBox) mdBox.checked = isTrue(emdVal); }
+    
+    const gzipVal = p.get('gzip');
+    if (gzipVal !== null) { const gz = $('gzip-enable'); if(gz) gz.checked = isTrue(gzipVal); }
+
+    // 图片处理参数
+    const webpqVal = p.get('webpq'), ptVal = p.get('webpt'), prVal = p.get('webpr'), pcVal = p.get('webpc');
+    // webpc 控制总开关
+    if (pcVal !== null) { const pc = $('img-comp'); if(pc) pc.checked = isTrue(pcVal); }
     if (webpqVal) setVal('img-q', webpqVal);
-    if (prVal) { setVal('img-val', prVal); if ($('img-comp').checked) reprocImg(); }
+
     if (ptVal) {
         const ptMap = {"1": "pixel", "2": "short", "3": "long", "4": "orig" };
         const mode = ptMap[ptVal];
         const r = document.querySelector(`input[name="rmode"][value="${mode}"]`);
-        if (r) { r.checked = true; handleModeChange(true, null, !!prVal); }
+        // 第三个参数传入 true (skipReproc)，因为页面刚加载时 oFile 为 null，避免无意义重绘
+        if (r) { r.checked = true; handleModeChange(true, prVal, true); }
+    } else if (prVal) {
+        // 只有 webpr 没有 webpt 时，只设数值，同样跳过重绘
+        setVal('img-val', prVal); 
     }
+
     const cryptVal = p.get('crypt');
     if (cryptVal !== null) {
-        let algo = (['0','cbc'].includes(cryptVal)) ? '0' : (['1','gcm'].includes(cryptVal) ? '1' : (['2','p384'].includes(cryptVal) ? '2' : '3'));
+        let v = cryptVal.toLowerCase();
+        let algo = (['0','cbc'].includes(v)) ? '0' : (['1','gcm'].includes(v) ? '1' : (['2','p384'].includes(v) ? '2' : '3'));
         const r = document.querySelector(`input[name="algo"][value="${algo}"]`);
-        if (r) { r.checked = true; checkEncIdentity(); }
+        if (r) r.checked = true;
     }
+
+    // 【重要】最后执行身份检查，确保 UI 状态（如 crypt 参数改变后的状态）被正确反映
+    checkEncIdentity();
+
     const pageVal = p.get('page');
     if (pageVal !== null) {
         let t = (['2','dec'].includes(pageVal)) ? 'decode' : (['3','keygen'].includes(pageVal) ? 'keygen' : 'encode');
@@ -2072,7 +2080,12 @@ function renderDec(bin) {
             if (mdBtn && typeof marked !== 'undefined') {
                 mdBtn.style.display = 'inline-block';
             }
-const shouldAutoSwitch = (window.lastDecIsMd || window.forceDecodeMd) && typeof marked !== 'undefined' && mdView;
+// 修复逻辑：URL参数 dmd 优先级 > 文件自身标记 lastDecIsMd
+            // 如果 dmdParam 定义了(true或false)，直接使用它；否则使用文件头标记
+            let autoMd = window.lastDecIsMd;
+            if (typeof window.dmdParam !== 'undefined') autoMd = window.dmdParam;
+            
+            const shouldAutoSwitch = autoMd && typeof marked !== 'undefined' && mdView;
 
             if (shouldAutoSwitch) {
                  // 直接复用 toggleMarkdown 的逻辑（包含顶栏注入和显示切换）
