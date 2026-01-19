@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>AmbWebCrypt - 配套工具箱</title>
+    <title>AmbWebCrypt 配套工具箱</title>
     <style>
         :root {
             --primary: #00ff41; 
@@ -11,127 +11,168 @@
             --danger: #ff4444; 
             --bg: #111; 
             --panel: #0a0a0a; 
-            --text: #d1d1d1;
+            --text: #d1d1d1; 
             color-scheme: dark;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: Consolas, monospace; background: var(--bg); color: var(--text); padding: 10px; line-height: 1.5; }
-        .container { max-width: 800px; margin: 0 auto; border: 1px solid #333; padding: 20px; background: var(--panel); box-shadow: 0 0 20px rgba(0,0,0,0.5); }
-        h1 { color: var(--primary); font-size: 22px; margin-bottom: 20px; border-bottom: 2px solid var(--primary); padding-bottom: 10px; }
-        h2 { color: var(--warn); font-size: 16px; margin: 20px 0 10px 0; display: flex; align-items: center; gap: 8px; }
+        .container { max-width: 900px; margin: 0 auto; border: 1px solid #333; padding: 15px; background: var(--panel); box-shadow: 0 0 20px rgba(0,0,0,0.5); }
         
-        .card { background: #161616; border: 1px solid #333; padding: 15px; border-radius: 4px; margin-bottom: 20px; }
-        label { display: block; font-size: 0.85rem; color: #888; margin-bottom: 5px; }
-        input, textarea, select { width: 100%; background: #222; border: 1px solid #444; color: #fff; padding: 10px; font-family: inherit; font-size: 13px; margin-bottom: 10px; border-radius: 4px; }
-        
-        .opt-row { display: flex; flex-wrap: wrap; align-items: center; column-gap: 15px; row-gap: 8px; margin-bottom: 15px; font-size: 0.85rem; }
-        .opt-row label { display: flex; align-items: center; gap: 4px; color: #ddd; cursor: pointer; margin: 0; white-space: nowrap; }
-        input[type="radio"], input[type="checkbox"] { width: auto; margin: 0; cursor: pointer; position: relative; top: 1px; }
+        @media (max-width: 600px) {
+            body { padding: 5px; }
+            .container { padding: 10px; border: none; }
+            .converter-grid { grid-template-columns: 1fr !important; }
+        }
 
-        .btn-group { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
-        button { background: var(--primary); color: #000; border: none; padding: 10px 20px; font-weight: bold; cursor: pointer; border-radius: 4px; font-size: 13px; }
-        button.sec { background: #333; color: #fff; border: 1px solid #444; }
+        #header-area { display: flex; flex-direction: column; gap: 8px; border-bottom: 2px solid var(--primary); margin-bottom: 15px; padding-bottom: 10px; }
+        .header-top { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+        h1 { font-size: clamp(16px, 5vw, 22px); white-space: nowrap; margin: 0; color: var(--primary); }
+        h2 { color: var(--warn); font-size: 1rem; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+
+        .opt-group { margin: 15px 0; padding: 12px; background: #161616; border: 1px solid #333; border-radius: 4px; }
+        label { display: block; margin-bottom: 8px; color: var(--warn); font-size: 0.9rem; }
+        
+        textarea, input[type="text"], input[type="number"], select {
+            width: 100%; background: #222; border: 1px solid #444; color: #fff; padding: 10px; font-family: inherit; font-size: 13px;
+        }
+
+        button { padding: 10px 20px; background: var(--primary); color: #000; border: none; font-weight: bold; cursor: pointer; transition: filter 0.2s; }
+        .btn-secondary { background: #333; color: #fff; border: 1px solid #444; padding: 4px 10px; font-size: 12px; }
         button:hover { filter: brightness(1.2); }
 
-        .res-container { margin-top: 15px; display: none; }
-        .res-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
-        .res-area { background: #000; border: 1px solid var(--primary); color: var(--primary); padding: 12px; font-size: 12px; word-break: break-all; border-radius: 4px; min-height: 40px; }
-        
-        .group-label { font-size: 11px; color: #555; text-transform: uppercase; width: 100%; margin-top: 10px; margin-bottom: 5px; border-bottom: 1px solid #222; }
+        .converter-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 10px; }
+        .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+        .btn-group-sm { display: flex; gap: 5px; }
+
+        .res-area { 
+            height: 180px; background: #000; color: var(--primary); border: 1px solid #444; 
+            font-size: 13px; font-family: inherit; width: 100%; padding: 10px; resize: vertical; outline: none;
+        }
+        .res-area:focus { border-color: var(--primary); }
+
+        .radio-grid { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-bottom: 12px; }
+        .radio-item { display: inline-flex; align-items: center; gap: 5px; cursor: pointer; white-space: nowrap; color: #aaa; }
+
         a { color: var(--primary); text-decoration: none; border-bottom: 1px solid; }
+        .byte-info { font-size: 0.75rem; color: #666; margin-top: 4px; text-align: right; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>AmbWebCrypt - 配套工具箱</h1>
-    <p style="font-size: 0.8rem; color: #666; margin-top: -15px; margin-bottom: 20px;">
-        为 <a href="index.html">AmbWebCrypt</a> 打造的效率增强模块
-    </p>
+    <div id="header-area">
+        <div class="header-top">
+            <h1>🛠️ AmbWebCrypt 配套工具</h1>
+            <a href="index.html" style="font-size: 0.8rem; font-weight: bold; white-space: nowrap;">🏠 主页</a>
+        </div>
+    </div>
 
-    <!-- 1. URL 构造器 -->
-    <div class="card">
+    <!-- 1. 链接构造器 -->
+    <div class="opt-group">
         <h2>🔗 直达链接构造</h2>
-        <label>原始数据直链 (URL)</label>
-        <input type="text" id="link-url" placeholder="https://example.com/data.bin">
-        
-        <label>访问密钥 (pwd/depwd)</label>
-        <input type="text" id="link-pwd" placeholder="留空则访问时手动输入">
-        
-        <div class="opt-row">
-            <span style="color:#888;">Markdown 渲染 (dmd):</span>
-            <label><input type="radio" name="dmd-opt" value="none" checked> 默认</label>
-            <label><input type="radio" name="dmd-opt" value="1"> 开启</label>
-            <label><input type="radio" name="dmd-opt" value="0"> 关闭</label>
-        </div>
-
-        <div class="opt-row">
-            <label style="color:var(--primary); font-weight:bold;">
-                <input type="checkbox" id="link-fast" checked> 开启流畅模式 (推荐)
-            </label>
-        </div>
-
-        <div class="btn-group">
-            <button onclick="linkAction('copy')">📋 复制直达链接</button>
-            <button class="sec" onclick="linkAction('jump')">🚀 直接跳转访问</button>
-        </div>
-    </div>
-
-    <!-- 2. 增强格式转换 -->
-    <div class="card">
-        <h2>🔀 综合格式转换</h2>
-        <textarea id="conv-input" placeholder="在此输入需要处理的内容..." style="height: 100px;"></textarea>
-        
-        <div class="btn-group">
-            <div class="group-label">AmbWebCrypt 特有 (六字头)</div>
-            <button class="sec" onclick="conv('t2m')" style="background:#1a1a1a; color:var(--primary); border-color:var(--primary)">字符 → 六字头</button>
-            <button class="sec" onclick="conv('m2t')" style="background:#1a1a1a; color:var(--primary); border-color:var(--primary)">六字头 → 字符</button>
-            <button class="sec" onclick="conv('h2m')">Hex → 六字头</button>
-            <button class="sec" onclick="conv('m2h')">六字头 → Hex</button>
-
-            <div class="group-label">通用编解码</div>
-            <button class="sec" onclick="conv('t2b')">字符 → Base64</button>
-            <button class="sec" onclick="conv('b2t')">Base64 → 字符</button>
-            <button class="sec" onclick="conv('t2h')">字符 → Hex</button>
-            <button class="sec" onclick="conv('h2t')">Hex → 字符</button>
-
-            <div class="group-label">安全校验</div>
-            <button class="sec" onclick="calcHash()" style="background:#222; color:var(--warn); border-color:var(--warn)">SHA-256 哈希计算</button>
-        </div>
-        
-        <div id="conv-res-box" class="res-container">
-            <div class="res-header">
-                <span style="font-size:0.8rem; color:var(--primary);">处理结果:</span>
-                <button class="sec" onclick="copyValue('conv-res')">📋 复制结果</button>
+        <div style="margin-top:10px;">
+            <label>原始数据直链 (URL)</label>
+            <input type="text" id="link-url" placeholder="https://example.com/data.bin">
+            
+            <div style="display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 200px;">
+                    <label>解密密钥 (pwd)</label>
+                    <input type="text" id="link-pwd" placeholder="留空则需要稍后再输入">
+                </div>
             </div>
-            <div id="conv-res" class="res-area"></div>
+
+            <div class="radio-grid" style="margin-top: 15px;">
+                <span style="font-size:0.85rem; color:#888;">Markdown 渲染:</span>
+                <label class="radio-item"><input type="radio" name="dmd-opt" value="none" checked> 默认</label>
+                <label class="radio-item"><input type="radio" name="dmd-opt" value="1"> 开启</label>
+                <label class="radio-item"><input type="radio" name="dmd-opt" value="0"> 关闭</label>
+            </div>
+
+            <div style="margin-top: 10px;">
+                <label style="display:inline-flex; align-items:center; gap:8px; cursor:pointer; color: var(--primary);">
+                    <input type="checkbox" id="link-fast" checked style="width:auto;"> ⚡ 开启流畅模式 (推荐)
+                </label>
+            </div>
+
+            <div class="btn-group" style="margin-top:15px; display:flex; gap:10px;">
+                <button onclick="linkAction('copy')" style="flex:1;">📋 复制直达链接</button>
+                <button class="btn-secondary" onclick="linkAction('jump')" style="flex:1; padding:10px;">🚀 直接跳转</button>
+            </div>
         </div>
     </div>
 
-    <!-- 3. 安全随机生成器 -->
-    <div class="card">
+    <!-- 2. 综合转换器 -->
+    <div class="opt-group">
+        <h2>🔀 综合实时转换</h2>
+        
+        <div style="margin-bottom: 15px;">
+            <label>当前转换模式</label>
+            <select id="conv-mode" onchange="doConv(1)">
+                <optgroup label="—— 文本转换 ——">
+                    <option value="t_b32k">文本 ↔ Base32768</option>
+                    <option value="t_b64">文本 ↔ Base64</option>
+                    <option value="t_six">文本 ↔ 六字头</option>
+                    <option value="t_hex">文本 ↔ 原始16进制</option>
+                </optgroup>
+                <optgroup label="—— Base256转换 ——">
+                    <option value="m_b32k" selected>Base256 ↔ Base32768</option>
+                    <option value="m_b64">Base256 ↔ Base64</option>
+                    <option value="m_hex">Base256 ↔ 原始16进制</option>
+                </optgroup>
+                <optgroup label="—— 其它 ——">
+                    <option value="six_hex">六字头 ↔ 原始16进制</option>
+                </optgroup>
+            </select>
+        </div>
+
+        <div class="converter-grid">
+            <div class="panel">
+                <div class="panel-header">
+                    <label style="margin:0;">左侧内容</label>
+                    <div class="btn-group-sm">
+                        <button class="btn-secondary" onclick="copyValue('left-val')">📋 复制</button>
+                        <button class="btn-secondary" onclick="clearValue('left-val')" style="background:#444;">🗑️ 清空</button>
+                    </div>
+                </div>
+                <textarea id="left-val" class="res-area" placeholder="在此输入内容..." oninput="doConv(1)"></textarea>
+                <div id="left-info" class="byte-info">0 字节</div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-header">
+                    <label style="margin:0;">右侧结果</label>
+                    <div class="btn-group-sm">
+                        <button class="btn-secondary" onclick="copyValue('right-val')">📋 复制</button>
+                        <button class="btn-secondary" onclick="clearValue('right-val')" style="background:#444;">🗑️ 清空</button>
+                    </div>
+                </div>
+                <textarea id="right-val" class="res-area" placeholder="转换结果..." oninput="doConv(-1)"></textarea>
+                <div id="right-info" class="byte-info">0 字节</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. 随机密钥生成器 -->
+    <div class="opt-group">
         <h2>🎲 随机密钥生成</h2>
-        <div class="opt-row">
-            <span style="color:#888;">生成模式:</span>
-            <label><input type="radio" name="rand-mode" value="num" onclick="updateRandLen(32)"> 数字 (手机)</label>
-            <label><input type="radio" name="rand-mode" value="low" onclick="updateRandLen(24)"> 小写+数字 (PC)</label>
-            <label><input type="radio" name="rand-mode" value="mix" checked onclick="updateRandLen(20)"> 复杂 (粘贴)</label>
-            <label title="同样的安全性下长度缩短至1/4"><input type="radio" name="rand-mode" value="map" onclick="updateRandLen(8)"> 汉字 (短密)</label>
+        <div class="radio-grid">
+            <span style="font-size:0.85rem; color:#888;">生成模式:</span>
+            <label class="radio-item"><input type="radio" name="rand-mode" value="num" onclick="updateRandLen(32)"> 数字（适合手机输入）</label>
+            <label class="radio-item"><input type="radio" name="rand-mode" value="low" onclick="updateRandLen(24)"> 小写（适合电脑输入）</label>
+            <label class="radio-item"><input type="radio" name="rand-mode" value="mix" checked onclick="updateRandLen(20)"> 复杂（适合复制粘贴）</label>
+            <label class="radio-item"><input type="radio" name="rand-mode" value="map" onclick="updateRandLen(8)"> 汉字（适合缩短长度）</label>
         </div>
 
-        <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 10px;">
-            <span style="font-size:0.85rem;">生成长度:</span>
-            <input type="number" id="rand-len" value="20" style="width: 80px; margin:0;">
-            <button onclick="genRand()">🔄 重新生成</button>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-size: 0.85rem; white-space: nowrap;">长度:</span>
+                <input type="number" id="rand-len" value="20" style="width: 70px;">
+            </div>
+            <button onclick="genRand()" style="flex: 1;">🔄 重新生成</button>
         </div>
         
-        <div id="rand-res-box" class="res-container">
-            <div class="res-header">
-                <span style="font-size:0.8rem; color:var(--primary);">生成的随机密钥:</span>
-                <button class="sec" onclick="copyValue('rand-res')">📋 复制</button>
-            </div>
-            <div id="rand-res" class="res-area"></div>
-        </div>
+        <input type="text" id="rand-res" readonly style="margin-top:15px; background:#000; color:var(--primary); text-align:center; font-weight:bold; cursor:pointer;" onclick="this.select(); document.execCommand('copy')" title="点击复制">
+        <small style="display:block; text-align:center; margin-top:5px;">(点击上方文本框可直接复制)</small>
     </div>
 
     <footer style="text-align: center; margin-top: 30px; font-size: 0.75rem; color: #444;">
@@ -143,120 +184,150 @@
     const $ = id => document.getElementById(id);
     const HEX_MAP = "哈嘿嘻咕吱吧哔嘚嘛嘞嘎嘟啸嘶嚷噗";
     const MAP_CHAR = "零一二三四五六七八九十个百千万服多来米发锁拉系骇古极你歪它他她啊波次的饿歌喝以几可了们呢喔屏群人是烫鱼绿写用这莱方录鹿卢凹折山葱仪厂长秧同草末音菜酸汤名口窝填田土木火水金风雨石竹鸟马牛羊虫花树云雷雪星光天海湖林点线面体条猫狗搜库炮进城管锚泡抛刨袍图如吐加键减肥乘出除处初厨楚乔恩奖江姜酱犟僵耳儿文静网热卡空虚拟想希丁克门付款啦放大哦扩对皮肤看快手内存成绩差登记机声第集平时都觉得就行打击哒西到哪咳嗽带飞辛苦老试怕漏刷未微位小众中从聪信新旧杨样阳提清青酒流留物里例理力丽礼李立事史视率形之只染然似防重饭洗头连叫扣宜";
+    const C2B = Object.fromEntries(MAP_CHAR.split('').map((c,i)=>[c,i]));
+    const B32_START = 0x4E00;
+
+    const bufToB32K = buf => {
+        let res = "", acc = 0n, bits = 0;
+        for (let b of buf) {
+            acc = (acc << 8n) | BigInt(b);
+            bits += 8;
+            while (bits >= 15) {
+                bits -= 15;
+                res += String.fromCharCode(B32_START + Number((acc >> BigInt(bits)) & 0x7FFFn));
+            }
+        }
+        if (bits > 0) res += String.fromCharCode(B32_START + Number((acc << BigInt(15 - bits)) & 0x7FFFn));
+        return res;
+    };
+    const b32KToBuf = str => {
+        let res = [], acc = 0n, bits = 0;
+        for (let char of str) {
+            let val = char.charCodeAt(0) - B32_START;
+            if (val < 0 || val >= 32768) continue;
+            acc = (acc << 15n) | BigInt(val);
+            bits += 15;
+            while (bits >= 8) {
+                bits -= 8;
+                res.push(Number((acc >> BigInt(bits)) & 0xFFn));
+            }
+        }
+        return new Uint8Array(res);
+    };
+
+    const bufToHex = buf => Array.from(buf).map(b => b.toString(16).padStart(2, '0')).join('');
+    const hexToBuf = hex => new Uint8Array(hex.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
+    const mapToBuf = str => new Uint8Array(str.split('').map(c => C2B[c]).filter(v => v !== undefined));
+    const bufToMap = buf => Array.from(buf).map(b => MAP_CHAR[b]).join('');
+
+    function doConv(dir) {
+        const left = $('left-val'), right = $('right-val'), mode = $('conv-mode').value;
+        const src = (dir === 1) ? left.value : right.value;
+        
+        if (!src) { 
+            if(dir === 1) right.value = ""; else left.value = ""; 
+            updateInfo(); return; 
+        }
+        
+        try {
+            let out = "";
+            let rawBuf = new Uint8Array();
+
+            switch(mode) {
+                case "t_b32k":
+                    if(dir === 1) { out = bufToB32K(new TextEncoder().encode(src)); }
+                    else { out = new TextDecoder().decode(b32KToBuf(src)).replace(/\0+$/, ''); }
+                    break;
+                case "t_b64":
+                    out = (dir === 1) ? btoa(unescape(encodeURIComponent(src))) : decodeURIComponent(escape(atob(src)));
+                    break;
+                case "t_six":
+                    if(dir === 1) {
+                        const hex = bufToHex(new TextEncoder().encode(src));
+                        out = Array.from(hex).map(c => HEX_MAP[parseInt(c, 16)]).join('');
+                    } else {
+                        let hex = "";
+                        for(let c of src) { let idx = HEX_MAP.indexOf(c); if(idx !== -1) hex += idx.toString(16); }
+                        out = new TextDecoder().decode(hexToBuf(hex));
+                    }
+                    break;
+                case "t_hex":
+                    out = (dir === 1) ? bufToHex(new TextEncoder().encode(src)) : new TextDecoder().decode(hexToBuf(src));
+                    break;
+                case "m_b32k":
+                    out = (dir === 1) ? bufToB32K(mapToBuf(src)) : bufToMap(b32KToBuf(src));
+                    break;
+                case "m_b64":
+                    if(dir === 1) { out = btoa(String.fromCharCode(...mapToBuf(src))); }
+                    else { out = bufToMap(new Uint8Array(atob(src).split('').map(c => c.charCodeAt(0)))); }
+                    break;
+                case "m_hex":
+                    out = (dir === 1) ? bufToHex(mapToBuf(src)) : bufToMap(hexToBuf(src));
+                    break;
+                case "six_hex":
+                    if(dir === 1) { for(let c of src) { let idx = HEX_MAP.indexOf(c); if(idx !== -1) out += idx.toString(16); } }
+                    else { for(let c of src) out += HEX_MAP[parseInt(c, 16)]; }
+                    break;
+            }
+            if(dir === 1) right.value = out; else left.value = out;
+        } catch(e) { console.error(e); }
+        updateInfo();
+    }
+
+    function updateInfo() {
+        const lVal = $('left-val').value;
+        const rVal = $('right-val').value;
+        // 粗略估算字节数（对于Base256/Hex比较准确，对于文本是UTF8字节数）
+        $('left-info').innerText = new TextEncoder().encode(lVal).length + " 字节";
+        $('right-info').innerText = new TextEncoder().encode(rVal).length + " 字节";
+    }
+
+    function clearValue(id) {
+        $(id).value = "";
+        doConv(id === 'left-val' ? 1 : -1);
+    }
 
     function copyValue(id) {
-        const text = $(id).textContent;
-        navigator.clipboard.writeText(text);
-        alert("已复制到剪切板");
+        const el = $(id); el.select();
+        document.execCommand('copy');
+        const btn = event.target;
+        const oldText = btn.innerText;
+        btn.innerText = "✅ 已复制";
+        setTimeout(() => btn.innerText = oldText, 1500);
     }
 
     function linkAction(action) {
         const base = window.location.href.split('/').slice(0, -1).join('/') + '/index.html';
-        const urlInput = $('link-url').value.trim();
-        if(!urlInput) return alert("请输入数据直链 URL");
-
+        const url = $('link-url').value.trim();
+        if(!url) return alert("URL必填");
         const pwd = $('link-pwd').value.trim();
         const dmd = document.querySelector('input[name="dmd-opt"]:checked').value;
-        const fast = $('link-fast').checked;
-
-        let finalUrl = `${base}?URL=${encodeURIComponent(urlInput)}`;
-        if(pwd) finalUrl += `&pwd=${encodeURIComponent(pwd)}`;
-        if(dmd !== "none") finalUrl += `&dmd=${dmd}`;
-        if(!fast) finalUrl += `&fast=0`; 
-
-        if (action === 'copy') {
-            navigator.clipboard.writeText(finalUrl);
-            alert("直达链接已复制！");
-        } else {
-            window.open(finalUrl, '_blank');
-        }
-    }
-
-    function conv(type) {
-        const input = $('conv-input').value.trim();
-        if(!input) return;
-        $('conv-res-box').style.display = 'block';
-        try {
-            // --- 核心二合一逻辑：字符与六字头 ---
-            if (type === 't2m') {
-                const bytes = new TextEncoder().encode(input);
-                const hex = Array.from(bytes).map(b => b.toString(16).padStart(2, '0')).join('');
-                let res = ""; for(let char of hex) res += HEX_MAP[parseInt(char, 16)];
-                $('conv-res').textContent = res;
-            } else if (type === 'm2t') {
-                let hex = "";
-                for(let char of input) {
-                    const idx = HEX_MAP.indexOf(char);
-                    if(idx !== -1) hex += idx.toString(16);
-                }
-                const bytes = new Uint8Array(hex.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
-                $('conv-res').textContent = new TextDecoder().decode(bytes);
-            }
-            // --- 其他逻辑 ---
-            else if (type === 't2b') {
-                const bytes = new TextEncoder().encode(input);
-                let binary = "";
-                for (let i = 0; i < bytes.byteLength; i++) binary += String.fromCharCode(bytes[i]);
-                $('conv-res').textContent = btoa(binary);
-            } else if (type === 'b2t') {
-                const binary = atob(input);
-                const bytes = new Uint8Array(binary.length);
-                for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
-                $('conv-res').textContent = new TextDecoder().decode(bytes);
-            } else if (type === 't2h') {
-                const bytes = new TextEncoder().encode(input);
-                $('conv-res').textContent = Array.from(bytes).map(b => b.toString(16).padStart(2, '0')).join('');
-            } else if (type === 'h2t') {
-                const bytes = new Uint8Array(input.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
-                $('conv-res').textContent = new TextDecoder().decode(bytes);
-            } else if(type === 'h2m') {
-                const hex = input.toLowerCase().replace(/[^0-9a-f]/g, '');
-                let res = ""; for(let char of hex) res += HEX_MAP[parseInt(char, 16)];
-                $('conv-res').textContent = res;
-            } else if(type === 'm2h') {
-                let res = ""; for(let char of input) {
-                    const idx = HEX_MAP.indexOf(char);
-                    if(idx !== -1) res += idx.toString(16);
-                }
-                $('conv-res').textContent = res;
-            }
-        } catch(e) { alert("转换失败：输入格式有误，请检查数据完整性"); }
-    }
-
-    async function calcHash() {
-        const input = $('conv-input').value.trim();
-        if(!input) return;
-        const data = new TextEncoder().encode(input);
-        const hash = await crypto.subtle.digest('SHA-256', data);
-        $('conv-res-box').style.display = 'block';
-        $('conv-res').textContent = Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
+        const fast = $('link-fast').checked ? '1' : '0';
+        let final = `${base}?URL=${encodeURIComponent(url)}&fast=${fast}`;
+        if(pwd) final += `&pwd=${encodeURIComponent(pwd)}`;
+        if(dmd !== "none") final += `&dmd=${dmd}`;
+        if(action === 'copy') { navigator.clipboard.writeText(final); alert("直达链接已复制"); }
+        else window.open(final, '_blank');
     }
 
     function updateRandLen(len) { $('rand-len').value = len; }
-
     function genRand() {
         const len = parseInt($('rand-len').value) || 20;
         const array = new Uint8Array(len);
         window.crypto.getRandomValues(array);
         const mode = document.querySelector('input[name="rand-mode"]:checked').value;
-        let charset = "";
-        
-        if (mode === "map") {
-            let res = '';
-            for (let i = 0; i < len; i++) res += MAP_CHAR.charAt(array[i]);
-            $('rand-res-box').style.display = 'block';
-            $('rand-res').textContent = res;
-            return;
-        }
-
-        if (mode === "num") charset = "0123456789";
-        else if (mode === "low") charset = "abcdefghijklmnopqrstuvwxyz0123456789";
-        else charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
-
         let res = '';
-        for (let i = 0; i < len; i++) res += charset.charAt(array[i] % charset.length);
-        $('rand-res-box').style.display = 'block';
-        $('rand-res').textContent = res;
+        if (mode === "map") {
+            for (let i = 0; i < len; i++) res += MAP_CHAR.charAt(array[i]);
+        } else {
+            const charset = {
+                num: "0123456789",
+                low: "abcdefghijklmnopqrstuvwxyz0123456789",
+                mix: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*"
+            }[mode];
+            for (let i = 0; i < len; i++) res += charset.charAt(array[i] % charset.length);
+        }
+        $('rand-res').value = res;
     }
 </script>
 
