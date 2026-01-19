@@ -12,8 +12,16 @@
 
 ### 🌐 在此体验（建议收藏）：
 *   [Pages（线路一）](https://cz-6.github.io/AmbWebCrypt)
+
+🇺🇸🇸🇬🇯🇵🇭🇰 ✅ 🇨🇳 ❌
+
 *   [大陆优化（线路二）](https://j.157126.xyz)
+
+🇭🇰 ✅✅ 🇨🇳 ✅ 🇺🇸 🟡 🇯🇵🇸🇬 ⚠️
+
 *   [FRP（线路三）](https://cn.157126.xyz:31527/Documents/www/aes.htm.txt)
+
+🇨🇳 ✅✅ 🇭🇰🇯🇵🇸🇬🇺🇸 ⚠️
 
 线路一最稳定，不会变，不会掉线。
 
