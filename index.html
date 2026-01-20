@@ -5,7 +5,7 @@
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <link rel="apple-touch-icon" href="icon-192.png">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>AmbWebCrypt (sd5p)</title>
+    <title>AmbWebCrypt (pd5r)</title>
     <style>
 :root {
     --primary: #00ff41; 
@@ -149,11 +149,11 @@ button:disabled { background: #666 !important; color: #999 !important; cursor: n
 
 .pwd-label { font-size: 0.8rem; margin-top: 6px; color: #aaa; }
 </style>
-<link id="via_inject_css_blocker" type="text/css" rel="stylesheet" href="https://j.157126.xyz/via_inject_blocker.css"><style type="text/css" id="__via_marker__"></style></head>
+</head>
 <body>
 <div id="loader-screen" style="display:none; max-width: 600px; margin: 30px auto; padding: 20px; background: #0a0a0a; border: 1px solid #333; color: #fff; font-family: Consolas, monospace; border-radius: 8px;">
 <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 10px;">
-    <h1 style="font-size: clamp(16px, 5vw, 22px); white-space: nowrap; margin: 0; color: var(--primary); border: none; padding: 0;">🔤 AmbWebCrypt (sd5p)</h1>
+    <h1 style="font-size: clamp(16px, 5vw, 22px); white-space: nowrap; margin: 0; color: var(--primary); border: none; padding: 0;">🔤 AmbWebCrypt (pd5r)</h1>
     <button onclick="backupTool()" style="background: none; border: 1px solid #444; color: #888; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 11px; flex-shrink: 0; white-space: nowrap; margin: 0;">
         💾 保存本页
     </button>
@@ -201,7 +201,7 @@ button:disabled { background: #666 !important; color: #999 !important; cursor: n
 <div class="drop-hint" id="drop-hint">📁 释放文件以导入</div>
 <div id="header-area" style="display: flex; flex-direction: column; gap: 8px; border-bottom: 2px solid var(--primary); margin-bottom: 0px; padding-bottom: 10px;">
     <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px;">
-        <h1 style="font-size: clamp(16px, 5vw, 22px); white-space: nowrap; margin: 0; color: var(--primary); border: none; padding: 0;">🔤 AmbWebCrypt (sd5p)</h1>
+        <h1 style="font-size: clamp(16px, 5vw, 22px); white-space: nowrap; margin: 0; color: var(--primary); border: none; padding: 0;">🔤 AmbWebCrypt (pd5r)</h1>
         <button onclick="backupTool()" style="background: none; border: 1px solid #444; color: #888; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 11px; flex-shrink: 0; white-space: nowrap; margin: 0;">
             💾 保存本页
         </button>
@@ -247,6 +247,9 @@ button:disabled { background: #666 !important; color: #999 !important; cursor: n
         </label>
         <label style="display:inline-block; white-space:nowrap; cursor:pointer">
             <input type="checkbox" id="img-comp" checked="" onchange="reprocImg()" style="position:relative; top:3px;"> 图像预处理
+        </label>
+        <label style="display:inline-block; white-space:nowrap; margin-left:15px; cursor:pointer;" title="使用 Base32768 编码，更省空间">
+            <input type="checkbox" id="x-flag" style="position:relative; top:3px;"> 极限压缩
         </label>
     </div>
 <div style="margin-bottom: 4px; display: flex; flex-wrap: wrap; align-items: center; column-gap: 10px; row-gap: 5px;">
@@ -324,13 +327,28 @@ button:disabled { background: #666 !important; color: #999 !important; cursor: n
     </button>
 </div>
             <div class="file-info" id="d-file-info" style="display: none;"></div>
-<div style="margin: 15px 0 10px 0;">
-    <label style="cursor:pointer; font-size: 0.85rem; display: flex; align-items: center; gap: 8px; color: #fff;">
-        <input type="checkbox" id="is-bin" style="margin:0;"> 导入的文件是二进制 (.bin)
+<div style="margin: 15px 0 0 0;">
+<div style="display:flex; flex-wrap:wrap; gap:10px; margin-bottom:0px; align-items:center; font-size:0.85rem;">
+    <span style="color:#aaa;white-space:nowrap;position:relative; top:-3.5px;">源格式:</span>
+    
+    <!-- 1. B256 -->
+    <label style="cursor:pointer; display:flex;align-items:center; gap:4px">
+        <input type="radio" name="fmt-mode" value="b256" checked> B256 
     </label>
-    <label style="cursor:pointer; font-size: 0.85rem; display: flex; align-items: center; gap: 8px; color: #fff; margin-top:5px;">
-    <input type="checkbox" id="fast-mode" checked> ⚡ 流畅模式 (减少不必要的检查和尝试)
-</label>
+    
+    <!-- 2. BIN (已移到中间) -->
+    <label style="cursor:pointer; display:flex; align-items:center; gap:4px">
+        <input type="radio" name="fmt-mode" value="bin"> BIN 
+    </label>
+    
+    <!-- 3. B32K (已移到最后) -->
+    <label style="cursor:pointer; display:flex; align-items:center; gap:4px">
+        <input type="radio" name="fmt-mode" value="b32k"> B32K 
+    </label>
+</div>
+    <label style="cursor:pointer; font-size: 0.85rem; display: flex; align-items: center; gap: 8px; color: #fff; margin-top:3px;">
+        <input type="checkbox" id="fast-mode" checked> ⚡ 流畅模式 (减少不必要的检查和尝试)
+    </label>
 </div>
         </div>
 
@@ -513,13 +531,60 @@ button:disabled { background: #666 !important; color: #999 !important; cursor: n
 }
     </style>
     <script>
-    const VER = "sd5p"; // 升级到 sd5p
+    const VER = "pd5r"; // 升级到 pd5r
     const PLIM = 100000; 
     const MAX_PIXELS = 10000000; 
     const MAP = "零一二三四五六七八九十个百千万服多来米发锁拉系骇古极你歪它他她啊波次的饿歌喝以几可了们呢喔屏群人是烫鱼绿写用这莱方录鹿卢凹折山葱仪厂长秧同草末音菜酸汤名口窝填田土木火水金风雨石竹鸟马牛羊虫花树云雷雪星光天海湖林点线面体条猫狗搜库炮进城管锚泡抛刨袍图如吐加键减肥乘出除处初厨楚乔恩奖江姜酱犟僵耳儿文静网热卡空虚拟想希丁克门付款啦放大哦扩对皮肤看快手内存成绩差登记机声第集平时都觉得就行打击哒西到哪咳嗽带飞辛苦老试怕漏刷未微位小众中从聪信新旧杨样阳提清青酒流留物里例理力丽礼李立事史视率形之只染然似防重饭洗头连叫扣宜";
     const HEX_MAP = "哈嘿嘻咕吱吧哔嘚嘛嘞嘎嘟啸嘶嚷噗";
     const B2C = MAP.split(''), C2B = Object.fromEntries(B2C.map((c,i)=>[c,i]));
     const ADMIN_P384_PUB_HEX = "047562a86fcd211fad72ef66958a1d6e9c2d05d749de8e1bad3a522460270dd9be619fdd78ab4a9e3ae3a60cc41cee5f7a2a6d16e93d28465fe80b341dd9518414466dd7c7fd5ae6395d1a8bd58504d24c5e3339f7494bbc4d4aa022726fb479d3"
+    // --- 新增 Base32768 支持 ---
+    const B32_START = 0x4E00;
+    const bufToB32K = buf => {
+        let res = [], acc = 0n, bits = 0;
+        for (let b of buf) {
+            acc = (acc << 8n) | BigInt(b); bits += 8;
+            while (bits >= 15) { bits -= 15; res.push(String.fromCharCode(B32_START + Number((acc >> BigInt(bits)) & 0x7FFFn))); }
+        }
+        if (bits > 0) res.push(String.fromCharCode(B32_START + Number((acc << BigInt(15 - bits)) & 0x7FFFn)));
+        return res.join('');
+    };
+    const b32KToBuf = str => {
+        const len = str.length;
+        const res = new Uint8Array(len * 2); 
+        let acc = 0n, bits = 0, idx = 0;
+        for (let i = 0; i < len; i++) {
+            let val = str.charCodeAt(i) - B32_START;
+            if (val < 0 || val >= 32768) continue;
+            acc = (acc << 15n) | BigInt(val); bits += 15;
+            while (bits >= 8) { bits -= 8; res[idx++] = Number((acc >> BigInt(bits)) & 0xFFn); }
+        }
+        return res.slice(0, idx);
+    };
+
+    // --- 主题加载逻辑 ---
+    async function loadTheme(url) {
+        try {
+            const resp = await fetch(url);
+            if (!resp.ok) return;
+            const buf = await resp.arrayBuffer();
+            let cssText = "";
+            // 简单判断 gzip 头 (1f 8b)
+            const u8 = new Uint8Array(buf);
+            if (u8[0] === 0x1f && u8[1] === 0x8b) {
+                try { cssText = new TextDecoder().decode(pako.ungzip(u8)); } catch(e){ cssText = new TextDecoder().decode(u8); }
+            } else {
+                cssText = new TextDecoder().decode(u8);
+            }
+            // 提取 <style> 内容或直接作为 CSS
+            const match = cssText.match(/<style[^>]*>([\s\S]*?)<\/style>/i);
+            const finalCss = match ? match[1] : cssText;
+            const style = document.createElement('style');
+            style.textContent = finalCss;
+            document.head.appendChild(style);
+            console.log("Theme loaded:", url);
+        } catch(e) { console.error("Theme load failed", e); }
+    }
     const $ = id => document.getElementById(id);
 // 辅助工具：Hex与Buffer转换
 const hexToBuf = hex => {
@@ -645,60 +710,42 @@ let edIdentity = {isEd: false, isAdmin: false };
 let decWarning = {active: false, message: "" };
 function parseSixHeader(fileName, textContent, rawBuf) {
     const HEX_MAP = "哈嘿嘻咕吱吧哔嘚嘛嘞嘎嘟啸嘶嚷噗";
-    
-    // 扫描文件名中的六字头
     const scanFileName = (name) => {
         if (!name || typeof name !== 'string') return null;
-        // 核心修复：必须是“连续”的6个字符，不能是从文中零散拼凑的
-        // 这样可以避开注释中的“哈哈”等干扰字符
         for (let i = 0; i <= name.length - 6; i++) {
-            // 优化：首字匹配才开始深度检查
             if (HEX_MAP.indexOf(name[i]) === -1) continue;
-            
-            let chunk = [];
-            let isContiguous = true;
+            let chunk = [], isContiguous = true;
             for (let j = 0; j < 6; j++) {
                 const char = name[i+j];
-                if (HEX_MAP.indexOf(char) !== -1) {
-                    chunk.push(char);
-                } else {
-                    isContiguous = false;
-                    break;
-                }
+                if (HEX_MAP.indexOf(char) !== -1) chunk.push(char);
+                else { isContiguous = false; break; }
             }
             if (isContiguous) return chunk;
         }
         return null;
     };
-let sixHeaderChars = scanFileName(fileName) || scanFileName(textContent);
-if (!sixHeaderChars && rawBuf) {
-    try {
-        const head = new TextDecoder().decode(new Uint8Array(rawBuf).slice(0, 1024));
-        sixHeaderChars = scanFileName(head);
-    } catch(e) {}
-}
-    if (!sixHeaderChars) {
-        return { isValid: false };
+    let sixHeaderChars = scanFileName(fileName) || scanFileName(textContent);
+    if (!sixHeaderChars && rawBuf) {
+        try { const head = new TextDecoder().decode(new Uint8Array(rawBuf).slice(0, 1024)); sixHeaderChars = scanFileName(head); } catch(e) {}
     }
-const cksum = (HEX_MAP.indexOf(sixHeaderChars[0]) << 12) |
-                  (HEX_MAP.indexOf(sixHeaderChars[1]) << 8)  |
-                  (HEX_MAP.indexOf(sixHeaderChars[2]) << 4)  |
-                  (HEX_MAP.indexOf(sixHeaderChars[3]));
-
+    if (!sixHeaderChars) return { isValid: false };
+    
+    const cksum = (HEX_MAP.indexOf(sixHeaderChars[0]) << 12) | (HEX_MAP.indexOf(sixHeaderChars[1]) << 8)  | (HEX_MAP.indexOf(sixHeaderChars[2]) << 4)  | (HEX_MAP.indexOf(sixHeaderChars[3]));
     const isGCM = sixHeaderChars[4] === "嘿";
     const sixthCharIdx = HEX_MAP.indexOf(sixHeaderChars[5]);
+    const isEnc = (sixthCharIdx & 1) !== 0;
 
-const isEnc = (sixthCharIdx & 1) !== 0;
-return {
-    isValid: true,
-    isGCM: sixHeaderChars[4] === "嘿",
-    isEncrypted: isEnc,
-    isMd: (sixthCharIdx & 4) !== 0, // 读取第3比特(4)
-    firstAlgo: isEnc ? HEX_MAP.indexOf(sixHeaderChars[4]) : 5, 
-    cksumTarget: cksum,
-    firstFourChars: sixHeaderChars.slice(0,4).join(''),
-    sixthCharIdx: sixthCharIdx
-};
+    return {
+        isValid: true,
+        isGCM: sixHeaderChars[4] === "嘿",
+        isEncrypted: isEnc,
+        isMd: (sixthCharIdx & 4) !== 0,
+        isB32K: (sixthCharIdx & 8) !== 0, // 新增：Base32768 识别
+        firstAlgo: isEnc ? HEX_MAP.indexOf(sixHeaderChars[4]) : 5, 
+        cksumTarget: cksum,
+        firstFourChars: sixHeaderChars.slice(0,4).join(''),
+        sixthCharIdx: sixthCharIdx
+    };
 }
 function checkEncIdentity() {
     const valInput = $('e-key');
@@ -825,30 +872,118 @@ function handleModeChange(show, valFromParam, skipReproc = false) {// 增加了 
         reprocImg(); 
     }
 }
+function detectAndSetMode(inputBufferOrStr) {
+    let sample = "", headerIdx = -1, h6 = -1;
+    // 1. 调用现有注释识别引擎，获取六字头信息
+    const sixHeaderResult = parseSixHeader(
+        decodeFileName || "", 
+        typeof inputBufferOrStr === 'string' ? inputBufferOrStr : "", 
+        typeof inputBufferOrStr !== 'string' ? inputBufferOrStr : null
+    );
+
+    // 2. 处理输入为字符串（仅取前70000字符，避免性能问题）
+    let str = typeof inputBufferOrStr === 'string' 
+        ? inputBufferOrStr 
+        : new TextDecoder().decode(new Uint8Array(inputBufferOrStr).slice(0, 70000));
+if (sixHeaderResult.isValid) {
+    // 定位六字头在字符串中的起始位置（全局位置）
+    const headerGlobalStart = str.indexOf(sixHeaderResult.firstFourChars) === -1 ? 0 : str.indexOf(sixHeaderResult.firstFourChars);    if (headerGlobalStart !== -1) {
+        // 记录六字头全局位置（供后续判定使用）
+        window.sixHeaderGlobalPos = { start: headerGlobalStart, end: headerGlobalStart + 6 };
+        // 找到六字头所在行的起始（换行后/字符串开头）和结束（换行前/字符串结尾）
+        const lineStart = str.lastIndexOf('\n', headerGlobalStart) + 1;
+        const lineEnd = str.indexOf('\n', headerGlobalStart) !== -1 ? str.indexOf('\n', headerGlobalStart) : str.length;
+        // 提取同行完整内容（包含六字头）
+        const lineContent = str.substring(lineStart, lineEnd);
+        // 定位六字头在当前行内的位置
+        const headerInLineStart = lineContent.indexOf(sixHeaderResult.firstFourChars);
+        // 数据主体：B32K时剔除六字头（行内六字头后→句号前），非B32K保留同行全部
+        const isB32K = (sixHeaderResult.sixthCharIdx & 8) !== 0;
+        const dataStartInLine = isB32K ? headerInLineStart + 6 : 0; // B32K时跳过6位六字头
+        const dataEndInLine = lineContent.indexOf('。', dataStartInLine);
+        
+        sample = lineContent.substring(
+            dataStartInLine, 
+            dataEndInLine !== -1 ? dataEndInLine : lineContent.length
+        );
+        h6 = sixHeaderResult.sixthCharIdx;
+        headerIdx = 1;
+    }
+} else {
+    // 无六字头时清空位置记录
+    window.sixHeaderGlobalPos = null;
+    // 原逻辑：中间500字符抽样
+    const mid = Math.floor(str.length / 2);
+    sample = str.substring(mid, mid + 500);
+}
+
+    // 4. 格式识别（仅基于纯数据主体）
+    let b256Match = 0, b32kMatch = 0, total = 0;
+    for (let c of sample) {
+        if (/\s/.test(c)) continue; // 排除空白字符
+        if (HEX_MAP.indexOf(c) !== -1) continue; // 排除六字头字符
+        
+        total++;
+        // 统计B256匹配（MAP字符或逗号）
+        if (C2B[c] !== undefined || c === '，') b256Match++;
+        // 统计B32K匹配（Unicode 0x4E00~0x4E00+32768）
+        const code = c.charCodeAt(0);
+        if (code >= 0x4E00 && code < (0x4E00 + 32768)) b32kMatch++;
+    }
+
+    // 5. 格式判定（优先级：B256 > B32K（有头且标位含B32K标记） > BIN）
+    let mode = 'bin';
+    if (total > 0) {
+        if ((b256Match / total) > 0.8) {
+            mode = 'b256';
+        } else if ((b32kMatch / total) > 0.6 && headerIdx !== -1 && (h6 & 8)) {
+            // 需满足：B32K匹配率>60% + 有六字头 + 六字头第6位含B32K标记（bit8）
+            mode = 'b32k';
+        }
+    }
+
+    // 6. 更新UI选择框
+    const radios = document.getElementsByName('fmt-mode');
+    for (let r of radios) {
+        r.checked = (r.value === mode);
+    }
+}
 function syncBinCheckbox() {
     const val = $('decode-input').value;
-    const cb = $('is-bin');
-    if (val.includes("二进制")) {
-        cb.checked = true;
-    } else if (val.includes("文本")) {
-        cb.checked = false;
+    if (!val) return;
+    // 如果有 rawBuffer (文件载入模式)，优先判断 buffer，否则判断文本框内容
+    if (decodeRawBuffer) {
+        detectAndSetMode(decodeRawBuffer);
+    } else {
+        detectAndSetMode(val);
     }
 }
 let prevPreviewUrl = null; // 放在函数外部或 script 顶端
 let lastProcessingId = 0; // 全局变量
 async function reprocImg() {
     if (!oFile || !oFile.type || !oFile.type.startsWith('image/')) return;
-    $('e-file-info').style.display = 'block'; // 修复：调整参数时强制显示容器
     const infoBox = $('e-file-info'), processingId = ++lastProcessingId;
+    infoBox.style.display = 'block';
 
     if (!$('img-comp').checked) {
-        try {
-            eData = new Uint8Array(await oFile.arrayBuffer());
-            infoBox.innerHTML = `<span class="meta-tag">原始: ${oFile.name}</span> <span class="meta-tag">${oFile.size.toLocaleString()} B</span><br><span class="meta-tag">未处理透传</span>`;
-        } catch(e) {}
+        // 未处理（透传）模式：直接显示原图和原始分辨率
+        const reader = new FileReader();
+        reader.onload = async e => {
+            const img = new Image();
+            img.onload = async () => {
+                if (processingId !== lastProcessingId) return;
+                eData = new Uint8Array(await oFile.arrayBuffer());
+                if (prevPreviewUrl) URL.revokeObjectURL(prevPreviewUrl);
+                prevPreviewUrl = e.target.result; // 使用原始 DataURL
+                infoBox.innerHTML = `<span class="meta-tag">原始: ${oFile.name}</span> <span class="meta-tag">${img.width}x${img.height}</span><br><span class="meta-tag">未处理透传 (${oFile.size.toLocaleString()} B)</span><div style="margin-top:10px; border:1px solid #333; background:#000; text-align:center;"><img src="${prevPreviewUrl}" style="max-height:150px; max-width:100%; display:block; margin:0 auto;"></div>`;
+            };
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(oFile);
         return;
     }
-    // 下面保持原逻辑，未改动
+    
+    // 原有的压缩逻辑保持不变
     const img = new Image(), reader = new FileReader();
     reader.onload = e => {
         img.onload = () => {
@@ -879,7 +1014,6 @@ async function reprocImg() {
     };
     reader.readAsDataURL(oFile);
 }
-    // 文件名生成：支持前缀
     function getFullFN(ext, prefix = "") {
         const now = new Date();
         const f = (v) => v.toString().padStart(2, '0');
@@ -891,55 +1025,27 @@ let decodeRawText = "";
 async function handleFile(fileOrInput, mode) {
     let f = (fileOrInput instanceof File) ? fileOrInput : fileOrInput.files[0];
     if (!f) return;
+    
     if (mode === 'encode') {
         oFile = f; $('e-file-info').style.display = 'block';
         if (f.type.startsWith('image/') && $('img-comp').checked) reprocImg();
         else {
             eData = new Uint8Array(await f.arrayBuffer());
             $('e-file-info').innerHTML = `<span class="meta-tag">载入: ${f.name} (${f.size.toLocaleString()} B)</span>`;
-        }} else {
-        decodeFileName = f.name; const buf = await f.arrayBuffer(); decodeRawBuffer = buf;
-        const view = new Uint8Array(buf);
-        let isText = false;
-        try {
-            const headText = new TextDecoder().decode(view.slice(0, 65536));
-            // 1. 寻找疑似六字头起点
-            let headerIdx = -1;
-            for (let i = 0; i < headText.length - 7; i++) {
-                let seq = 0;
-                while (seq < 6 && HEX_MAP.indexOf(headText[i+seq]) !== -1) seq++;
-                if (seq === 6 && headText[i+6] === '，') { headerIdx = i; break; }
-            }
+        }
+    } else {
+        // --- 解密模式逻辑 ---
+        decodeFileName = f.name; 
+        const buf = await f.arrayBuffer(); 
+        decodeRawBuffer = buf; // 保存原始 Buffer
 
-            // 2. 采样判定：如果找到头，取头后几百字；否则取文件中段采样
-            let match = 0, total = 0;
-            const sampleLen = 400;
-            let sample = "";
-            
-            if (headerIdx !== -1) {
-                // 采样疑似密文段落（跳过头和逗号）
-                sample = headText.substring(headerIdx + 7, headerIdx + 7 + sampleLen);
-            } else {
-                // 无头文件，采样正中间
-                const mid = Math.floor(view.length / 2);
-                sample = new TextDecoder().decode(view.slice(mid, mid + sampleLen));
-            }
-
-            for (let c of sample) {
-                if (!/\s/.test(c)) {
-                    total++;
-                    if (C2B[c] !== undefined || HEX_MAP.indexOf(c) !== -1 || c === '，' || c === '。') match++;
-                }
-            }
-            // 3. 核心判定：30% 密度为主
-            isText = total > 0 && (match / total) > 0.3;
-        } catch(e){}
-        
-        $('is-bin').checked = !isText;
-        $('decode-input').value = `[已载入 (${isText?'文本':'二进制'}) 文件: ${f.name}]`;
+        // 1. UI 显示文件名
+        $('decode-input').value = `[已载入文件: ${f.name}]`;
         $('d-file-info').style.display = 'block';
         $('d-file-info').innerHTML = `<span class="meta-tag">载入: ${f.name} (${f.size.toLocaleString()} B)</span>`;
-        syncBinCheckbox();
+
+        // 2. 调用统一判定逻辑，自动切换 Radio (B256 / BIN)
+        detectAndSetMode(buf);
     }
 }
 const ADMIN_ED_PUB_HEX = "310cba5a40091f292e7e48cd1527bd80789bbaac0a922438ff9676b8ebf3febe";
@@ -1073,12 +1179,14 @@ async function pasteToDecode() {
         if (!navigator.clipboard) throw new Error("环境不支持剪切板(需HTTPS)");
         const text = await navigator.clipboard.readText();
         if (text && text.trim()) {
-            // 彻底清除旧文件引用，防止解密时优先读取旧文件
+            // 清理旧状态
             decodeRawBuffer = null; decodeFileName = "";
             $('d-file-info').innerHTML = '';
             $('d-file-info').style.display = 'none';
             $('decode-input').value = text;
-            syncBinCheckbox();
+            
+            // 调用统一判定逻辑，自动切换 Radio
+            detectAndSetMode(text);
         } else {
             alert("剪切板内容为空");
         }
@@ -1165,133 +1273,191 @@ async function tryRestore(rawBin, pwd, mode) {
     } catch (e) { return null; }
 }
 async function doDecode() {
-    const btn = $('btn-do-decode'), inputArea = $('decode-input'), 
-          isBinChecked = $('is-bin').checked, keyStr = $('d-key').value.trim();
+    const btn = $('btn-do-decode'), inputArea = $('decode-input'), keyStr = $('d-key').value.trim();
     if (!btn || !inputArea) return;
 
-    let finalBin = null, finalSourceText = "", finalName = "";
     let currentVal = inputArea.value.trim();
-    // 修复：严谨判定（必须头尾格式都匹配系统提示语，才视为无效占位符）
-    if (currentVal.startsWith("[已抓取剪切板:") && currentVal.endsWith("字)]")) currentVal = "";
-    let isPlaceholder = currentVal.includes("已载入") && decodeRawBuffer;
+    // 修复：增强占位符识别，防止将“[已载入文件:xxx]”或剪切板提示误认为密文
+    // 只要匹配到了占位符格式，就强制置空，后续逻辑会自动回落到 decodeRawBuffer
+    const isPlaceholder = (
+        (currentVal.startsWith("[已抓取剪切板:") && currentVal.endsWith("字)]")) || 
+        (currentVal.startsWith("[已载入文件:") && currentVal.endsWith("]"))
+    );
+    if (isPlaceholder) currentVal = "";
 
-    // --- 黑科技核心：自动抓取 ---
-    if ((!currentVal || (currentVal.includes("已载入") && !decodeRawBuffer)) && navigator.clipboard) {
+    if (!currentVal && !decodeRawBuffer && navigator.clipboard) {
         try {
             const clipText = await navigator.clipboard.readText();
-            if (clipText && clipText.length > 0) {
-                decodeRawBuffer = null; decodeFileName = "";
-                $('d-file-info').style.display = 'none';
-                isPlaceholder = false;
-                currentVal = clipText; // 变量存全量，确保后续解密不截断
-                finalSourceText = clipText;
-                // 输入框显示提示语，不影响变量
-                inputArea.value = `[已抓取剪切板: ${clipText.substring(0, 15).replace(/\n/g,' ')}... (${clipText.length.toLocaleString()}字)]`;
-                syncBinCheckbox();
-            }
-        } catch (e) { console.warn("抓取失败:", e.message); }
+            if (clipText) { currentVal = clipText; inputArea.value = `[已抓取剪切板: ${clipText.substring(0, 15)}... (${clipText.length.toLocaleString()}字)]`; detectAndSetMode(clipText); }
+        } catch (e) {}
     }
 
-    const startTime = Date.now(); 
     btn.disabled = true; btn.textContent = "⌛ 还原中..."; 
     await new Promise(r => setTimeout(r, 50)); 
+const getBinaryData = () => {
+  const fmtMode = document.querySelector('input[name="fmt-mode"]:checked').value;
+  let str = $('decode-input').value;
 
-    const getBinaryData = (text, buffer) => {
-        if (isBinChecked && buffer) return new Uint8Array(buffer);
-        let str = text || (buffer ? new TextDecoder().decode(buffer) : "");
-        if (!str) return null;
+  // ========== BIN 模式：绝不解析文本，直接返回原始流 ==========
+  if (fmtMode === 'bin') {
+    if (decodeRawBuffer) {
+      // 上传了文件 → 直接用 buffer
+      return { bin: new Uint8Array(decodeRawBuffer), isB32K: false };
+    } else {
+      // 粘贴了文本 → 整段按 UTF-8 编码成字节（不删、不截、不找六字头）
+      if (!str) return null;
+      return { bin: new TextEncoder().encode(str), isB32K: false };
+    }
+  }
 
-        // 1. 扫描定位疑似六字头起点
-        let headerIdx = -1;
-        const scanLen = Math.min(str.length, 65536);
-        for (let i = 0; i < scanLen - 7; i++) {
-            let seq = 0;
-            while (seq < 6 && HEX_MAP.indexOf(str[i+seq]) !== -1) seq++;
-            if (seq === 6 && str[i+6] === '，') { headerIdx = i; break; }
-        }
-        
-        // 2. 动态密度判定：以疑似起点后的内容为准进行采样
-        const startPos = (headerIdx !== -1) ? headerIdx : 0;
-        let match = 0, total = 0, sample = str.substring(startPos + (headerIdx !== -1 ? 7 : 0), startPos + 500);
-        for (let c of sample) {
-            if (!/\s/.test(c)) {
-                total++;
-                if (C2B[c] !== undefined || HEX_MAP.indexOf(c) !== -1 || c === "，" || c === "。") match++;
-            }
-        }
-        
-        // 3. 决策：如果采样区密度 > 30% 且找到了头（或密度极高），则执行 C2B
-        // 即使有头，如果后面采样密度不足 30%，依然判定为“明文”
-        const isEncoded = total > 0 && (match / total) > 0.3;
-
-        if (isEncoded) {
-            // 剥离起点前的感言
-            let core = (headerIdx !== -1) ? str.substring(headerIdx) : str;
-            const termIdx = core.indexOf("。");
-            if (termIdx !== -1) core = core.substring(0, termIdx);
-            
-            let temp = new Uint8Array(core.length), count = 0;
-            for (let i = 0; i < core.length; i++) {
-                const b = C2B[core[i]]; if (b !== undefined) temp[count++] = b;
-            }
-            return count > 0 ? temp.slice(0, count) : null;
-        } else {
-            // 密度不足，视为普通明文（支持 markdown/html/感言预览）
-            return new TextEncoder().encode(str);
-        }
-    };
-
+  // ========== B256 / B32K 模式：启用注释/六字头逻辑 ==========
+  if (str.startsWith("[已") && str.endsWith("]")) str = "";
+  if (!str && decodeRawBuffer) {
     try {
-        if (isPlaceholder) {
-            finalBin = getBinaryData(null, decodeRawBuffer);
-            finalName = decodeFileName;
-        } else if (currentVal) {
-            finalBin = getBinaryData(currentVal, null);
-            finalSourceText = currentVal;
+      str = new TextDecoder().decode(decodeRawBuffer);
+    } catch (e) {
+      str = "";
+    }
+  }
+  if (!str) return null;
+
+  // 扫描六字头
+  let sixHeaderPos = { start: undefined };
+  for (let i = 0; i <= str.length - 6; i++) {
+    let valid = true;
+    for (let j = 0; j < 6; j++) {
+      if (HEX_MAP.indexOf(str[i + j]) === -1) {
+        valid = false;
+        break;
+      }
+    }
+    if (valid) {
+      sixHeaderPos.start = i;
+      break;
+    }
+  }
+
+  // 判断是否为 B32K
+  let isB32K = false;
+  if (sixHeaderPos.start !== undefined) {
+    const sixthChar = str[sixHeaderPos.start + 5];
+    const sixthIdx = HEX_MAP.indexOf(sixthChar);
+    if (sixthIdx !== -1) {
+      isB32K = (sixthIdx & 8) !== 0;
+    }
+  }
+  if (!isB32K) {
+    isB32K = (fmtMode === 'b32k');
+  }
+
+  // 提取六字头所在行（含前缀），剔除上方注释行
+  let core = str;
+  if (sixHeaderPos.start !== undefined) {
+    const lineStart = str.lastIndexOf('\n', sixHeaderPos.start - 1) + 1;
+    const lineEnd = str.indexOf('\n', sixHeaderPos.start);
+    const lineContent = str.substring(lineStart, lineEnd === -1 ? str.length : lineEnd);
+    const periodIndex = lineContent.indexOf('。');
+    const dataLine = periodIndex === -1 ? lineContent : lineContent.substring(0, periodIndex);
+    if (isB32K) {
+      const headerStr = str.substring(sixHeaderPos.start, sixHeaderPos.start + 6);
+      const headerInLine = dataLine.indexOf(headerStr);
+      if (headerInLine !== -1) {
+        core = dataLine.substring(0, headerInLine) + dataLine.substring(headerInLine + 6);
+      } else {
+        core = dataLine;
+      }
+    } else {
+      core = dataLine;
+    }
+  } else {
+    // 无六字头：传统模式（整段找句号）
+    const firstPeriod = str.indexOf('。');
+    if (firstPeriod !== -1) {
+      core = str.substring(0, firstPeriod);
+    }
+  }
+
+  // 解码
+  if (isB32K) {
+    return { bin: b32KToBuf(core), isB32K: true };
+  } else {
+    let temp = new Uint8Array(core.length), count = 0;
+    for (let i = 0; i < core.length; i++) {
+      const b = C2B[core[i]];
+      if (b !== undefined) temp[count++] = b;
+    }
+    if (count > 0) {
+      return { bin: temp.slice(0, count), isB32K: false };
+    }
+    return { bin: new TextEncoder().encode(core), isB32K: false };
+  }
+};
+try {
+        const source = getBinaryData();
+        if (!source) throw new Error("输入内容为空"); // 只有真正的空才报错
+
+        let result = null;
+        const tryBins = (source.isB32K && source.bin.length > 0) ? [source.bin, source.bin.slice(0, -1)] : [source.bin];
+
+        for (let testBin of tryBins) {
+            // coreRestore 内部已经写好了：如果全错，会保底返回 Algo 5 的明文
+            result = await coreRestore(testBin, keyStr, $('decode-input').value, decodeFileName, decodeRawBuffer, Date.now());
+            // 只有拿到正分（意味着解密/压缩/签名中了一个）才提前跳出，否则跑完所有 tryBins
+            if (result && window.lastDecScore > 0) break; 
         }
 
-        if (finalBin) {
-            const result = await coreRestore(finalBin, keyStr, finalSourceText, finalName, decodeRawBuffer, startTime);
-            if (result) {
-                dData = result; renderDec(result);
-            } else throw new Error("还原失败：密码错误或数据损坏。");
-        } else throw new Error("未发现有效内容。");
-    } catch (e) { alert("❌ " + e.message); } 
-    finally { btn.disabled = false; btn.textContent = "🔓 执行还原"; }
+        // 核心修复：如果没有还原结果，就拿原始流当做结果
+        if (!result) {
+            result = source.bin;
+            window.lastDecScore = 0;
+            window.lastDecMode = 5; 
+        }
+
+        dData = result; 
+        renderDec(result); 
+        
+        // 只有在明确有“六字头”但解不出来时才弹窗提醒，不中断显示
+        if (window.lastDecHasHeader && (window.lastDecScore <= 0 || decWarning.active)) {
+            alert("⚠️ 数据损坏或密码错误");
+        }
+    } catch (e) { 
+        alert("❌ " + e.message); 
+    } finally { 
+        btn.disabled = false; btn.textContent = "🔓 执行还原"; 
+    }
 }
 async function coreRestore(rawBin, pwd, sniffSource, fileName, rawFileBuf, externalStartTime) {
     const sixHeader = parseSixHeader(fileName, sniffSource, rawFileBuf);
     const startTime = externalStartTime || Date.now(); 
     const isSixHeaderValid = !!(sixHeader && sixHeader.isValid);
     const targetCksum = isSixHeaderValid ? sixHeader.cksumTarget : -1;
-    window.lastDecIsMd = isSixHeaderValid ? sixHeader.isMd : false; // 全局记录
+    window.lastDecIsMd = isSixHeaderValid ? sixHeader.isMd : false;
+    window.lastDecHasHeader = isSixHeaderValid; // 记录本次是否存在六字头
     
     const isFastRequested = document.getElementById('fast-mode')?.checked !== false;
-    // 修改点：增加 && !!rawFileBuf 条件。
-    // 只有当 rawFileBuf 存在（即通过文件导入，而非文本粘贴）且大于 10MB 时，才允许流畅模式。
+    // 只有勾选了流畅模式且文件大于 10MB 才是真正的 SmoothActive
     const isSmoothActive = isFastRequested && rawBin.length > 10485760 && !!rawFileBuf; 
 
-    let algoOrder = [1, 2, 4, 5, 3, 0]; 
-    if (isSixHeaderValid) algoOrder = [sixHeader.firstAlgo, ...algoOrder.filter(a => a !== sixHeader.firstAlgo)];
+    let algoOrder = isSixHeaderValid ? [sixHeader.firstAlgo] : [1, 2, 4, 5, 3, 0]; 
+    if (!pwd || !pwd.trim()) {
+        algoOrder = isSixHeaderValid ? (sixHeader.firstAlgo === 3 ? [5, 3] : [5]) : [5, 3];
+    }
+
     let candidates = [], triedAlgoCount = 0;
 
     const fastExit = (data, score, mode, ed, ck, ckCalculated) => {
         window.lastDecMode = mode; window.lastDecScore = score; window.edIdentity = ed;
-        // 这里的用时就会包含 C2B 的转换时间了
         window.decryptStats = { usedTime: ((Date.now() - startTime) / 1000).toFixed(3), triedAlgoCount };
         decWarning.active = false;
-        if (isSixHeaderValid && targetCksum > 0) {
-            if (ckCalculated && ck !== targetCksum) {
-                decWarning.active = true;
-                decWarning.message = `⚠️ 文件指纹不匹配 (预期:${targetCksum.toString(16)} 实际:${ck.toString(16)})`;
-                if (score <= 0) alert(`⚠️ 数据损坏或密码错误`);
-            }
+        if (isSixHeaderValid && targetCksum > 0 && ckCalculated && ck !== targetCksum) {
+            decWarning.active = true;
+            decWarning.message = `⚠️ 文件指纹不匹配 (预期:${targetCksum.toString(16)} 实际:${ck.toString(16)})`;
         }
         return data;
     };
 
     for (const mode of algoOrder) {
-        if ((mode <= 2 || mode === 4) && !pwd) continue; 
+        if ((mode <= 2 || mode === 4) && (!pwd || !pwd.trim())) continue; 
         triedAlgoCount++;
         let currentEd = { isEd: false, isAdmin: false, usedPubKey: null, sigValid: false };
         let backupEd = edIdentity; edIdentity = currentEd;
@@ -1301,36 +1467,52 @@ async function coreRestore(rawBin, pwd, sniffSource, fileName, rawFileBuf, exter
 
         if (!decrypted || !decrypted.length) continue;
 
+        // --- 核心修改：流畅模式下彻底不处理 Gzip，追求极限解密性能 ---
         if (isSmoothActive && [1, 2, 4].includes(mode)) {
             return fastExit(decrypted, 4.0, mode, currentEd, 0, false);
         }
 
         let finalData = decrypted;
         let score = ([1, 2, 4].includes(mode) ? 4.0 : 0) + (currentEd.sigValid ? 2.0 : 0);
-        const isGzip = decrypted.length > 6 && decrypted[0] === 0x1f && decrypted[1] === 0x8b && decrypted[2] === 0x08;
-        if (isGzip && !isSmoothActive) {
+        
+        // 非流畅模式（<10MB 或未勾选）正常执行 Gzip 解压
+        if (decrypted.length > 6 && decrypted[0] === 0x1f && decrypted[1] === 0x8b) {
             try { finalData = pako.ungzip(decrypted); score += 0.5; } catch (e) {}
         }
+
         const autoExt = getAutoExtension(finalData);
         if (autoExt) score += (autoExt === '.bin' || autoExt === '.riff') ? 0.125 : 0.25;
-
-        if (isSmoothActive && [0, 3, 5].includes(mode) && score >= 0.125) {
-            return fastExit(finalData, score, mode, currentEd, 0, false);
-        }
 
         const h = new Uint8Array(await window.crypto.subtle.digest('SHA-256', finalData));
         const currentCksum = ((h[16] << 8) | h[17]) >>> 0;
         const cksumMatched = isSixHeaderValid && targetCksum > 0 && currentCksum === targetCksum;
         if (cksumMatched) score += 1.0;
-        candidates.push({ data: finalData, mode, edState: currentEd, cksum: currentCksum, score });
-        if (score >= 4.0 && (!isSixHeaderValid || targetCksum <= 0 || cksumMatched)) break;
+        
+        const candidate = { data: finalData, mode, edState: currentEd, cksum: currentCksum, score };
+        candidates.push(candidate);
+
+        if (cksumMatched) { candidates = [candidate]; break; }
+        if (score >= 4.0) break;
+        if (mode === 5 && score >= 0.125) break;
     }
 
-    if (!candidates.length) return null;
+// 确保永远不返回 null。如果没有候选算法匹配，就拿原始二进制流作为“明文”候选
+    if (!candidates.length) {
+        let fallbackCk = 0;
+        try { fallbackCk = await CryptoUtils.getShaChecksum(rawBin); } catch(e){}
+        candidates.push({ data: rawBin, mode: 5, edState: {isEd:false}, cksum: fallbackCk, score: 0 });
+    }
     candidates.sort((a, b) => b.score - a.score);
-    const best = candidates[0];
-    return fastExit(best.data, best.score, best.mode, best.edState, best.cksum, (rawBin.length <= 10485760 || !isFastRequested));
-}
+    
+    let best = candidates[0];
+    
+    // 核心修正：如果最高分也是 0，强制选择模式 5 (明文) 作为展示结果
+    if (best.score <= 0) {
+        const fallback = candidates.find(c => c.mode === 5);
+        if (fallback) best = fallback;
+    }
+
+    return fastExit(best.data, best.score, best.mode, best.edState, best.cksum, true);}
 function checkStrength(pwd) {
     const bar = $('e-bar');
     const info = $('e-pwd-info');
@@ -1504,6 +1686,12 @@ window.onload = async () => {
 
     // 2. 优先处理影响核心行为的参数 (fast, dmd)
     const fastVal = p.get('fast');
+    // 在 p.get('fast') 之前或之后添加
+    const xVal = p.get('x');
+    if (xVal !== null && $('x-flag')) $('x-flag').checked = isTrue(xVal);
+
+    const themeUrl = p.get('theme');
+    if (themeUrl) loadTheme(themeUrl);
     if (fastVal !== null) {
         const fChk = $('fast-mode');
         // 【修复】统一使用 isTrue，支持 fast=t 或 fast=on
@@ -1559,20 +1747,37 @@ window.onload = async () => {
             for(let chunk of chunks) { rawBin.set(chunk, pos); pos += chunk.length; }
             chunks = null;
 
+            // --- 核心统一化逻辑 ---
+            decodeRawBuffer = rawBin; // 1. 存入全局流，确保核心提取器 getBinaryData 能认领到数据
+            const binRadio = document.querySelector('input[name="fmt-mode"][value="bin"]');
+            if (binRadio) binRadio.checked = true; // 2. 强制设为 BIN 模式，不解析文本，省流省CPU
+
             s1Fill.style.width = "100%";
             s1Status.innerText = "(已完成) 1.下载原始数据流"; s1Status.style.color = "var(--primary)";
             s2Status.innerText = "(进行中) 2. 解密数据"; s2Status.style.color = "var(--warn)";
             decodeFileName = decodeURIComponent(targetUrl.split('/').pop());
             await new Promise(r => setTimeout(r, 50)); 
 
+            // 3. 统一调用核心还原器
             const result = await coreRestore(rawBin, dePwd || generalPwd || "", "", decodeFileName, rawBin);
+            
             if (result) {
-                dData = result; renderDec(result); 
+                dData = result; 
+                renderDec(result); 
+                
+                // 4. 精准 Alert 逻辑：得分0 + 有头 + 指纹错 才弹窗
+                if (window.lastDecScore <= 0 && window.lastDecHasHeader && decWarning.active) {
+                    alert("⚠️ 数据损坏或密码错误");
+                }
+
                 s2Status.innerText = "(已完成) 2. 解密数据"; s2Status.style.color = "var(--primary)";
                 manualDlBtn.disabled = false;
                 manualDlBtn.style.background = "var(--primary)"; manualDlBtn.style.color = "#000";
-                dlDec(); $('step3-status').innerText = "(已完成) 3. 触发下载"; $('step3-status').style.color = "var(--primary)";
-            } else throw new Error("还原失败");
+                dlDec(); 
+                $('step3-status').innerText = "(已完成) 3. 触发下载"; $('step3-status').style.color = "var(--primary)";
+            } else {
+                throw new Error("格式严重损坏，无法识别任何编码。");
+            }
         } catch (e) {
             s1Status.innerText = "(失败) " + e.message; s1Status.style.color = "var(--danger)";
         }
@@ -1630,97 +1835,87 @@ window.onload = async () => {
     }
 };
 async function doEncode() {
-    const btn = $('btn-do-encode'), encodeText = $('encode-text'), gzipEnable = $('gzip-enable'), algoEl = document.querySelector('input[name="algo"]:checked'), eKey = $('e-key'), eStats = $('e-stats'), resShowArea = $('res-show-area'), eResult = $('e-result');
+    const btn = $('btn-do-encode'), encodeText = $('encode-text'), gzipEnable = $('gzip-enable'), 
+          algoEl = document.querySelector('input[name="algo"]:checked'), eKey = $('e-key'), 
+          eStats = $('e-stats'), resShowArea = $('res-show-area'), eResult = $('e-result');
     if (!btn || !encodeText) return;
     btn.disabled = true; btn.textContent = "⌛ 处理中...";
     const encodeStartTime = Date.now();
     await new Promise(r => setTimeout(r, 50));
     try {
         const txt = encodeText.value.trim(), algoMode = algoEl.value, keyStr = eKey.value.trim();
-        // 1. 判定吱模式：原文件是GCM（六字头第5字嘿）+当前选Ed25519签名
-        // 修改点：第二个参数传入 txt，确保能从粘贴的文本中读取原Header
         const originalSixHeader = parseSixHeader(oFile ? oFile.name : "", txt, null);
         const isSigningGCM = originalSixHeader.isValid && originalSixHeader.isGCM && algoMode === "3";
 
-        // 2. 处理待签名/加密的二进制数据
         let processedBin;
         if (eData && eData.length > 0) {
-            // 优先使用导入文件的二进制数据（如GCM加密文件）
             processedBin = eData;
         } else {
-            // 无文件时
-            // 核心修复：如果是 GCM 签名模式 (isSigningGCM)，说明用户粘贴了 GCM 密文文本
-            // 此时必须先进行 C2B 反向映射，还原为二进制，否则会对“密文的文字编码”进行签名，导致解密后是Base256文本而非原始数据
             if (isSigningGCM) {
-                const temp = new Uint8Array(txt.length);
-                let count = 0;
-                for (let i = 0; i < txt.length; i++) {
-                    const b = C2B[txt[i]]; // 使用全局 C2B 映射表
-                    if (b !== undefined) temp[count++] = b;
+                // 吱模式反解：如果原Header是B32K (bit 3)，则用b32kToBuf，否则用C2B
+                const isSrcB32K = (originalSixHeader.sixthCharIdx & 8) !== 0;
+                if (isSrcB32K) {
+                    // 去除头部的6个字后解码
+                    processedBin = b32KToBuf(txt.substring(6));
+                } else {
+                    const temp = new Uint8Array(txt.length);
+                    let count = 0;
+                    for (let i = 0; i < txt.length; i++) {
+                        const b = C2B[txt[i]];
+                        if (b !== undefined) temp[count++] = b;
+                    }
+                    processedBin = count > 0 ? temp.slice(0, count) : new TextEncoder().encode(txt);
                 }
-                // 如果能还原出数据，则使用还原后的二进制；否则保底回退到 UTF-8 (防止空内容等异常)
-                processedBin = count > 0 ? temp.slice(0, count) : new TextEncoder().encode(txt);
             } else {
                 processedBin = new TextEncoder().encode(txt);
             }
         }
         if (!processedBin || processedBin.length === 0) throw new Error("内容为空");
 
-        // 3. 计算SHA256校验和
         const cksum = await CryptoUtils.getShaChecksum(processedBin);
         let finalBin = processedBin, featFlags = 0;
 
-        // 4. Gzip压缩与Markdown标记
-        if ($('md-flag').checked) featFlags |= 0x04; // 写入比特位4
+        // 1. 读取极限压缩标记 (x-flag) 并写入 featFlags 的第3位 (值8)
+        const isX = $('x-flag').checked;
+        if ($('md-flag').checked) featFlags |= 0x04;
+        if (isX) featFlags |= 0x08; // Base32768 标记
 
+        // 2. Gzip
         if (gzipEnable.checked && !isSigningGCM) {
             try {
-                // 强制开启 Level 9 最高压缩率
                 const gzipped = pako.gzip(processedBin, { level: 9 });
                 if (gzipped.length < processedBin.length) {
                     finalBin = gzipped;
-                    featFlags |= 0x02; // 标记已压缩
+                    featFlags |= 0x02;
                 }
             } catch (e) {}
         }
 
-        // 5. 执行签名/加密逻辑
+        // 3. 加密/签名
         if (algoMode === "3") {
-            // Ed25519签名（吱模式/纯签名模式）
             if (!keyStr) throw new Error("签名需要私钥");
-            featFlags |= 0x01; // 标记已签名
+            featFlags |= 0x01;
             const privKey = await importEdPrivKey(keyStr);
             const sig = await window.crypto.subtle.sign({ name: 'Ed25519' }, privKey, finalBin);
-            // 拼接签名（前64字节）和原始数据
             const combined = new Uint8Array(64 + finalBin.length);
-            combined.set(new Uint8Array(sig));
-            combined.set(finalBin, 64);
+            combined.set(new Uint8Array(sig)); combined.set(finalBin, 64);
             finalBin = combined;
         } else if (keyStr) {
-            // 其他加密模式（CBC/GCM/P384）
-            featFlags |= 0x01; // 标记已加密
+            featFlags |= 0x01;
             const keyEnc = new TextEncoder();
             const keyHash = await window.crypto.subtle.digest('SHA-256', keyEnc.encode(keyStr));
             let encrypted, combined;
-
             if (algoMode === "0") {
-                // CBC加密（旧版兼容）
                 const iv = crypto.getRandomValues(new Uint8Array(16));
                 const key = await crypto.subtle.importKey('raw', keyHash, 'AES-CBC', false, ['encrypt']);
                 encrypted = await crypto.subtle.encrypt({ name: 'AES-CBC', iv }, key, finalBin);
-                combined = new Uint8Array(16 + encrypted.byteLength);
-                combined.set(iv);
-                combined.set(new Uint8Array(encrypted), 16);
+                combined = new Uint8Array(16 + encrypted.byteLength); combined.set(iv); combined.set(new Uint8Array(encrypted), 16);
             } else if (algoMode === "1") {
-                // GCM加密
                 const iv = crypto.getRandomValues(new Uint8Array(12));
                 const key = await crypto.subtle.importKey('raw', keyHash, 'AES-GCM', false, ['encrypt']);
                 encrypted = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, finalBin);
-                combined = new Uint8Array(12 + encrypted.byteLength);
-                combined.set(iv);
-                combined.set(new Uint8Array(encrypted), 12);
+                combined = new Uint8Array(12 + encrypted.byteLength); combined.set(iv); combined.set(new Uint8Array(encrypted), 12);
             } else if (algoMode === "2") {
-                // P384加密
                 const ephKp = await crypto.subtle.generateKey({ name: 'ECDH', namedCurve: 'P-384' }, true, ['deriveKey']);
                 const remotePub = await crypto.subtle.importKey('raw', hexToBuf(keyStr), { name: 'ECDH', namedCurve: 'P-384' }, false, []);
                 const shared = await crypto.subtle.deriveKey({ name: 'ECDH', public: remotePub }, ephKp.privateKey, { name: 'AES-GCM', length: 256 }, false, ['encrypt']);
@@ -1728,60 +1923,40 @@ async function doEncode() {
                 const ephPub = await crypto.subtle.exportKey('raw', ephKp.publicKey);
                 encrypted = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, shared, finalBin);
                 combined = new Uint8Array(ephPub.byteLength + 12 + encrypted.byteLength);
-                combined.set(new Uint8Array(ephPub));
-                combined.set(iv, ephPub.byteLength);
-                combined.set(new Uint8Array(encrypted), ephPub.byteLength + 12);
+                combined.set(new Uint8Array(ephPub)); combined.set(iv, ephPub.byteLength); combined.set(new Uint8Array(encrypted), ephPub.byteLength + 12);
             }
             finalBin = combined;
         }
-
-        // 6. 确定算法标识（finalAlgo）
-        let finalAlgo;
-        if (isSigningGCM) {
-            // 吱模式：GCM+Ed25519签名，标识4（对应HEX_MAP[4] = "吱"）
-            finalAlgo = 4;
-        } else if (algoMode === "3") {
-            // 纯Ed25519签名：标识3（对应HEX_MAP[3] = "咕"）
-            finalAlgo = 3;
-        } else {
-            // 其他模式（CBC/GCM/P384）：用选择的算法值
-            finalAlgo = parseInt(algoMode);
-        }
-
-        // 7. 生成六字头（前4字复制原文件，第5字吱，第6字按原逻辑）
+let finalAlgo = isSigningGCM ? 4 : (algoMode === "3" ? 3 : parseInt(algoMode));
         let h;
         if (isSigningGCM && originalSixHeader.isValid) {
-            const firstFour = originalSixHeader.firstFourChars; // 原文件六字头前4字（如“吧哔咕嘿”）
-            const fifthChar = "吱"; // 固定第5字为“吱”
-            // 第6字：优先用原文件第6字索引，无则用featFlags
-            const sixthChar = originalSixHeader.sixthCharIdx >= 0 ? HEX_MAP[originalSixHeader.sixthCharIdx] : HEX_MAP[featFlags];
-            h = firstFour + fifthChar + sixthChar;
+            // 核心修复：保留原始前四位，确保校验通过
+            h = originalSixHeader.firstFourChars + "吱" + HEX_MAP[featFlags];
         } else {
-            // 非吱模式：按原逻辑生成六字头
             h = HEX_MAP[(cksum >> 12) & 0xF] + HEX_MAP[(cksum >> 8) & 0xF] + HEX_MAP[(cksum >> 4) & 0xF] + HEX_MAP[cksum & 0xF] + HEX_MAP[finalAlgo] + HEX_MAP[featFlags];
         }
 
-        // 8. 保存结果并更新UI
-        window.resBin = finalBin;
-        isEncDataReady = true;
-        window.resHeader = h;
-        // 生成最终编码文本（规模超限时提示）
-        // 3. 增加句号作为终止标记（注意末尾的 "。"）
-        window.resTxt = finalBin.length > PLIM 
-            ? `${h}，[规模较大（${finalBin.length.toLocaleString()} B），已禁用预览]` 
-            : `${h}，${Array.from(finalBin).map(b => B2C[b]).join('')}。`;
-const showAlgoName = (["0", "1", "2"].includes(algoMode) && !keyStr.trim()) ? "明文" : getAlgoName(finalAlgo);
-eStats.innerHTML = `规模: ${finalBin.length.toLocaleString()} B | 算法: ${showAlgoName} | 用时: ${((Date.now() - encodeStartTime) / 1000).toFixed(3)}s`;
+        window.resBin = finalBin; isEncDataReady = true; window.resHeader = h;
+        
+        // 核心修复：正文渲染逻辑必须与生成的 Header (h) 严格同步，而不是看复选框
+        const finalIsX = (HEX_MAP.indexOf(h[5]) & 8) !== 0; 
+        const localB2C = B2C; 
+        if (finalIsX) {
+    window.resTxt = finalBin.length > PLIM 
+        ? `${h}。[规模较大（${finalBin.length.toLocaleString()} B），已禁用预览]` 
+        : `${h}${bufToB32K(finalBin)}。`; 
+} else {
+    window.resTxt = finalBin.length > PLIM 
+        ? `${h}，[规模较大（${finalBin.length.toLocaleString()} B），已禁用预览]` 
+        : `${h}，${Array.from(finalBin).map(b => localB2C[b]).join('')}。`; // 改用 localB2C
+}
+
+        const showAlgoName = (["0", "1", "2"].includes(algoMode) && !keyStr.trim()) ? "明文" : getAlgoName(finalAlgo);
+        eStats.innerHTML = `规模: ${finalBin.length.toLocaleString()} B | 算法: ${showAlgoName} | 用时: ${((Date.now() - encodeStartTime) / 1000).toFixed(3)}s`;
         resShowArea.value = window.resTxt;
         eResult.style.display = "block";
-    } catch (e) {
-        alert(`❌ 编码失败：${e.message}`);
-    } finally {
-        btn.disabled = false;
-        btn.textContent = "🚀 执行编码";
-    }
+    } catch (e) { alert(`❌ 编码失败：${e.message}`); } finally { btn.disabled = false; btn.textContent = "🚀 执行编码"; }
 }
-// 搜索并替换整个 dlRes 函数
 function dlRes(t) {
     if (!isEncDataReady || !window.resBin || window.resBin.length === 0) {
         alert("❌ 无有效加密数据，请先点击【执行编码】");
@@ -1789,23 +1964,30 @@ function dlRes(t) {
     }
     try {
         let blob;
-        if (t === 'txt') {
-            // 性能优化：分块构建字符串，避免创建数百万长度的数组导致浏览器崩溃
-            const chunks = [window.resHeader, "，"];
-            const len = window.resBin.length;
-            const CHUNK_SIZE = 4096; // 每次处理4KB，兼顾速度与内存
-            
-            for (let i = 0; i < len; i += CHUNK_SIZE) {
-                let s = "";
-                const end = Math.min(i + CHUNK_SIZE, len);
-                for (let j = i; j < end; j++) {
-                    s += (B2C[window.resBin[j]] || B2C[0]);
-                }
-                chunks.push(s);
+if (t === 'txt') {
+    // 核心修复：从已生成的 Header 中提取真相，而不是看复选框
+    const h = window.resHeader;
+    const isX = h && h.length >= 6 && (HEX_MAP.indexOf(h[5]) & 8) !== 0;
+    const chunks = [h];
+    const len = window.resBin.length;
+    
+    if (isX) {
+        chunks.push(bufToB32K(window.resBin));
+    } else {
+        chunks.push("，");
+        const CHUNK_SIZE = 4096;
+        for (let i = 0; i < len; i += CHUNK_SIZE) {
+            let s = "";
+            const end = Math.min(i + CHUNK_SIZE, len);
+            for (let j = i; j < end; j++) {
+                s += (B2C[window.resBin[j]] || B2C[0]);
             }
-            chunks.push("。"); // 补上句号
-            blob = new Blob(chunks, {type: 'text/plain;charset=utf-8' });
-        } else {
+            chunks.push(s);
+        }
+    }
+    chunks.push("。");
+    blob = new Blob(chunks, {type: 'text/plain;charset=utf-8' });
+} else {
             blob = new Blob([window.resBin], {type: 'application/octet-stream' });
         }
 
@@ -1952,10 +2134,25 @@ async function copyTo(text, msg = "已复制") {
 async function copyRes() {
     if (!window.resBin) return alert("没有内容可复制");
     if (window.resBin.length > 2000000) return alert("数据过大，请使用【下载TXT】");
-    const chunks = [window.resHeader, "，"];
-    for (let i = 0; i < window.resBin.length; i++) chunks.push(B2C[window.resBin[i]]);
-    chunks.push("。"); // 补上句号
-    copyTo(chunks.join(''), "全量编码已复制");
+    
+    // 检查头部的第6个字是否标记了 B32K
+    const h = window.resHeader;
+    const isB32K = h && h.length >= 6 && (HEX_MAP.indexOf(h[5]) & 8) !== 0;
+    
+    let text = "";
+    if (isB32K) {
+        // B32K 模式：无逗号
+        text = h + bufToB32K(window.resBin) + "。";
+    } else {
+// 优化后：缓存 B2C 到局部
+const localB2C = B2C; // 新增：全局数组缓存到局部
+const chunks = [h, "，"];
+for (let i = 0; i < window.resBin.length; i++) chunks.push(localB2C[window.resBin[i]]); // 改用 localB2C
+chunks.push("。");
+text = chunks.join('');
+    }
+    
+    copyTo(text, "全量编码已复制");
 }
 function copyKey(id) {
     const val = $(id).value;
