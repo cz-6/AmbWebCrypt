@@ -15,15 +15,15 @@
 ---
 
 ### 🌐 在此体验（建议收藏）：
-*   [Pages（线路一）](https://cz-6.github.io/AmbWebCrypt)
+*   [Pages（线路一）](https://cz-6.github.io/AmbWebCrypt)----[🌸](https://cz-6.github.io/AmbWebCrypt?theme=theme)----[🌙](https://cz-6.github.io/AmbWebCrypt?theme=via)
 
 🇺🇸🇸🇬🇯🇵🇭🇰 ✅ 🇨🇳 ❌
 
-*   [大陆优化（线路二）](https://j.157126.xyz)
+*   [大陆优化（线路二）](https://j.157126.xyz)----[🌸](https://j.157126.xyz/?theme=theme)----[🌙](https://j.157126.xyz/?theme=via)
 
 🇭🇰 ✅✅ 🇨🇳 ✅ 🇺🇸 🟡 🇯🇵🇸🇬 ⚠️
 
-*   [FRP（线路三）](https://cn.157126.xyz:31527/Documents/www/aes.htm.txt)
+*   [FRP（线路三）](https://cn.157126.xyz:31527/Documents/www/aes.htm.txt)----[🌸](https://cn.157126.xyz:31527/Documents/www/aes.htm.txt?theme=theme)----[🌙](https://cn.157126.xyz:31527/Documents/www/aes.htm.txt?theme=via)
 
 🇨🇳 ✅✅ 🇭🇰🇯🇵🇸🇬🇺🇸 ⚠️
 
