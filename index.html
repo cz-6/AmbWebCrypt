@@ -1416,9 +1416,10 @@ try {
         renderDec(result); 
         
         // 只有在明确有“六字头”但解不出来时才弹窗提醒，不中断显示
-        if (window.lastDecHasHeader && (window.lastDecScore <= 0 || decWarning.active)) {
-            alert("⚠️ 数据损坏或密码错误");
-        }
+// 增加 window.lastTargetCksum > 0 的判断
+if (window.lastDecHasHeader && window.lastTargetCksum > 0 && (window.lastDecScore <= 0 || decWarning.active)) {
+    alert("⚠️ 数据损坏或密码错误");
+}
     } catch (e) { 
         alert("❌ " + e.message); 
     } finally { 
@@ -1429,7 +1430,8 @@ async function coreRestore(rawBin, pwd, sniffSource, fileName, rawFileBuf, exter
     const sixHeader = parseSixHeader(fileName, sniffSource, rawFileBuf);
     const startTime = externalStartTime || Date.now(); 
     const isSixHeaderValid = !!(sixHeader && sixHeader.isValid);
-    const targetCksum = isSixHeaderValid ? sixHeader.cksumTarget : -1;
+// 增加 window.lastTargetCksum 的赋值
+const targetCksum = window.lastTargetCksum = isSixHeaderValid ? sixHeader.cksumTarget : -1;
     window.lastDecIsMd = isSixHeaderValid ? sixHeader.isMd : false;
     window.lastDecHasHeader = isSixHeaderValid; // 记录本次是否存在六字头
     
@@ -1765,9 +1767,10 @@ window.onload = async () => {
                 renderDec(result); 
                 
                 // 4. 精准 Alert 逻辑：得分0 + 有头 + 指纹错 才弹窗
-                if (window.lastDecScore <= 0 && window.lastDecHasHeader && decWarning.active) {
-                    alert("⚠️ 数据损坏或密码错误");
-                }
+// 增加 window.lastTargetCksum > 0 的判断
+if (window.lastDecScore <= 0 && window.lastDecHasHeader && window.lastTargetCksum > 0 && decWarning.active) {
+    alert("⚠️ 数据损坏或密码错误");
+}
 
                 s2Status.innerText = "(已完成) 2. 解密数据"; s2Status.style.color = "var(--primary)";
                 manualDlBtn.disabled = false;
