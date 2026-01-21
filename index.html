@@ -5,7 +5,7 @@
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <link rel="apple-touch-icon" href="icon-192.png">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>AmbWebCrypt (pd5r)</title>
+    <title>AmbWebCrypt (sd5r)</title>
     <style>
 :root {
     --primary: #00ff41; 
@@ -153,7 +153,7 @@ button:disabled { background: #666 !important; color: #999 !important; cursor: n
 <body>
 <div id="loader-screen" style="display:none; max-width: 600px; margin: 30px auto; padding: 20px; background: #0a0a0a; border: 1px solid #333; color: #fff; font-family: Consolas, monospace; border-radius: 8px;">
 <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 10px;">
-    <h1 style="font-size: clamp(16px, 5vw, 22px); white-space: nowrap; margin: 0; color: var(--primary); border: none; padding: 0;">🔤 AmbWebCrypt (pd5r)</h1>
+    <h1 style="font-size: clamp(16px, 5vw, 22px); white-space: nowrap; margin: 0; color: var(--primary); border: none; padding: 0;">🔤 AmbWebCrypt (sd5r)</h1>
     <button onclick="backupTool()" style="background: none; border: 1px solid #444; color: #888; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 11px; flex-shrink: 0; white-space: nowrap; margin: 0;">
         💾 保存本页
     </button>
@@ -201,7 +201,7 @@ button:disabled { background: #666 !important; color: #999 !important; cursor: n
 <div class="drop-hint" id="drop-hint">📁 释放文件以导入</div>
 <div id="header-area" style="display: flex; flex-direction: column; gap: 8px; border-bottom: 2px solid var(--primary); margin-bottom: 0px; padding-bottom: 10px;">
     <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px;">
-        <h1 style="font-size: clamp(16px, 5vw, 22px); white-space: nowrap; margin: 0; color: var(--primary); border: none; padding: 0;">🔤 AmbWebCrypt (pd5r)</h1>
+        <h1 style="font-size: clamp(16px, 5vw, 22px); white-space: nowrap; margin: 0; color: var(--primary); border: none; padding: 0;">🔤 AmbWebCrypt (sd5r)</h1>
         <button onclick="backupTool()" style="background: none; border: 1px solid #444; color: #888; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 11px; flex-shrink: 0; white-space: nowrap; margin: 0;">
             💾 保存本页
         </button>
@@ -531,7 +531,7 @@ button:disabled { background: #666 !important; color: #999 !important; cursor: n
 }
     </style>
     <script>
-    const VER = "pd5r"; // 升级到 pd5r
+    const VER = "sd5r"; // 升级到 sd5r
     const PLIM = 100000; 
     const MAX_PIXELS = 10000000; 
     const MAP = "零一二三四五六七八九十个百千万服多来米发锁拉系骇古极你歪它他她啊波次的饿歌喝以几可了们呢喔屏群人是烫鱼绿写用这莱方录鹿卢凹折山葱仪厂长秧同草末音菜酸汤名口窝填田土木火水金风雨石竹鸟马牛羊虫花树云雷雪星光天海湖林点线面体条猫狗搜库炮进城管锚泡抛刨袍图如吐加键减肥乘出除处初厨楚乔恩奖江姜酱犟僵耳儿文静网热卡空虚拟想希丁克门付款啦放大哦扩对皮肤看快手内存成绩差登记机声第集平时都觉得就行打击哒西到哪咳嗽带飞辛苦老试怕漏刷未微位小众中从聪信新旧杨样阳提清青酒流留物里例理力丽礼李立事史视率形之只染然似防重饭洗头连叫扣宜";
@@ -1294,9 +1294,8 @@ async function doDecode() {
 
     btn.disabled = true; btn.textContent = "⌛ 还原中..."; 
     await new Promise(r => setTimeout(r, 50)); 
-const getBinaryData = () => {
+const getBinaryData = (str) => {
   const fmtMode = document.querySelector('input[name="fmt-mode"]:checked').value;
-  let str = $('decode-input').value;
 
   // ========== BIN 模式：绝不解析文本，直接返回原始流 ==========
   if (fmtMode === 'bin') {
@@ -1393,7 +1392,7 @@ const getBinaryData = () => {
   }
 };
 try {
-        const source = getBinaryData();
+        const source = getBinaryData(currentVal);
         if (!source) throw new Error("输入内容为空"); // 只有真正的空才报错
 
         let result = null;
