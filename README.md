@@ -23,13 +23,9 @@
 
 🇭🇰 ✅✅ 🇨🇳 ✅ 🇺🇸 🟡 🇯🇵🇸🇬 ⚠️
 
-*   [FRP（线路三）](https://cn.157126.xyz:31527/Documents/www/aes.htm.txt)----[🌸](https://cn.157126.xyz:31527/Documents/www/aes.htm.txt?theme=theme)----[🌙](https://cn.157126.xyz:31527/Documents/www/aes.htm.txt?theme=via)
-
-🇨🇳 ✅✅ 🇭🇰🇯🇵🇸🇬🇺🇸 ⚠️
-
 线路一最稳定，不会变，不会掉线。
 
-线路三加载最快。
+线路三竟然炸了！去用线路二。我怀疑是这个README干的好事。
 
 线路二平衡速度与稳定性。
 
